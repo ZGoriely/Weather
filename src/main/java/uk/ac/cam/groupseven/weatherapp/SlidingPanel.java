@@ -11,17 +11,18 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 public class SlidingPanel extends JPanel {
-    int offset = 0;
-    @Inject
-    @Named("screenDimension")
-    Dimension screenDimension;
+    private SlidingLayoutManager slidingLayoutManager;
+    private float offset = 0;
     private ScreenLayout screenLayout;
     private Disposable currentAnimation = null;
 
     @Inject
-    public SlidingPanel(ScreenLayout screenLayout) {
+    public SlidingPanel(ScreenLayout screenLayout, @Named("screenDimension") Dimension screenDimension) {
         this.screenLayout = screenLayout;
+        this.slidingLayoutManager = new SlidingLayoutManager(screenDimension);
         add(screenLayout.getDefault());
+        setLayout(slidingLayoutManager);
+        revalidate();
 
     }
 
@@ -31,49 +32,26 @@ public class SlidingPanel extends JPanel {
                 screenLayout.start());
     }
 
-    Component getFrontPanel() {
+    private Component getFrontPanel() {
         if (getComponents().length > 0) {
             return getComponents()[0];
         }
         return null;
     }
 
-    Component getBackPanel() {
+    private Component getBackPanel() {
         if (getComponents().length > 1) {
             return getComponents()[1];
         }
         return null;
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return screenDimension;
+    private void updateBounds(ScreenLayout.Direction direction) {
+        slidingLayoutManager.setOffset(offset, direction);
+        slidingLayoutManager.layoutContainer(this);
     }
 
-    @Override
-    public Dimension getMinimumSize() {
-
-        return screenDimension;
-    }
-
-    @Override
-    public Dimension getMaximumSize() {
-        return screenDimension;
-    }
-
-    void updateBounds(ScreenLayout.Direction direction) {
-        if (direction == ScreenLayout.Direction.LEFT) {
-            getFrontPanel().setBounds(offset, 0, getWidth(), getHeight());
-            getBackPanel().setBounds((int) (-getWidth() + offset), 0, (int) getWidth(), (int) getHeight());
-        } else if (direction == ScreenLayout.Direction.RIGHT) {
-            getFrontPanel().setBounds(-offset, 0, (int) getWidth(), (int) getHeight());
-            getBackPanel().setBounds((int) (getWidth() - offset), 0, (int) getWidth(), (int) getHeight());
-
-        }
-
-    }
-
-    void slide(JPanel next, ScreenLayout.Direction direction) {
+    private void slide(JPanel next, ScreenLayout.Direction direction) {
         if (currentAnimation != null) {
             currentAnimation.dispose();
         }
@@ -85,16 +63,20 @@ public class SlidingPanel extends JPanel {
         next.repaint();
 
 
-        currentAnimation = Observable.intervalRange(0, 100, 0, 5, TimeUnit.MILLISECONDS).subscribe(x ->
+        int count = 50;
+        currentAnimation = Observable.intervalRange(0, count, 0, 400 / count, TimeUnit.MILLISECONDS).subscribe(x ->
                 {
-                    offset = (int) (getFrontPanel().getWidth() * x / 100);
+                    offset = x / (float) count;
                     updateBounds(direction);
                     this.invalidate();
                 },
                 x -> {
                     throw new RuntimeException(x);
                 },
-                () -> remove(getFrontPanel())
+                () -> {
+                    if (getFrontPanel() != null) remove(getFrontPanel());
+                    updateBounds(null);
+                }
         );
     }
 

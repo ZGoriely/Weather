@@ -16,7 +16,7 @@ public class ApplicationModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(Dimension.class).annotatedWith(Names.named("screenDimension"))
-                .toInstance(new Dimension(500, 500)); //Set screen size
+                .toInstance(new Dimension(700, 1132)); //Set screen size
 
         binder.bind(new TypeLiteral<ViewModelSource<HomeWeather>>() {
         }).to(HomeWeatherSource.class);
