@@ -15,7 +15,7 @@ public class HoursWeatherSource extends ViewModelSource<HourWeather> {
 
     @Override
     public Observable<HourWeather> getViewModel(Observable<Object> refresh) {
-        return Observable.range(0, 7)
+        return Observable.range(0, 24)
                 .flatMap(x -> weatherApiSource.getWeatherInHours(x))
                 .toList()
                 .map(x -> buildModel(x))
@@ -28,13 +28,13 @@ public class HoursWeatherSource extends ViewModelSource<HourWeather> {
         for (int i = 0; i < weatherList.size(); i++) {
             switch (weatherList.get(i).precipitation) {
                 case RAIN:
-                    weatherTexts.add(String.format("Day %s: Rain", i));
+                    weatherTexts.add(String.format("%s:00 - Rain", i));
                     break;
                 case SNOW:
-                    weatherTexts.add(String.format("Day %s: Snow", i));
+                    weatherTexts.add(String.format("%s:00 - Snow", i));
                     break;
                 case NONE:
-                    weatherTexts.add(String.format("Day %s: Sun", i));
+                    weatherTexts.add(String.format("%s:00 - Sun", i));
                     break;
             }
         }

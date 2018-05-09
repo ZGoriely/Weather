@@ -22,7 +22,7 @@ public class ScreenLayout {
         return homeScreen.getPanel();
     }
 
-    JPanel getScreen(Screen current, Direction direction) {
+    public JPanel getScreen(Screen current, Direction direction) {
         JPanel currentPanel = current.getPanel();
         if (currentPanel == homeScreen.getPanel()) {
             return hoursScreen.getPanel();
@@ -33,7 +33,7 @@ public class ScreenLayout {
         throw new NotImplementedException();
     }
 
-    Observable<ScreenChange> getScreenChanges() {
+    public Observable<ScreenChange> getScreenChanges() {
         return Observable.merge(
                 homeScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(homeScreen, x), x)),
                 hoursScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(hoursScreen, x), x))
@@ -41,7 +41,7 @@ public class ScreenLayout {
 
     }
 
-    Disposable start() {
+    public Disposable start() {
         return new CompositeDisposable(
                 homeScreen.start(),
                 hoursScreen.start()

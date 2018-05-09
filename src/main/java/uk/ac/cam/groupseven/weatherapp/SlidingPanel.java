@@ -25,7 +25,7 @@ public class SlidingPanel extends JPanel {
 
     }
 
-    Disposable start() {
+    public Disposable start() {
         return new CompositeDisposable(
                 screenLayout.getScreenChanges().subscribe(x -> slide(x.nextScreen, x.direction)),
                 screenLayout.start());

@@ -1,6 +1,7 @@
 package uk.ac.cam.groupseven.weatherapp.viewmodels;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HourWeather {
 
@@ -8,8 +9,8 @@ public class HourWeather {
     public final boolean loading;
     public final Throwable error;
 
-    public HourWeather(ArrayList<String> precipitationTexts) {
-        this.precipitationTexts = precipitationTexts;
+    public HourWeather(List<String> precipitationTexts) {
+        this.precipitationTexts = new ArrayList<>(precipitationTexts);
         loading = false;
         error = null;
     }
