@@ -1,6 +1,7 @@
 package uk.ac.cam.groupseven.weatherapp.datasources;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import org.w3c.dom.Document;
@@ -8,7 +9,6 @@ import org.xml.sax.SAXException;
 import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.LightingTimes;
 
-import javax.inject.Named;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
