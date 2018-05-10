@@ -15,8 +15,10 @@ public class HoursScreen implements Screen {
     @Inject
     ViewModelSource<HourWeather> viewModelSource;
     private JPanel panel;
-    private JButton hoursScreenButton;
     private JList list;
+    private JButton leftButton;
+    private JButton rightButton;
+    private JTextPane dateText;
 
     @Override
     public Disposable start() {
@@ -25,7 +27,8 @@ public class HoursScreen implements Screen {
 
     @Override
     public Observable<ScreenLayout.Direction> getScreenChanges() {
-        return SwingObservable.actions(hoursScreenButton).map(x -> ScreenLayout.Direction.LEFT);
+        return SwingObservable.actions(leftButton).map(x -> ScreenLayout.Direction.LEFT)
+                .mergeWith(SwingObservable.actions(rightButton).map(x -> ScreenLayout.Direction.RIGHT));
     }
 
     private void updateScreen(HourWeather viewModel) {

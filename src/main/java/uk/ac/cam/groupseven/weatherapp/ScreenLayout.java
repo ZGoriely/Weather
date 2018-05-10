@@ -25,10 +25,34 @@ public class ScreenLayout {
     public JPanel getScreen(Screen current, Direction direction) {
         JPanel currentPanel = current.getPanel();
         if (currentPanel == homeScreen.getPanel()) {
-            return hoursScreen.getPanel();
+            JPanel nextPanel;
+            switch (direction) {
+                case LEFT:
+                    nextPanel = hoursScreen.getPanel();
+                    break;
+                case RIGHT:
+                    nextPanel = hoursScreen.getPanel();
+                    break;
+                default:
+                    nextPanel = currentPanel;
+                    break;
+            }
+            return nextPanel;
         }
         if (currentPanel == hoursScreen.getPanel()) {
-            return homeScreen.getPanel();
+            JPanel nextPanel;
+            switch (direction) {
+                case LEFT:
+                    nextPanel = homeScreen.getPanel();
+                    break;
+                case RIGHT:
+                    nextPanel = homeScreen.getPanel();
+                    break;
+                default:
+                    nextPanel = currentPanel;
+                    break;
+            }
+            return nextPanel;
         }
         throw new NotImplementedException();
     }

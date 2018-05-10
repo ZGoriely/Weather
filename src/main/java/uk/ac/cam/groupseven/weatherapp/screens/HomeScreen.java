@@ -15,10 +15,13 @@ public class HomeScreen implements Screen {
     @Inject
     ViewModelSource<HomeWeather> homeWeatherSource;
     private JPanel panel;
-    private JButton right;
     private JTextPane weatherText;
     private JTextArea flagText;
     private JButton refreshButton;
+    private JButton crestButton;
+    private JButton leftButton;
+    private JButton rightButton;
+    private JButton additionalInformationButton;
 
     public JPanel getPanel() {
         return panel;
@@ -49,9 +52,8 @@ public class HomeScreen implements Screen {
     }
 
     public Observable<ScreenLayout.Direction> getScreenChanges() {
-        return SwingObservable.actions(right).map(x ->
-                ScreenLayout.Direction.RIGHT
-        );
+        return SwingObservable.actions(leftButton).map(x -> ScreenLayout.Direction.LEFT)
+                .mergeWith(SwingObservable.actions(rightButton).map(x -> ScreenLayout.Direction.RIGHT));
 
     }
 
