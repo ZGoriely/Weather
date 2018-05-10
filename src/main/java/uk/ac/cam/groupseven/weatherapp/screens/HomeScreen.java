@@ -63,4 +63,5 @@ public class HomeScreen implements Screen {
                         .concatWith(SwingObservable.actions(refreshButton))//Refresh when button pressed
                         .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); //Refresh every 15 seconds
     }
+
 }

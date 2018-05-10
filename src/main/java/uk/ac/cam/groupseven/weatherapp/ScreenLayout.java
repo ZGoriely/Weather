@@ -17,7 +17,6 @@ public class ScreenLayout {
     @Inject
     HoursScreen hoursScreen;
 
-
     public JPanel getDefault() {
         return homeScreen.getPanel();
     }
