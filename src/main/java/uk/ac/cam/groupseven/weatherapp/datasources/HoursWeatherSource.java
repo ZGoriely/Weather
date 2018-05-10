@@ -11,7 +11,7 @@ import java.util.List;
 
 public class HoursWeatherSource extends ViewModelSource<HourWeather> {
     @Inject
-    WeatherApiSource weatherApiSource;
+    private WeatherApiSource weatherApiSource;
 
     @Override
     public Observable<HourWeather> getViewModel(Observable<Object> refresh) {

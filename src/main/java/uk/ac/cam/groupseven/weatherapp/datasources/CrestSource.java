@@ -8,7 +8,7 @@ import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 public class CrestSource {
-    public static final String USER_CREST_PREF = "user_crest";
+    private static final String USER_CREST_PREF = "user_crest";
     private static final Preferences preferences = Preferences.userNodeForPackage(Crest.class);
 
     public static void setNewCrest(Crest crest) throws BackingStoreException {
