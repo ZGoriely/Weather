@@ -20,10 +20,10 @@ import java.net.URLConnection;
 public class CucbcSource {
     @Inject
     @Named("cucbcFlagUrl")
-    URL cucbcFlagUrl;
+    private URL cucbcFlagUrl;
     @Inject
     @Named("cucbcLightingUrl")
-    URL cucbcLightingUrl;
+    private URL cucbcLightingUrl;
 
     public Observable<FlagStatus> getFlagStatus() {
 
@@ -52,10 +52,11 @@ public class CucbcSource {
 
     private Document getDocumentFromUrl(URL url) throws IOException, ParserConfigurationException, SAXException {
         URLConnection con = url.openConnection();
-        InputStream instream = con.getInputStream();
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setIgnoringElementContentWhitespace(true);
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(instream);
+        try (InputStream inputStream = con.getInputStream()) {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setIgnoringElementContentWhitespace(true);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            return builder.parse(inputStream);
+        }
     }
 }
