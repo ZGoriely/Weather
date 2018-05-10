@@ -26,12 +26,14 @@ public class ApplicationModule implements Module {
         }).to(HoursWeatherSource.class);
 
 
-        // bind CUCBC Urls
+        // bind CUCBC & Environment website Urls
         try {
             binder.bind(URL.class).annotatedWith(Names.named("cucbcLightingUrl"))
                     .toInstance(new URL("http://www.cucbc.org/darkness.xml"));
             binder.bind(URL.class).annotatedWith(Names.named("cucbcFlagUrl"))
                     .toInstance(new URL("http://www.cucbc.org/flag.xml"));
+            binder.bind(URL.class).annotatedWith(Names.named("waterLevelSourceUrl"))
+                    .toInstance(new URL("https://environment.data.gov.uk/flood-monitoring/id/measures/E60501-level-stage-i-15_min-mASD/readings?latest"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
