@@ -13,6 +13,6 @@ public class CucbcSourceMock extends CucbcSource {
 
     @Override
     public Observable<FlagStatus> getFlagStatus() {
-        return Observable.just(FlagStatus.NONOPERATIONAL);
+        return Observable.just(FlagStatus.GREEN);
     }
 }
