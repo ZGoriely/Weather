@@ -30,7 +30,6 @@ public class CucbcSource {
         return Observable.fromCallable(() -> {
             Document doc = getDocumentFromUrl(cucbcFlagUrl);
             String flagCode = doc.getElementsByTagName("flag").item(0).getAttributes().item(1).getNodeValue();
-            System.out.println(flagCode);
             return FlagStatus.getFlagFromCode(flagCode);
         })
                 .subscribeOn(Schedulers.io()); //Do in background io thread
