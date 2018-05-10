@@ -31,7 +31,7 @@ public class HomeWeatherSource extends ViewModelSource<HomeWeather> {
 
     private HomeWeather buildModel(FlagStatus flagStatus, Weather weather) {
         String flagText = "";
-        switch (flagStatus.status) {
+        switch (flagStatus) {
             case RED:
                 flagText = "The flag is RED";
                 break;

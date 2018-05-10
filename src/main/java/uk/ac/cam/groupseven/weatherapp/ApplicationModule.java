@@ -11,6 +11,8 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 
 import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class ApplicationModule implements Module {
     @Override
@@ -23,5 +25,15 @@ public class ApplicationModule implements Module {
         binder.bind(new TypeLiteral<ViewModelSource<HourWeather>>() {
         }).to(HoursWeatherSource.class);
 
+
+        // bind CUCBC Urls
+        try {
+            binder.bind(URL.class).annotatedWith(Names.named("cucbcLightingUrl"))
+                    .toInstance(new URL("http://www.cucbc.org/darkness.xml"));
+            binder.bind(URL.class).annotatedWith(Names.named("cucbcFlagUrl"))
+                    .toInstance(new URL("http://www.cucbc.org/flag.xml"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 }
