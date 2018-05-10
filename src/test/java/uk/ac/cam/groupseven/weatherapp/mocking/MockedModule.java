@@ -9,11 +9,15 @@ import uk.ac.cam.groupseven.weatherapp.datasources.WeatherApiSource;
 import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.screens.Screen;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 
 import java.awt.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.TreeMap;
 
 public class MockedModule implements Module {
     public static Injector injector = Guice.createInjector(new MockedModule());
@@ -33,12 +37,18 @@ public class MockedModule implements Module {
         binder.bind(HomeWeather.class).toInstance(new HomeWeather("The flag is GREEN", "Sunny skies"));
         binder.bind(HourWeather.class).toInstance(new HourWeather(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun")));
+        TreeMap<String, Path> crests = new TreeMap<String, Path>();
+        crests.put("Pelby", Paths.get("res/imgs/Pelby.png"));
+        binder.bind(CrestViewModel.class).toInstance(new CrestViewModel(crests));
 
         binder.bind(new TypeLiteral<ViewModelSource<HomeWeather>>() {
         }).to(new TypeLiteral<ViewModelSourceMock<HomeWeather>>() {
         });
         binder.bind(new TypeLiteral<ViewModelSource<HourWeather>>() {
         }).to(new TypeLiteral<ViewModelSourceMock<HourWeather>>() {
+        });
+        binder.bind(new TypeLiteral<ViewModelSource<CrestViewModel>>() {
+        }).to(new TypeLiteral<ViewModelSourceMock<CrestViewModel>>() {
         });
 
     }
