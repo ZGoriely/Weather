@@ -29,7 +29,7 @@ public class MockedModule implements Module {
         binder.bind(Screen.class).to(ScreenMock.class);
 
         binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE));
-        binder.bind(FlagStatus.class).toInstance(new FlagStatus(FlagStatus.Status.GREEN));
+        binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
         binder.bind(HomeWeather.class).toInstance(new HomeWeather("The flag is GREEN", "Sunny skies"));
         binder.bind(HourWeather.class).toInstance(new HourWeather(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun")));
