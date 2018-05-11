@@ -2,10 +2,10 @@ package uk.ac.cam.groupseven.weatherapp.mocking;
 
 import com.google.inject.Inject;
 import io.reactivex.Observable;
-import uk.ac.cam.groupseven.weatherapp.datasources.WeatherApiSource;
+import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 
-public class WeatherApiSourceMock extends WeatherApiSource {
+public class WeatherApiSourceMock extends OpenWeatherSource {
     @Inject
     private Weather weather;
 

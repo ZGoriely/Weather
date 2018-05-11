@@ -3,6 +3,13 @@ package uk.ac.cam.groupseven.weatherapp.models;
 public class Weather {
     public final Precipitation precipitation;
 
+    /*TODO: Add
+               Wind Object (with speed&dir)
+               cloud %
+               visibility
+               temp
+     */
+
     public Weather(Precipitation precipitation) {
 
         this.precipitation = precipitation;

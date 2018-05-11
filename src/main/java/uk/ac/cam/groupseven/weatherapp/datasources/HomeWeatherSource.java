@@ -10,7 +10,7 @@ public class HomeWeatherSource extends ViewModelSource<HomeWeather> {
     @Inject
     CucbcSource cucbcSource;
     @Inject
-    WeatherApiSource weatherApiSource;
+    OpenWeatherSource weatherApiSource;
 
     public Observable<HomeWeather> getViewModel(Observable<Object> refresh) {
         return refresh.flatMap(x ->
