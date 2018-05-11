@@ -12,10 +12,10 @@ public class CrestSourceTest {
     @Test
     public void getUserCrests() throws Exception {
         CrestSource crestSource = new CrestSource();
-        CrestSource.setNewCrest(Crest.EMMANUEL);
+        crestSource.setNewCrest(Crest.EMMANUEL);
         ConnectableObservable<Crest> observable = crestSource.getUserCrests().replay();
         Disposable disposable = observable.connect();
-        CrestSource.setNewCrest(Crest.QUEENS);
+        crestSource.setNewCrest(Crest.QUEENS);
         List<Crest> crests = observable.take(2).toList().blockingGet();
         Assert.assertEquals(Crest.EMMANUEL, crests.get(0));
         Assert.assertEquals(Crest.QUEENS, crests.get(1));
