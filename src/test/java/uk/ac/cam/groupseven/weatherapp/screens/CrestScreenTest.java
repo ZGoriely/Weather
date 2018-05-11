@@ -2,6 +2,7 @@ package uk.ac.cam.groupseven.weatherapp.screens;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.mocking.MockedModule;
 
 import javax.swing.*;

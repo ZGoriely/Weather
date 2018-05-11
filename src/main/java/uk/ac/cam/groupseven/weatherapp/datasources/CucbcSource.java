@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class CucbcSource {
+public class CucbcSource implements RowingInfoSource {
     @Inject
     @Named("cucbcFlagUrl")
     private URL cucbcFlagUrl;
@@ -25,6 +25,7 @@ public class CucbcSource {
     @Named("cucbcLightingUrl")
     private URL cucbcLightingUrl;
 
+    @Override
     public Observable<FlagStatus> getFlagStatus() {
 
         return Observable.fromCallable(() -> {
@@ -36,6 +37,7 @@ public class CucbcSource {
 
     }
 
+    @Override
     public Observable<LightingTimes> getLightingStatus() {
 
         return Observable.fromCallable(() -> {

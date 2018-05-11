@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HoursWeatherSource extends ViewModelSource<HourWeather> {
+public class HoursWeatherSource implements ViewModelSource<HourWeather> {
     @Inject
     private WeatherApiSource weatherApiSource;
 
