@@ -6,12 +6,6 @@ public class Weather {
     public final float temperature;
     public final Wind wind;
 
-    /*TODO: Add
-               Wind Object (with speed&dir)
-               cloud %
-               temp
-     */
-
     public Weather(Precipitation precipitation, int CCover, float temp, Wind w) {
         this.precipitation = precipitation;
         this.cloudCover = CCover;

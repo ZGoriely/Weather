@@ -34,12 +34,12 @@ public class OpenWeatherSource {
             System.out.println(e.getMessage());
         }
 
-
+        /* There are a lot of for loops as the XML parsing system seems to create a lot of NodeLists, which you can only iterate through */
         return Observable.fromCallable(() -> {
             Weather.Precipitation currentPrecipitation = Weather.Precipitation.NONE;
             int currentCloudCover = 0;
-            float currentTemperature = 0.0f; // These may be bad initialization values.  IDK what would be good ones!
-            Wind currentWind = new Wind(0.0f, "");
+            float currentTemperature = 0.0f; // The default temperature of the world is 0 Celsius, right?
+            Wind currentWind;
             float windSpeed = 0.0f;
             String windDir = "";
             try {
@@ -53,22 +53,18 @@ public class OpenWeatherSource {
                 for(int i = 0; i < readings.item(0).getChildNodes().getLength(); i++){ /* Get first forecast in response (current-ish) */
                     Node dataNode = readings.item(0).getChildNodes().item(i);
                     if(dataNode.getNodeName().equals("temperature")) {
-                        currentTemperature = Float.parseFloat(dataNode.getAttributes().getNamedItem("value").getNodeValue());
-                        System.out.println("Temperature: " + dataNode.getAttributes().getNamedItem("value").getNodeValue()+"C");
+                        currentTemperature = Float.parseFloat(dataNode.getAttributes().getNamedItem("value").getNodeValue()); /* TODO Careful of parsing floats etc */
                     }
                     if(dataNode.getNodeName().equals("windDirection")){
-                        System.out.println("Wind Direction: "+dataNode.getAttributes().getNamedItem("code").getNodeValue());
                         windDir = dataNode.getAttributes().getNamedItem("code").getNodeValue();
                     }
                     if(dataNode.getNodeName().equals("windSpeed")){
                         windSpeed = Float.parseFloat(dataNode.getAttributes().getNamedItem("mps").getNodeValue());
-                        System.out.println("Wind Speed: "+dataNode.getAttributes().getNamedItem("mps").getNodeValue()+", "+dataNode.getAttributes().getNamedItem("name").getNodeValue());
                     }
                     if(dataNode.getNodeName().equals("clouds")){
                         currentCloudCover = Integer.parseInt(dataNode.getAttributes().getNamedItem("all").getNodeValue());
-                        System.out.println("Cloud cover: "+dataNode.getAttributes().getNamedItem("all").getNodeValue()+"%");
                     }
-                    if(dataNode.getNodeName().equals("precipitation")){
+                    if(dataNode.getNodeName().equals("precipitation")){ /* DISCLAIMER: THERE MAY BE MORE TYPES OF PRECIPITATION. TODO investigate this. */
                         NamedNodeMap attrs = dataNode.getAttributes();
 
                         for(int j = 0; j < attrs.getLength(); j++) {
@@ -80,7 +76,6 @@ public class OpenWeatherSource {
                                 }
                             }
                         }
-                        System.out.println("Precipitation: " + currentPrecipitation);
                     }
                 }
 
