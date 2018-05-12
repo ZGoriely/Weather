@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 
-public class ViewModelSourceMock<T> extends ViewModelSource<T> {
+public class ViewModelSourceMock<T> implements ViewModelSource<T> {
     private T mock;
 
     public ViewModelSourceMock() {

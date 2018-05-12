@@ -7,7 +7,6 @@ import io.reactivex.disposables.Disposable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.cam.groupseven.weatherapp.screens.HomeScreen;
 import uk.ac.cam.groupseven.weatherapp.screens.HoursScreen;
-import uk.ac.cam.groupseven.weatherapp.screens.Screen;
 
 import javax.swing.*;
 
