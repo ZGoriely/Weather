@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HoursWeatherSource extends ViewModelSource<HourWeather> {
+public class HoursWeatherSource implements ViewModelSource<HourWeather> {
     @Inject
-    OpenWeatherSource weatherApiSource;
+    private OpenWeatherSource weatherApiSource;
 
     @Override
     public Observable<HourWeather> getViewModel(Observable<Object> refresh) {

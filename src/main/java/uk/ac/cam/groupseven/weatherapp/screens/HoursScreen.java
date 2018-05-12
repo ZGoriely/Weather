@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
@@ -15,7 +16,7 @@ public class HoursScreen implements Screen {
     @Inject
     ViewModelSource<HourWeather> viewModelSource;
     private JPanel panel;
-    private JList list;
+    private JList<Object> list;
     private JButton leftButton;
     private JButton rightButton;
     private JTextPane dateText;
@@ -37,9 +38,8 @@ public class HoursScreen implements Screen {
             //TODO
         } else if (viewModel.error != null) {
             //TODO
-        } else {
+        } else if (viewModel.precipitationTexts != null) {
             list.setListData(viewModel.precipitationTexts.toArray());
-
         }
 
     }

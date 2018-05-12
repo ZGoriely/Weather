@@ -18,13 +18,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
 import java.net.URL;
 
-public class OpenWeatherSource {
+public class OpenWeatherSource implements WeatherSource {
 
     @Inject
     @Named("openWeatherApiUrl")
     private URL apiUrl;
     private InputStream apiResponse;
 
+    @Override
     public Observable<Weather> getWeatherNow() {
 
         /* There are a lot of for loops as the XML parsing system seems to create a lot of NodeLists, which you can only iterate through */
@@ -85,6 +86,7 @@ public class OpenWeatherSource {
     }
 
     //TODO: Implement methods for getting future weather
+    @Override
     public Observable<Weather> getWeatherInHours(int hours) {
         throw new NotImplementedException();
 
