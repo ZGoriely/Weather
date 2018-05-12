@@ -5,7 +5,7 @@ import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 
-public class WeatherApiSourceMock extends OpenWeatherSource {
+public class OpenWeatherSourceMock extends OpenWeatherSource {
     @Inject
     private Weather weather;
 

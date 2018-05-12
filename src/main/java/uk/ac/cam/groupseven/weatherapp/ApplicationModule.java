@@ -26,12 +26,14 @@ public class ApplicationModule implements Module {
         }).to(HoursWeatherSource.class);
 
 
-        // bind CUCBC Urls
+        // bind Urls
         try {
             binder.bind(URL.class).annotatedWith(Names.named("cucbcLightingUrl"))
                     .toInstance(new URL("http://www.cucbc.org/darkness.xml"));
             binder.bind(URL.class).annotatedWith(Names.named("cucbcFlagUrl"))
                     .toInstance(new URL("http://www.cucbc.org/flag.xml"));
+            binder.bind(URL.class).annotatedWith(Names.named("openWeatherApiUrl"))
+                    .toInstance(new URL("http://api.openweathermap.org/data/2.5/forecast?APPID=8b35f0643a9e43fac171d05738bd2b8d&id=2653941&units=metric&mode=xml"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

@@ -4,8 +4,8 @@ import com.google.inject.*;
 import com.google.inject.name.Names;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.datasources.CucbcSource;
-import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
+import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.models.Wind;
@@ -25,7 +25,7 @@ public class MockedModule implements Module {
                 .toInstance(new Dimension(500, 500)); //Set screen size
 
         binder.bind(CucbcSource.class).to(CucbcSourceMock.class);
-        binder.bind(OpenWeatherSource.class).to(WeatherApiSourceMock.class);
+        binder.bind(OpenWeatherSource.class).to(OpenWeatherSourceMock.class);
         binder.bind(ScreenLayout.class).to(ScreenLayoutMock.class);
         binder.bind(Screen.class).to(ScreenMock.class);
 

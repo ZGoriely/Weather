@@ -1,12 +1,18 @@
 package uk.ac.cam.groupseven.weatherapp.models;
 
+
+import org.jetbrains.annotations.Nullable;
+
 public class Weather {
+    @Nullable
     public final Precipitation precipitation;
-    public final int cloudCover;
-    public final float temperature;
+    @Nullable
+    public final Integer cloudCover;
+    @Nullable
+    public final Float temperature;
     public final Wind wind;
 
-    public Weather(Precipitation precipitation, int CCover, float temp, Wind w) {
+    public Weather(@Nullable Precipitation precipitation, @Nullable Integer CCover, @Nullable Float temp, Wind w) {
         this.precipitation = precipitation;
         this.cloudCover = CCover;
         this.temperature = temp;
@@ -32,7 +38,7 @@ public class Weather {
 
     @Override
     public String toString(){
-        return "precipitation: "+this.precipitation.toString()+", cloudCover: "+this.cloudCover
+        return "precipitation: " + (this.precipitation != null ? this.precipitation.toString() : "null") + ", cloudCover: " + this.cloudCover
                 +", temperature: "+this.temperature+", wind: ("+this.wind.toString()+")";
     }
 }
