@@ -4,6 +4,7 @@ import com.google.inject.*;
 import com.google.inject.name.Names;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
+import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.RowingInfoSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.WeatherApiSource;
@@ -22,8 +23,9 @@ public class MockedModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(Dimension.class).annotatedWith(Names.named("screenDimension"))
-                .toInstance(new Dimension(500, 500)); //Set screen size
+                .toInstance(new Dimension(700, 1132)); //Set screen size
 
+        binder.bind(CrestSource.class).to(CrestSourceMock.class);
         binder.bind(RowingInfoSource.class).to(RowingInfoSourceMock.class);
         binder.bind(WeatherApiSource.class).to(WeatherApiSourceMock.class);
         binder.bind(ScreenLayout.class).to(ScreenLayoutMock.class);

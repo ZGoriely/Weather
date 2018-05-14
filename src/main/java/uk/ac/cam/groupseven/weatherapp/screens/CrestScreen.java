@@ -6,7 +6,9 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
+import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
+import uk.ac.cam.groupseven.weatherapp.models.Crest;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
 
 import javax.swing.*;
@@ -22,12 +24,16 @@ import java.util.TreeMap;
 
 public class CrestScreen implements Screen {
 
+    private final int tableWidth = 4;
     @Inject
-    ViewModelSource<CrestViewModel> crestSource;
+    CrestSource crestSource;
+    @Inject
+    ViewModelSource<CrestViewModel> crestViewModelSource;
     private JPanel panel;
     private JButton returnHomeButton;
     private JScrollPane crestScrollPanel;
     private JTable crestTable;
+    private LinkedList<String> crestLabels;
 
     @Override
     public JPanel getPanel() {
@@ -37,7 +43,7 @@ public class CrestScreen implements Screen {
     @Override
     public Disposable start() {
         return
-                crestSource
+                crestViewModelSource
                         .getViewModel(getRefreshObservable())
                         .subscribe(viewModel -> updateScreen(viewModel));
 
@@ -46,16 +52,23 @@ public class CrestScreen implements Screen {
 
     @Override
     public Observable<ScreenLayout.Direction> getScreenChanges() {
-        return SwingObservable.actions(returnHomeButton).map(x -> ScreenLayout.Direction.DOWN);
+        return SwingObservable.actions(returnHomeButton).map(x -> ScreenLayout.Direction.DOWN).mergeWith(
+                SwingObservable.listSelection(crestTable.getSelectionModel())
+                        .map(x -> 0)//TODO: Map to correct crest
+                        .doOnNext(x -> crestTable.clearSelection())
+                        .map(x -> Crest.getCrestFromCode(crestLabels.get(x)))
+                        .doOnNext(x -> crestSource.setNewCrest(x))
+                        .map(x -> ScreenLayout.Direction.DOWN)
+        );
     }
 
     private void updateScreen(CrestViewModel viewModel) {
         TreeMap<String, ImageIcon> crests = viewModel.images;
         int numCrests = crests.size();
-        LinkedList<String> crestLabels = new LinkedList(crests.keySet());
+        crestLabels = new LinkedList<>(crests.keySet());
         Collections.sort(crestLabels);
 
-        int width = 4;
+        int width = tableWidth;
         int height = (numCrests + width - 1) / width;
         System.out.println(width + " " + height);
 
@@ -84,6 +97,7 @@ public class CrestScreen implements Screen {
                 return getValueAt(0, column).getClass();
             }
         };
+
 
         crestTable.setModel(dataModel);
         crestTable.setPreferredScrollableViewportSize(crestTable.getPreferredSize());
