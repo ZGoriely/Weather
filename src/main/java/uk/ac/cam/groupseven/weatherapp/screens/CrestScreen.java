@@ -54,7 +54,9 @@ public class CrestScreen implements Screen {
     public Observable<ScreenLayout.Direction> getScreenChanges() {
         return SwingObservable.actions(returnHomeButton).map(x -> ScreenLayout.Direction.DOWN).mergeWith(
                 SwingObservable.listSelection(crestTable.getSelectionModel())
-                        .map(x -> 0)//TODO: Map to correct crest
+                        .filter(x -> crestTable.getSelectedRow() >= 0)
+                        .filter(x -> crestTable.getSelectedColumn() >= 0)
+                        .map(x -> getPos(crestTable.getSelectedRow(), crestTable.getSelectedColumn()))
                         .doOnNext(x -> crestTable.clearSelection())
                         .map(x -> Crest.getCrestFromCode(crestLabels.get(x)))
                         .doOnNext(x -> crestSource.setNewCrest(x))
@@ -88,7 +90,7 @@ public class CrestScreen implements Screen {
             }
 
             public Object getValueAt(int row, int col) {
-                int pos = col + row * width;
+                int pos = getPos(row, col);
                 if (pos >= numCrests) return null;
                 return crests.get(crestLabels.get(pos));
             }
@@ -102,10 +104,15 @@ public class CrestScreen implements Screen {
         crestTable.setModel(dataModel);
         crestTable.setPreferredScrollableViewportSize(crestTable.getPreferredSize());
         crestTable.setRowHeight(crests.firstEntry().getValue().getIconHeight());
+        crestTable.setTableHeader(null);
         /*for (int column = 0; column < crestTable.getColumnCount(); column++) {
             crestTable.getColumn(column).setCellRenderer(new CrestRenderer());
             crestTable.getColumn(column).setCellEditor(new CrestEditor(new JCheckBox()));
         }*/
+    }
+
+    private int getPos(int row, int col) {
+        return col + row * tableWidth;
     }
 
     private Observable<Object> getRefreshObservable() {

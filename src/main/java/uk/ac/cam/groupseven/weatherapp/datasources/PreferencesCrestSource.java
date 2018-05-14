@@ -18,6 +18,11 @@ public class PreferencesCrestSource implements CrestSource {
     }
 
     @Override
+    public Observable<Crest> getAllCrests() {
+        return Observable.fromArray(Crest.values());
+    }
+
+    @Override
     public Observable<Crest> getUserCrests() {
         return Observable.create(emitter ->
                 {
