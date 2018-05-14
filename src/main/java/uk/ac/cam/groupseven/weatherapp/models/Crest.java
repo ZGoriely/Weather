@@ -25,6 +25,7 @@ public enum Crest {
     MURRAY_EDWARDS("Murray_edwards", "murray-edwards"),
     NEWHALL("Newhall", "newhall"),
     NEWNHAM("Newnham", "newnham"),
+    PELBY("Pelby", "pelby"),
     PEMBROKE("Pembroke", "pembroke"),
     PETERHOUSE("Peterhouse", "peterhouse"),
     QUEENS("Queens", "queens"),
@@ -37,7 +38,6 @@ public enum Crest {
     WESLEY_HOUSE("Wesley House", "wesleyhouse"),
     WESTCOTT_HOUSE("Westcott House", "westcotthouse"),
     WOLFSON("Wolfson", "wolfson");
-
 
     private final String displayName;
     private final String code;
