@@ -5,9 +5,10 @@ import com.google.inject.name.Names;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.datasources.*;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
 import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
+import uk.ac.cam.groupseven.weatherapp.models.Wind;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 
@@ -29,11 +30,11 @@ public class MockedModule implements Module {
 
         binder.bind(CrestSource.class).to(CrestSourceMock.class);
         binder.bind(RowingInfoSource.class).to(RowingInfoSourceMock.class);
-        binder.bind(WeatherApiSource.class).to(WeatherApiSourceMock.class);
+        binder.bind(WeatherSource.class).to(WeatherSourceMock.class);
         binder.bind(ScreenLayout.class).to(ScreenLayoutMock.class);
         binder.bind(Screen.class).to(ScreenMock.class);
 
-        binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE));
+        binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE, 0, 0.0f, new Wind(0.0f, "")));
         binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
         binder.bind(HomeWeather.class).toInstance(new HomeWeather("The colour is Green", "Sunny skies"));
         binder.bind(HourWeather.class).toInstance(new HourWeather(

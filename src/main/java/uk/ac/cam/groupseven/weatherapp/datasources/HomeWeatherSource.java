@@ -10,7 +10,7 @@ public class HomeWeatherSource implements ViewModelSource<HomeWeather> {
     @Inject
     private RowingInfoSource rowingInfoSource;
     @Inject
-    private WeatherApiSource weatherApiSource;
+    private WeatherSource weatherSource;
 
     public Observable<HomeWeather> getViewModel(Observable<Object> refresh) {
         return refresh.flatMap(x ->
@@ -20,7 +20,7 @@ public class HomeWeatherSource implements ViewModelSource<HomeWeather> {
                                 rowingInfoSource.getFlagStatus()//Get flag and observe result
                                         .flatMap(
                                                 flagStatus ->
-                                                        weatherApiSource.getWeatherNow()//Get weather and observe result
+                                                        weatherSource.getWeatherNow()//Get weather and observe result
                                                                 .map(weather -> buildModel(flagStatus, weather))
                                         )
 
@@ -32,17 +32,19 @@ public class HomeWeatherSource implements ViewModelSource<HomeWeather> {
     private HomeWeather buildModel(FlagStatus flagStatus, Weather weather) {
         String flagText = "The colour is " + flagStatus.getDisplayName();
 
-        String weatherText = "";
-        switch (weather.precipitation) {
-            case NONE:
-                weatherText = "Sunny skies";
-                break;
-            case RAIN:
-                weatherText = "Rainy skies";
-                break;
-            case SNOW:
-                weatherText = "Its snowing";
-                break;
+        String weatherText = "Unknown weather";
+        if (weather.precipitation != null) {
+            switch (weather.precipitation) {
+                case NONE:
+                    weatherText = "Sunny skies";
+                    break;
+                case RAIN:
+                    weatherText = "Rainy skies";
+                    break;
+                case SNOW:
+                    weatherText = "Its snowing";
+                    break;
+            }
         }
 
         return new HomeWeather(flagText, weatherText);

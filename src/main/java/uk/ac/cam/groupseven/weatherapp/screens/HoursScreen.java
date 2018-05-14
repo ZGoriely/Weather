@@ -16,7 +16,7 @@ public class HoursScreen implements Screen {
     @Inject
     ViewModelSource<HourWeather> viewModelSource;
     private JPanel panel;
-    private JList list;
+    private JList<Object> list;
     private JButton leftButton;
     private JButton rightButton;
     private JTextPane dateText;
@@ -38,9 +38,8 @@ public class HoursScreen implements Screen {
             //TODO
         } else if (viewModel.error != null) {
             //TODO
-        } else {
+        } else if (viewModel.precipitationTexts != null) {
             list.setListData(viewModel.precipitationTexts.toArray());
-
         }
 
     }
