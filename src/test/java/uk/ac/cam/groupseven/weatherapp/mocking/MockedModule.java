@@ -37,7 +37,7 @@ public class MockedModule implements Module {
         binder.bind(WaterLevelSource.class).to(WaterLevelSourceMock.class);
 
         binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE, 0, 0.0f, new Wind(0.0f, "")));
-        binder.bind(FlagStatus.class).toInstance(FlagStatus.NONOPERATIONAL);
+        binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
         binder.bind(HomeWeather.class).toInstance(new HomeWeather("The colour is Green", "Sunny skies"));
         binder.bind(HourWeather.class).toInstance(new HourWeather(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun")));
