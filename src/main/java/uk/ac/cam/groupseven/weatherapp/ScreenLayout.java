@@ -5,9 +5,9 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import uk.ac.cam.groupseven.weatherapp.screens.CrestScreen;
 import uk.ac.cam.groupseven.weatherapp.screens.HomeScreen;
 import uk.ac.cam.groupseven.weatherapp.screens.HoursScreen;
-import uk.ac.cam.groupseven.weatherapp.screens.Screen;
 
 import javax.swing.*;
 
@@ -16,6 +16,8 @@ public class ScreenLayout {
     HomeScreen homeScreen;
     @Inject
     HoursScreen hoursScreen;
+    @Inject
+    CrestScreen crestScreen;
 
     public JPanel getDefault() {
         return homeScreen.getPanel();
@@ -31,6 +33,9 @@ public class ScreenLayout {
                     break;
                 case RIGHT:
                     nextPanel = hoursScreen.getPanel();
+                    break;
+                case UP:
+                    nextPanel = crestScreen.getPanel();
                     break;
                 default:
                     nextPanel = currentPanel;
@@ -53,13 +58,17 @@ public class ScreenLayout {
             }
             return nextPanel;
         }
+        if (currentPanel == crestScreen.getPanel()) {
+            return homeScreen.getPanel();
+        }
         throw new NotImplementedException();
     }
 
     public Observable<ScreenChange> getScreenChanges() {
         return Observable.merge(
                 homeScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(homeScreen, x), x)),
-                hoursScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(hoursScreen, x), x))
+                hoursScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(hoursScreen, x), x)),
+                crestScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(crestScreen, x), x))
         );
 
     }
@@ -67,7 +76,8 @@ public class ScreenLayout {
     public Disposable start() {
         return new CompositeDisposable(
                 homeScreen.start(),
-                hoursScreen.start()
+                hoursScreen.start(),
+                crestScreen.start()
         );
     }
 

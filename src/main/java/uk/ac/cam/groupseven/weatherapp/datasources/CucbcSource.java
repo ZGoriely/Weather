@@ -17,14 +17,15 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class CucbcSource {
+public class CucbcSource implements RowingInfoSource {
     @Inject
     @Named("cucbcFlagUrl")
-    URL cucbcFlagUrl;
+    private URL cucbcFlagUrl;
     @Inject
     @Named("cucbcLightingUrl")
-    URL cucbcLightingUrl;
+    private URL cucbcLightingUrl;
 
+    @Override
     public Observable<FlagStatus> getFlagStatus() {
 
         return Observable.fromCallable(() -> {
@@ -36,6 +37,7 @@ public class CucbcSource {
 
     }
 
+    @Override
     public Observable<LightingTimes> getLightingStatus() {
 
         return Observable.fromCallable(() -> {
@@ -52,10 +54,11 @@ public class CucbcSource {
 
     private Document getDocumentFromUrl(URL url) throws IOException, ParserConfigurationException, SAXException {
         URLConnection con = url.openConnection();
-        InputStream instream = con.getInputStream();
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setIgnoringElementContentWhitespace(true);
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(instream);
+        try (InputStream inputStream = con.getInputStream()) {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setIgnoringElementContentWhitespace(true);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            return builder.parse(inputStream);
+        }
     }
 }

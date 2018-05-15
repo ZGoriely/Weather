@@ -16,7 +16,7 @@ import java.net.URLConnection;
 public class WaterLevelSource {
     @Inject
     @Named("waterLevelSourceUrl")
-    URL waterLevelSourceUrl;
+    private URL waterLevelSourceUrl;
 
     public Observable<WaterLevel> getWaterLevelNow() {
         return Observable.fromCallable(() -> {

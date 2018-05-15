@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import uk.ac.cam.groupseven.weatherapp.mocking.MockedModule;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.HomeWeatherSource;
 
 public class HomeWeatherSourceTest {
 

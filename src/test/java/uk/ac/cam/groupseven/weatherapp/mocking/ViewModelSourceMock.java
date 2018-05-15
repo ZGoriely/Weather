@@ -2,9 +2,9 @@ package uk.ac.cam.groupseven.weatherapp.mocking;
 
 import com.google.inject.Inject;
 import io.reactivex.Observable;
-import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
-public class ViewModelSourceMock<T> extends ViewModelSource<T> {
+public class ViewModelSourceMock<T> implements ViewModelSource<T> {
     private T mock;
 
     public ViewModelSourceMock() {
