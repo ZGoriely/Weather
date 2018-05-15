@@ -23,6 +23,7 @@ public class MoreScreen implements Screen {
     private JButton upButton;
     private JPanel panel;
     private JTable infoTable;
+    private JTextField imageGoesHereTextField;
 
     @Override
     public Disposable start() {
