@@ -1,7 +1,8 @@
-package uk.ac.cam.groupseven.weatherapp.datasources;
+package uk.ac.cam.groupseven.weatherapp.viewmodelsources;
 
 import com.google.inject.Inject;
 import io.reactivex.Observable;
+import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class HoursWeatherSource implements ViewModelSource<HourWeather> {
     @Inject
-    private WeatherApiSource weatherApiSource;
+    private OpenWeatherSource weatherApiSource;
 
     @Override
     public Observable<HourWeather> getViewModel(Observable<Object> refresh) {

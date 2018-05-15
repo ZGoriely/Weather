@@ -14,6 +14,8 @@ public class CrestScreenTest {
         JFrame frame = new JFrame("uk.ac.cam.groupseven.weatherapp.CrestScreenTest");
         Screen screen = injector.getInstance(CrestScreen.class);
         screen.start();
+        screen.getScreenChanges().subscribe(x -> {
+        });
         frame.setContentPane(screen.getPanel());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();

@@ -11,7 +11,7 @@ import java.util.List;
 public class CrestSourceTest {
     @Test
     public void getUserCrests() throws Exception {
-        CrestSource crestSource = new CrestSource();
+        CrestSource crestSource = new PreferencesCrestSource();
         crestSource.setNewCrest(Crest.EMMANUEL);
         ConnectableObservable<Crest> observable = crestSource.getUserCrests().replay();
         Disposable disposable = observable.connect();
