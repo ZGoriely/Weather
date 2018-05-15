@@ -1,4 +1,4 @@
-package uk.ac.cam.groupseven.weatherapp.datasources;
+package uk.ac.cam.groupseven.weatherapp.viewmodelsources;
 
 import io.reactivex.Observable;
 

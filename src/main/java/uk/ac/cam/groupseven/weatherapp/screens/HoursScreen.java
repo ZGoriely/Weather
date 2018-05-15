@@ -6,8 +6,8 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
-import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
 import java.util.concurrent.TimeUnit;

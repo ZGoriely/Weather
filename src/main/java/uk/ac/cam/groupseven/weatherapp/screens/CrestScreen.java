@@ -7,9 +7,9 @@ import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
-import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.models.Crest;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

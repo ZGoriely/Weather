@@ -4,13 +4,13 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
-import uk.ac.cam.groupseven.weatherapp.datasources.CrestViewModelSource;
-import uk.ac.cam.groupseven.weatherapp.datasources.HomeWeatherSource;
-import uk.ac.cam.groupseven.weatherapp.datasources.HoursWeatherSource;
-import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.CrestViewModelSource;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.HomeWeatherSource;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.HoursWeatherSource;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import java.awt.*;
 import java.net.MalformedURLException;
