@@ -92,6 +92,12 @@ public class OpenWeatherSource implements WeatherSource {
 
     }
 
+    @Override
+    public Observable<Weather> getWeatherInDays(int days) {
+        throw new NotImplementedException();
+    }
+
+
     private class UnsupportedPrecipitationException extends RuntimeException {
         private final String value;
 

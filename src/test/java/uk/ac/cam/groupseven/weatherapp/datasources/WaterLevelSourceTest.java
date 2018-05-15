@@ -7,7 +7,7 @@ import uk.ac.cam.groupseven.weatherapp.ApplicationModule;
 public class WaterLevelSourceTest {
     @Test
     public void getWaterLevelNow() {
-        WaterLevelSource waterLevelSource = Guice.createInjector(new ApplicationModule()).getInstance(WaterLevelSource.class);
-        System.out.println(waterLevelSource.getWaterLevelNow().blockingFirst().level);
+        WaterLevelSourceImpl waterLevelSourceImpl = Guice.createInjector(new ApplicationModule()).getInstance(WaterLevelSourceImpl.class);
+        System.out.println(waterLevelSourceImpl.getWaterLevelNow().blockingFirst().level);
     }
 }
