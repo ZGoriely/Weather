@@ -2,10 +2,10 @@ package uk.ac.cam.groupseven.weatherapp.mocking;
 
 import com.google.inject.Inject;
 import io.reactivex.Observable;
-import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
+import uk.ac.cam.groupseven.weatherapp.datasources.WeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 
-public class OpenWeatherSourceMock extends OpenWeatherSource {
+public class WeatherSourceMock implements WeatherSource {
     @Inject
     private Weather weather;
 
@@ -16,6 +16,11 @@ public class OpenWeatherSourceMock extends OpenWeatherSource {
 
     @Override
     public Observable<Weather> getWeatherInHours(int hours) {
+        return Observable.just(weather);
+    }
+
+    @Override
+    public Observable<Weather> getWeatherInDays(int days)  {
         return Observable.just(weather);
     }
 }

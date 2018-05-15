@@ -4,9 +4,10 @@ import com.google.inject.Inject;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
-import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 public class HomeScreen implements Screen {
     @Inject
     ViewModelSource<HomeWeather> homeWeatherSource;
+    @Inject
+    ViewModelSource<ImageIcon> crestImageSource;
     private JPanel panel;
     private JTextPane weatherText;
     private JTextArea flagText;
@@ -29,6 +32,7 @@ public class HomeScreen implements Screen {
 
     @Override
     public Disposable start() {
+        crestImageSource.getViewModel((getRefreshObservable())).subscribe(viewModel -> updateCrest(viewModel));
         return
                 homeWeatherSource
                         .getViewModel(getRefreshObservable())
@@ -51,9 +55,14 @@ public class HomeScreen implements Screen {
 
     }
 
+    private void updateCrest(ImageIcon viewModel) {
+        crestButton.setIcon(viewModel);
+    }
+
     public Observable<ScreenLayout.Direction> getScreenChanges() {
         return SwingObservable.actions(leftButton).map(x -> ScreenLayout.Direction.LEFT)
-                .mergeWith(SwingObservable.actions(rightButton).map(x -> ScreenLayout.Direction.RIGHT));
+                .mergeWith(SwingObservable.actions(rightButton).map(x -> ScreenLayout.Direction.RIGHT))
+                .mergeWith(SwingObservable.actions(crestButton).map(x -> ScreenLayout.Direction.UP));
 
     }
 
