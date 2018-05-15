@@ -27,7 +27,6 @@ public class CrestScreen implements Screen {
     ViewModelSource<CrestViewModel> crestViewModelSource;
     private JPanel panel;
     private JButton returnHomeButton;
-    private JScrollPane crestScrollPanel;
     private JTable crestTable;
     private LinkedList<String> crestLabels;
 

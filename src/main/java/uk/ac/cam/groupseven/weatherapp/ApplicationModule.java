@@ -10,6 +10,7 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,14 +26,15 @@ public class ApplicationModule implements Module {
                 .toInstance(Paths.get("./res/crests"));
 
         binder.bind(new TypeLiteral<ViewModelSource<HomeWeather>>() {
-        }).to(HomeWeatherSource.class);
+        }).to(HomeViewModelSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<HourWeather>>() {
         }).to(HoursWeatherSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<CrestViewModel>>() {
         }).to(CrestViewModelSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<DaysWeather>>() {
         }).to(DaysWeatherSource.class);
-
+        binder.bind(new TypeLiteral<ViewModelSource<ImageIcon>>() {
+        }).to(UserCrestViewModelSource.class);
 
         // bind Urls
         try {
