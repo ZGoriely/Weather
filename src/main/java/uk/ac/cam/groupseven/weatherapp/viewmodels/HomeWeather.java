@@ -13,7 +13,6 @@ public class HomeWeather {
         error = null;
     }
 
-
     private HomeWeather() {
         this.flagText = null;
         this.weatherText = null;
