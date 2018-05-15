@@ -11,6 +11,7 @@ import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.models.Wind;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.CrestViewModelSource;
@@ -43,6 +44,8 @@ public class MockedModule implements Module {
         binder.bind(HomeWeather.class).toInstance(new HomeWeather("The colour is Green", "Sunny skies"));
         binder.bind(HourWeather.class).toInstance(new HourWeather(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun")));
+        binder.bind(HourWeather.class).toInstance(new HourWeather(
+                Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun")));
 
         binder.bind(new TypeLiteral<ViewModelSource<HomeWeather>>() {
         }).to(new TypeLiteral<ViewModelSourceMock<HomeWeather>>() {
@@ -52,6 +55,9 @@ public class MockedModule implements Module {
         });
         binder.bind(new TypeLiteral<ViewModelSource<CrestViewModel>>() {
         }).to(CrestViewModelSource.class);
+        binder.bind(new TypeLiteral<ViewModelSource<DaysWeather>>() {
+        }).to(new TypeLiteral<ViewModelSourceMock<DaysWeather>>() {
+        });
 
     }
 }
