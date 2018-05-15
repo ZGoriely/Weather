@@ -20,7 +20,6 @@ public class HourWeather {
         loading = true;
         error = null;
     }
-
     public HourWeather(Throwable throwable) {
         this.precipitationTexts = null;
         loading = false;
