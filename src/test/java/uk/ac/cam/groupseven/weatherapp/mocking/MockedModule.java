@@ -14,6 +14,8 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class MockedModule implements Module {
@@ -29,7 +31,7 @@ public class MockedModule implements Module {
         binder.bind(ScreenLayout.class).to(ScreenLayoutMock.class);
         binder.bind(Screen.class).to(ScreenMock.class);
 
-        binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE, 0, 0.0f, new Wind(0.0f, "")));
+        binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE, 0, 0.0f, 0.0f, 0, new Wind(0.0f, ""), LocalDateTime.now(), LocalDateTime.now()));
         binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
         binder.bind(HomeWeather.class).toInstance(new HomeWeather("The flag is GREEN", "Sunny skies"));
         binder.bind(HourWeather.class).toInstance(new HourWeather(
