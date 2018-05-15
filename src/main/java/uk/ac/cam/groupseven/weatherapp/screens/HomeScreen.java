@@ -6,6 +6,8 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
+import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
@@ -15,13 +17,21 @@ import java.util.concurrent.TimeUnit;
 public class HomeScreen implements Screen {
     @Inject
     ViewModelSource<HomeWeather> homeWeatherSource;
+    @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
+    @ApplyStyle(BackgroundStyle.class)
     private JTextPane weatherText;
+    @ApplyStyle(BackgroundStyle.class)
     private JTextArea flagText;
+    @ApplyStyle(BackgroundStyle.class)
     private JButton refreshButton;
+    @ApplyStyle(BackgroundStyle.class)
     private JButton crestButton;
+    @ApplyStyle(BackgroundStyle.class)
     private JButton leftButton;
+    @ApplyStyle(BackgroundStyle.class)
     private JButton rightButton;
+    @ApplyStyle(BackgroundStyle.class)
     private JButton additionalInformationButton;
 
     public JPanel getPanel() {
