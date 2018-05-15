@@ -15,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 public class HomeScreen implements Screen {
     @Inject
     ViewModelSource<HomeWeather> homeWeatherSource;
+    @Inject
+    ViewModelSource<ImageIcon> crestImageSource;
     private JPanel panel;
     private JTextPane weatherText;
     private JTextArea flagText;
@@ -30,6 +32,7 @@ public class HomeScreen implements Screen {
 
     @Override
     public Disposable start() {
+        crestImageSource.getViewModel((getRefreshObservable())).subscribe(viewModel -> updateCrest(viewModel));
         return
                 homeWeatherSource
                         .getViewModel(getRefreshObservable())
@@ -50,6 +53,10 @@ public class HomeScreen implements Screen {
             weatherText.setText(viewModel.weatherText);
         }
 
+    }
+
+    private void updateCrest(ImageIcon viewModel) {
+        crestButton.setIcon(viewModel);
     }
 
     public Observable<ScreenLayout.Direction> getScreenChanges() {

@@ -10,7 +10,6 @@ public class CrestViewModel {
 
     public CrestViewModel(TreeMap<String, ImageIcon> images) {
         this.images = images;
-
         error = null;
     }
 
