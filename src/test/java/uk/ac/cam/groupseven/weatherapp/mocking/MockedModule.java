@@ -15,8 +15,10 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.CrestViewModelSource;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.UserCrestViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
+import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,7 +46,7 @@ public class MockedModule implements Module {
         binder.bind(HomeWeather.class).toInstance(new HomeWeather("The colour is Green", "Sunny skies"));
         binder.bind(HourWeather.class).toInstance(new HourWeather(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun")));
-        binder.bind(HourWeather.class).toInstance(new HourWeather(
+        binder.bind(DaysWeather.class).toInstance(new DaysWeather(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun")));
 
         binder.bind(new TypeLiteral<ViewModelSource<HomeWeather>>() {
@@ -58,6 +60,8 @@ public class MockedModule implements Module {
         binder.bind(new TypeLiteral<ViewModelSource<DaysWeather>>() {
         }).to(new TypeLiteral<ViewModelSourceMock<DaysWeather>>() {
         });
+        binder.bind(new TypeLiteral<ViewModelSource<ImageIcon>>() {
+        }).to(UserCrestViewModelSource.class);
 
     }
 }

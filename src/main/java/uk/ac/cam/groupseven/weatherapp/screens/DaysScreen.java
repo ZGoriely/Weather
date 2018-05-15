@@ -4,15 +4,14 @@ import com.google.inject.Inject;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import io.reactivex.internal.disposables.EmptyDisposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
-import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
@@ -29,10 +28,7 @@ public class DaysScreen implements Screen {
 
     @Override
     public Disposable start() {
-        return
-                daysWeatherSource
-                        .getViewModel(getRefreshObservable())
-                        .subscribe(viewModel -> updateScreen(viewModel));
+        return EmptyDisposable.INSTANCE;
     }
 
     private void updateScreen(DaysWeather viewModel) {

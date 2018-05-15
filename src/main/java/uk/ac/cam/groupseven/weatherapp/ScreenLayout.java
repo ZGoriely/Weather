@@ -5,7 +5,10 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.cam.groupseven.weatherapp.screens.*;
+import uk.ac.cam.groupseven.weatherapp.screens.CrestScreen;
+import uk.ac.cam.groupseven.weatherapp.screens.DaysScreen;
+import uk.ac.cam.groupseven.weatherapp.screens.HomeScreen;
+import uk.ac.cam.groupseven.weatherapp.screens.HoursScreen;
 
 import javax.swing.*;
 
@@ -100,8 +103,8 @@ public class ScreenLayout {
 
     public Observable<ScreenChange> getScreenChanges() {
         return Observable.merge(homeScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(homeScreen, x), x)),
-                                hoursScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(hoursScreen, x), x)))
-                         .merge(crestScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(crestScreen, x), x)),
+                hoursScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(hoursScreen, x), x)),
+                crestScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(crestScreen, x), x)),
                                 daysScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(daysScreen, x), x))
         );
     }
