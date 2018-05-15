@@ -89,15 +89,14 @@ public class OpenWeatherSource implements WeatherSource {
         UnsupportedPrecipitationException(String value) {
             this.value = value;
         }
+
+        public String getValue() {
+            return value;
+        }
     }
 
     private boolean isCorrectReading(LocalDateTime currentTime, Weather currentWeather){
-        if(currentTime.compareTo(currentWeather.fromTime) >= 0 && currentTime.compareTo(currentWeather.toTime) < 0){ /* Using from <= current < to as 'from' of next reading is same as 'to' of this reading (i.e. there is overlap in times)*/
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (currentTime.compareTo(currentWeather.fromTime) >= 0 && currentTime.compareTo(currentWeather.toTime) < 0); /* Using from <= current < to as 'from' of next reading is same as 'to' of this reading (i.e. there is overlap in times)*/
     }
 
     private Weather parseTimeNode(Node timeNode) {

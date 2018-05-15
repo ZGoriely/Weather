@@ -20,7 +20,6 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.nio.file.Path;
 import java.nio.file.Paths;

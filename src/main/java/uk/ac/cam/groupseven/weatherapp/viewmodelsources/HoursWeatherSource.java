@@ -19,7 +19,7 @@ public class HoursWeatherSource implements ViewModelSource<HourWeather> {
         return Observable.range(0, 24)
                 .flatMap(x -> weatherApiSource.getWeatherInHours(x))
                 .toList()
-                .map(x -> buildModel(x))
+                .map(this::buildModel)
                 .toObservable();
 
     }

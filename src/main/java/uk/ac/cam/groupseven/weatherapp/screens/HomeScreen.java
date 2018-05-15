@@ -32,25 +32,25 @@ public class HomeScreen implements Screen {
 
     @Override
     public Disposable start() {
-        crestImageSource.getViewModel((getRefreshObservable())).subscribe(viewModel -> updateCrest(viewModel));
+        crestImageSource.getViewModel((getRefreshObservable())).subscribe(this::updateCrest);
         return
                 homeWeatherSource
                         .getViewModel(getRefreshObservable())
-                        .subscribe(viewModel -> updateScreen(viewModel));
+                        .subscribe(this::updateScreen);
 
 
     }
 
     private void updateScreen(HomeWeather viewModel) {
-        if (viewModel.loading) {
-            flagText.setText("Loading");
+        if (viewModel.getLoading()) {
+            flagText.setText("loading");
             weatherText.setText("");
-        } else if (viewModel.error != null) {
+        } else if (viewModel.getError() != null) {
             flagText.setText("An error occurred");
             weatherText.setText("");
         } else {
-            flagText.setText(viewModel.flagText);
-            weatherText.setText(viewModel.weatherText);
+            flagText.setText(viewModel.getFlagText());
+            weatherText.setText(viewModel.getWeatherText());
         }
 
     }

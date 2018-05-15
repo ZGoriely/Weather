@@ -40,7 +40,7 @@ public class CrestScreen implements Screen {
         return
                 crestViewModelSource
                         .getViewModel(getRefreshObservable())
-                        .subscribe(viewModel -> updateScreen(viewModel));
+                        .subscribe(this::updateScreen);
 
 
     }
