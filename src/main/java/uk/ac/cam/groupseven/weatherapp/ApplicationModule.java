@@ -5,12 +5,10 @@ import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
-import uk.ac.cam.groupseven.weatherapp.viewmodelsources.CrestViewModelSource;
-import uk.ac.cam.groupseven.weatherapp.viewmodelsources.HomeWeatherSource;
-import uk.ac.cam.groupseven.weatherapp.viewmodelsources.HoursWeatherSource;
-import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.*;
 
 import java.awt.*;
 import java.net.MalformedURLException;
@@ -32,6 +30,8 @@ public class ApplicationModule implements Module {
         }).to(HoursWeatherSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<CrestViewModel>>() {
         }).to(CrestViewModelSource.class);
+        binder.bind(new TypeLiteral<ViewModelSource<DaysWeather>>() {
+        }).to(DaysWeatherSource.class);
 
 
         // bind Urls

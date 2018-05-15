@@ -7,12 +7,14 @@ import io.reactivex.disposables.Disposable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
-import uk.ac.cam.groupseven.weatherapp.datasources.ViewModelSource;
+import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 public class DaysScreen implements Screen {
@@ -42,7 +44,9 @@ public class DaysScreen implements Screen {
             dateText.setText("Error");
         } else {
             // Display screen
-            dateText.setText("Date here");   //TODO: Get date
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDateTime now = LocalDateTime.now();
+            dateText.setText(dtf.format((now)));
             updateTable(viewModel);
         }
     }
