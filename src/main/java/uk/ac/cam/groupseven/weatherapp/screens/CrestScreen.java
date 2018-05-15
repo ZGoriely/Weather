@@ -13,11 +13,7 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -76,7 +72,6 @@ public class CrestScreen implements Screen {
 
         Object[][] data = new Object[width][height];
         for (int i = 0; i < numCrests; i++) {
-            System.out.println(i + " " + i % width + " " + i / width);
             data[i % width][i / width] = crests.get(crestLabels.get(i));
         }
 
@@ -89,10 +84,16 @@ public class CrestScreen implements Screen {
                 return height;
             }
 
+            @Override
             public Object getValueAt(int row, int col) {
                 int pos = getPos(row, col);
                 if (pos >= numCrests) return null;
                 return crests.get(crestLabels.get(pos));
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
 
             public Class getColumnClass(int column) {
@@ -105,10 +106,6 @@ public class CrestScreen implements Screen {
         crestTable.setPreferredScrollableViewportSize(crestTable.getPreferredSize());
         crestTable.setRowHeight(crests.firstEntry().getValue().getIconHeight());
         crestTable.setTableHeader(null);
-        /*for (int column = 0; column < crestTable.getColumnCount(); column++) {
-            crestTable.getColumn(column).setCellRenderer(new CrestRenderer());
-            crestTable.getColumn(column).setCellEditor(new CrestEditor(new JCheckBox()));
-        }*/
     }
 
     private int getPos(int row, int col) {
@@ -121,76 +118,3 @@ public class CrestScreen implements Screen {
 
 }
 
-class CrestRenderer extends JButton implements TableCellRenderer {
-
-    public CrestRenderer() {
-        setOpaque(true);
-    }
-
-    public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus, int row, int column) {
-        if (isSelected) {
-            setForeground(table.getSelectionForeground());
-            setBackground(table.getSelectionBackground());
-        } else {
-            setForeground(table.getForeground());
-            setBackground(UIManager.getColor("Button.background"));
-        }
-        setText((value == null) ? "" : value.toString());
-        return this;
-    }
-}
-
-class CrestEditor extends DefaultCellEditor {
-    protected JButton button;
-
-    private String label;
-
-    private boolean isPushed;
-
-    public CrestEditor(JCheckBox checkBox) {
-        super(checkBox);
-        button = new JButton();
-        button.setOpaque(true);
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-            }
-        });
-    }
-
-    public Component getTableCellEditorComponent(JTable table, Object value,
-                                                 boolean isSelected, int row, int column) {
-        if (isSelected) {
-            button.setForeground(table.getSelectionForeground());
-            button.setBackground(table.getSelectionBackground());
-        } else {
-            button.setForeground(table.getForeground());
-            button.setBackground(table.getBackground());
-        }
-        label = (value == null) ? "" : value.toString();
-        button.setText(label);
-        isPushed = true;
-        return button;
-    }
-
-    public Object getCellEditorValue() {
-        if (isPushed) {
-            //
-            //
-            JOptionPane.showMessageDialog(button, label + ": Ouch!");
-            // System.out.println(label + ": Ouch!");
-        }
-        isPushed = false;
-        return new String(label);
-    }
-
-    public boolean stopCellEditing() {
-        isPushed = false;
-        return super.stopCellEditing();
-    }
-
-    protected void fireEditingStopped() {
-        super.fireEditingStopped();
-    }
-}
