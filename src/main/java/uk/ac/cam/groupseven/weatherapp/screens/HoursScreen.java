@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.disposables.EmptyDisposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
@@ -23,7 +24,8 @@ public class HoursScreen implements Screen {
 
     @Override
     public Disposable start() {
-        return viewModelSource.getViewModel(getRefreshObservable()).subscribe(x -> updateScreen(x));
+        return EmptyDisposable.INSTANCE;
+        //return viewModelSource.getViewModel(getRefreshObservable()).subscribe(x -> updateScreen(x));
     }
 
     @Override

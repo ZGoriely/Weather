@@ -8,7 +8,7 @@ import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 
-public class HomeWeatherSource implements ViewModelSource<HomeWeather> {
+public class HomeViewModelSource implements ViewModelSource<HomeWeather> {
     @Inject
     private RowingInfoSource rowingInfoSource;
     @Inject

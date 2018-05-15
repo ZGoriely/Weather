@@ -18,4 +18,9 @@ public class WeatherSourceMock implements WeatherSource {
     public Observable<Weather> getWeatherInHours(int hours) {
         return Observable.just(weather);
     }
+
+    @Override
+    public Observable<Weather> getWeatherInDays(int days)  {
+        return Observable.just(weather);
+    }
 }

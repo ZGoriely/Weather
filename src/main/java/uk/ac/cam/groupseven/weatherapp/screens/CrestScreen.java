@@ -27,7 +27,6 @@ public class CrestScreen implements Screen {
     ViewModelSource<CrestViewModel> crestViewModelSource;
     private JPanel panel;
     private JButton returnHomeButton;
-    private JScrollPane crestScrollPanel;
     private JTable crestTable;
     private LinkedList<String> crestLabels;
 
@@ -93,7 +92,7 @@ public class CrestScreen implements Screen {
 
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return column == 20;
             }
 
             public Class getColumnClass(int column) {
