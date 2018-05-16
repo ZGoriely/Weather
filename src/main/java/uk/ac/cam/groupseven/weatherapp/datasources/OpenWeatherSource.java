@@ -18,6 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class OpenWeatherSource implements WeatherSource {
 
@@ -78,9 +79,76 @@ public class OpenWeatherSource implements WeatherSource {
     }
 
     @Override
-    public Observable<Weather> getWeatherInDays(int hours) {
-        throw new NotImplementedException();
+    public Observable<Weather> getWeatherInDays(int days, int timeInHours) { //TODO deal with 5 days in future but time later than now in day so no forecast.
+        return Observable.fromCallable(() -> {
+            apiResponse = apiUrl.openStream();
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document weatherDataDoc = builder.parse(apiResponse);
+            NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
+            Weather forecast = null;
+
+            if(timeInHours >= 24 || timeInHours < 0) throw new TimeOutOfRangeException(timeInHours);
+
+            if(days > 5) throw new CrystalBallDepthExceededException(days, timeInHours);
+            if(days == 5
+                    && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
+                    && (LocalDateTime.now().getHour() / 3 <= timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
+                throw new CrystalBallDepthExceededException(days, timeInHours);
+
+            LocalDateTime forecastTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays((long)days).plusHours((long)timeInHours);
+
+            for(int i = 0; i < readings.getLength(); i++){
+                if(isCorrectReading(forecastTime, parseTimeNode(readings.item(i)))) {
+                    forecast = parseTimeNode(readings.item(i));
+                }
+            }
+
+            if(forecast == null) {
+                throw new ForecastNotAvailableException();
+            }
+
+            return forecast;
+
+        });
+    }
+
+    private class ForecastNotAvailableException extends RuntimeException{
+        public ForecastNotAvailableException() {
+            super("This forecast isn't available, not really sure why. You could be asking for a weird time, like in the past or something, or it could be a bug in this code.");
+        }
+    }
+
+    private class CrystalBallDepthExceededException extends RuntimeException {
+        private final int dayValue;
+        private final int timeValue;
+
+        public CrystalBallDepthExceededException(int dayValue, int timeValue){
+            super("Requested weather "+dayValue+" days and "+(timeValue - LocalDateTime.now().getHour())+" hours in the future ("+ timeValue+":00).\r\n Sadly, we're not *that* good - we're using the free API and can only forecast until (floor(current time / 3) * 3) o'clock on the 5th day ahead.");
+            this.dayValue = dayValue;
+            this.timeValue = timeValue;
+        }
+
+        public int getDayValue() {
+            return dayValue;
+        }
+
+        public int getTImeValue() {
+            return timeValue;
+        }
+    }
+
+    private class TimeOutOfRangeException extends RuntimeException {
+        private final int badTimeValue;
+
+        public TimeOutOfRangeException(int badTimeValue){
+            super("Requested weather at "+badTimeValue+" o'clock. Pretty sure that's not a time of day.");
+            this.badTimeValue = badTimeValue;
+        }
+
+        public int getBadTimeValue() {
+            return badTimeValue;
+        }
     }
 
     private class UnsupportedPrecipitationException extends RuntimeException {
@@ -96,7 +164,7 @@ public class OpenWeatherSource implements WeatherSource {
     }
 
     private boolean isCorrectReading(LocalDateTime currentTime, Weather currentWeather){
-        return (currentTime.compareTo(currentWeather.fromTime) >= 0 && currentTime.compareTo(currentWeather.toTime) < 0); /* Using from <= current < to as 'from' of next reading is same as 'to' of this reading (i.e. there is overlap in times)*/
+        return (currentTime.compareTo(currentWeather.fromTime) >= 0 && currentTime.compareTo(currentWeather.toTime) <= 0); /* 'from' of next reading is same as 'to' of this reading (i.e. the boundary times overlap) but the iterating-through-readings code will just use the more 'in the future' reading */
     }
 
     private Weather parseTimeNode(Node timeNode) {

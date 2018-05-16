@@ -17,7 +17,7 @@ public class DaysWeatherSource implements ViewModelSource<DaysWeather> {
     @Override
     public Observable<DaysWeather> getViewModel(Observable<Object> refresh) {
         return Observable.range(0, 24)
-                .flatMap(x -> weatherApiSource.getWeatherInDays(x))
+                .flatMap(x -> weatherApiSource.getWeatherInDays(x, 0)) /* TODO SORT THIS OUT - HAVE ARBITRARILY USED 00:00 AS TIME OF DAY */
                 .toList()
                 .map(this::buildModel)
                 .toObservable();
