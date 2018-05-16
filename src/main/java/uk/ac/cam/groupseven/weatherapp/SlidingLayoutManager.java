@@ -40,43 +40,41 @@ public class SlidingLayoutManager implements LayoutManager {
         if (parent.getComponentCount() > 1) backComponent = parent.getComponent(1);
 
         if (frontComponent != null) {
-            switch (direction) {
-                case LEFT:
-                    frontComponent.setBounds((int) (offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
-                    break;
-                case RIGHT:
-                    frontComponent.setBounds((int) (-offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
-                    break;
-                case UP:
-                    frontComponent.setBounds(0, (int) (offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
-                    break;
-                case DOWN:
-                    frontComponent.setBounds(0, (int) (-offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
-                    break;
-                default:
-                    frontComponent.setBounds(0, 0, parent.getWidth(), parent.getHeight());
-                    break;
+            if (direction == ScreenLayout.Direction.LEFT) {
+                frontComponent.setBounds((int) (offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
+
+            } else if (direction == ScreenLayout.Direction.RIGHT) {
+                frontComponent.setBounds((int) (-offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
+
+            } else if (direction == ScreenLayout.Direction.UP) {
+                frontComponent.setBounds(0, (int) (offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
+
+            } else if (direction == ScreenLayout.Direction.DOWN) {
+                frontComponent.setBounds(0, (int) (-offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
+
+            } else {
+                frontComponent.setBounds(0, 0, parent.getWidth(), parent.getHeight());
+
             }
             frontComponent.revalidate();
             frontComponent.repaint();
         }
         if (backComponent != null) {
-            switch (direction) {
-                case LEFT:
-                    backComponent.setBounds((int) (-backComponent.getWidth() + offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
-                    break;
-                case RIGHT:
-                    backComponent.setBounds((int) (backComponent.getWidth() - offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
-                    break;
-                case UP:
-                    backComponent.setBounds(0, (int) (-backComponent.getHeight() + offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
-                    break;
-                case DOWN:
-                    backComponent.setBounds(0, (int) (backComponent.getHeight() - offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
-                    break;
-                default:
-                    backComponent.setBounds(0, 0, 0, 0);
-                    break;
+            if (direction == ScreenLayout.Direction.LEFT) {
+                backComponent.setBounds((int) (-backComponent.getWidth() + offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
+
+            } else if (direction == ScreenLayout.Direction.RIGHT) {
+                backComponent.setBounds((int) (backComponent.getWidth() - offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
+
+            } else if (direction == ScreenLayout.Direction.UP) {
+                backComponent.setBounds(0, (int) (-backComponent.getHeight() + offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
+
+            } else if (direction == ScreenLayout.Direction.DOWN) {
+                backComponent.setBounds(0, (int) (backComponent.getHeight() - offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
+
+            } else {
+                backComponent.setBounds(0, 0, 0, 0);
+
             }
             backComponent.revalidate();
             backComponent.repaint();
