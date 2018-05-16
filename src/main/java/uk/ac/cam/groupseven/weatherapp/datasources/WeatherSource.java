@@ -10,4 +10,7 @@ public interface WeatherSource {
 
     //TODO: Implement methods for getting future weather
     Observable<Weather> getWeatherInHours(int hours);
+
+    //TODO: Implement methods for getting future weather
+    Observable<Weather> getWeatherInDays(int days, int timeInHours);
 }

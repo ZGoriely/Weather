@@ -8,7 +8,7 @@ import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 
-public class HomeWeatherSource implements ViewModelSource<HomeWeather> {
+public class HomeViewModelSource implements ViewModelSource<HomeWeather> {
     @Inject
     private RowingInfoSource rowingInfoSource;
     @Inject
@@ -17,7 +17,7 @@ public class HomeWeatherSource implements ViewModelSource<HomeWeather> {
     public Observable<HomeWeather> getViewModel(Observable<Object> refresh) {
         return refresh.flatMap(x ->
                 Observable
-                        .just(HomeWeather.Loading()) //Return loading followed by the actual data
+                        .just(HomeWeather.Companion.loading()) //Return loading followed by the actual data
                         .concatWith(
                                 rowingInfoSource.getFlagStatus()//Get flag and observe result
                                         .flatMap(

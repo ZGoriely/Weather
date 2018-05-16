@@ -1,6 +1,7 @@
 package uk.ac.cam.groupseven.weatherapp;
 
 import com.google.inject.Inject;
+import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -22,8 +23,8 @@ public class SlidingPanel extends JPanel {
     public SlidingPanel(ScreenLayout screenLayout, @Named("screenDimension") Dimension screenDimension) {
         this.screenLayout = screenLayout;
         this.slidingLayoutManager = new SlidingLayoutManager(screenDimension);
-        add(screenLayout.getDefault());
         setLayout(slidingLayoutManager);
+        add(screenLayout.getDefault());
         revalidate();
 
     }
@@ -54,8 +55,8 @@ public class SlidingPanel extends JPanel {
     }
 
     private void slide(JPanel next, ScreenLayout.Direction direction) {
-        if (currentAnimation != null) {
-            currentAnimation.dispose();
+        if (currentAnimation != null && !currentAnimation.isDisposed()) {
+            return;
         }
         if (getBackPanel() != null) {
             remove(getBackPanel());
@@ -66,7 +67,9 @@ public class SlidingPanel extends JPanel {
 
 
         int count = 50;
-        currentAnimation = Observable.intervalRange(0, count, 0, 400 / count, TimeUnit.MILLISECONDS).subscribe(x ->
+        currentAnimation = Observable.intervalRange(0, count, 0, 400 / count, TimeUnit.MILLISECONDS)
+                .observeOn(SwingSchedulers.edt())
+                .subscribe(x ->
                 {
                     offset = x / (float) count;
                     updateBounds(direction);

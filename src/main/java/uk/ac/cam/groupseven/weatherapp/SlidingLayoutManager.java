@@ -42,14 +42,19 @@ public class SlidingLayoutManager implements LayoutManager {
         if (frontComponent != null) {
             if (direction == ScreenLayout.Direction.LEFT) {
                 frontComponent.setBounds((int) (offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
+
             } else if (direction == ScreenLayout.Direction.RIGHT) {
                 frontComponent.setBounds((int) (-offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
+
             } else if (direction == ScreenLayout.Direction.UP) {
                 frontComponent.setBounds(0, (int) (offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
+
             } else if (direction == ScreenLayout.Direction.DOWN) {
                 frontComponent.setBounds(0, (int) (-offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
+
             } else {
                 frontComponent.setBounds(0, 0, parent.getWidth(), parent.getHeight());
+
             }
             frontComponent.revalidate();
             frontComponent.repaint();
@@ -57,14 +62,19 @@ public class SlidingLayoutManager implements LayoutManager {
         if (backComponent != null) {
             if (direction == ScreenLayout.Direction.LEFT) {
                 backComponent.setBounds((int) (-backComponent.getWidth() + offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
+
             } else if (direction == ScreenLayout.Direction.RIGHT) {
                 backComponent.setBounds((int) (backComponent.getWidth() - offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
+
             } else if (direction == ScreenLayout.Direction.UP) {
                 backComponent.setBounds(0, (int) (-backComponent.getHeight() + offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
+
             } else if (direction == ScreenLayout.Direction.DOWN) {
                 backComponent.setBounds(0, (int) (backComponent.getHeight() - offset * parent.getHeight()), parent.getWidth(), parent.getHeight());
+
             } else {
                 backComponent.setBounds(0, 0, 0, 0);
+
             }
             backComponent.revalidate();
             backComponent.repaint();

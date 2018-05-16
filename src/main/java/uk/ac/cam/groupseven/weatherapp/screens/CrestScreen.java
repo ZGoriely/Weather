@@ -44,7 +44,7 @@ public class CrestScreen implements Screen {
         return
                 crestViewModelSource
                         .getViewModel(getRefreshObservable())
-                        .subscribe(viewModel -> updateScreen(viewModel));
+                        .subscribe(this::updateScreen);
 
 
     }
@@ -96,7 +96,7 @@ public class CrestScreen implements Screen {
 
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return column == 20;
             }
 
             public Class getColumnClass(int column) {
