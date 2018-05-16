@@ -33,8 +33,8 @@ public class DaysScreen implements Screen {
 
     private void updateScreen(DaysWeather viewModel) {
         if (viewModel.loading) {
-            // Loading screen
-            dateText.setText("Loading");
+            // loading screen
+            dateText.setText("loading");
         } else if (viewModel.error != null) {
             // Error screen
             dateText.setText("Error");

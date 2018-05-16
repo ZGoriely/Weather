@@ -5,7 +5,6 @@ import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class DaysWeatherSource implements ViewModelSource<DaysWeather> {
         return Observable.range(0, 24)
                 .flatMap(x -> weatherApiSource.getWeatherInDays(x))
                 .toList()
-                .map(x -> buildModel(x))
+                .map(this::buildModel)
                 .toObservable();
     }
 

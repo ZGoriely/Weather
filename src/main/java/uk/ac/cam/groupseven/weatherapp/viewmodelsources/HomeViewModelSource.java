@@ -17,7 +17,7 @@ public class HomeViewModelSource implements ViewModelSource<HomeWeather> {
     public Observable<HomeWeather> getViewModel(Observable<Object> refresh) {
         return refresh.flatMap(x ->
                 Observable
-                        .just(HomeWeather.Loading()) //Return loading followed by the actual data
+                        .just(HomeWeather.Companion.loading()) //Return loading followed by the actual data
                         .concatWith(
                                 rowingInfoSource.getFlagStatus()//Get flag and observe result
                                         .flatMap(

@@ -1,6 +1,5 @@
 package uk.ac.cam.groupseven.weatherapp.screens;
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
