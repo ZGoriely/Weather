@@ -20,7 +20,7 @@ public class WeatherSourceMock implements WeatherSource {
     }
 
     @Override
-    public Observable<Weather> getWeatherInDays(int days)  {
+    public Observable<Weather> getWeatherInDays(int days, int timeInHours)  {
         return Observable.just(weather);
     }
 }
