@@ -52,8 +52,8 @@ public class SlidingPanel extends JPanel {
     }
 
     private void slide(JPanel next, ScreenLayout.Direction direction) {
-        if (currentAnimation != null) {
-            currentAnimation.dispose();
+        if (currentAnimation != null && !currentAnimation.isDisposed()) {
+            return;
         }
         if (getBackPanel() != null) {
             remove(getBackPanel());
