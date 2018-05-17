@@ -66,19 +66,6 @@ public class MoreScreen implements Screen {
         data[6][0] = new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString());
         data[6][1] = weather.lightingTimes.todayDownTime;
 
-
-
-        /*
-        model.setValueAt("Precipitation", 1, 0);
-        model.setValueAt(weather.weather.precipitation.toString(), 1, 1);
-        model.setValueAt("Cloud Cover", 2, 0);
-        model.setValueAt(weather.weather.cloudCover, 2, 1);
-        model.setValueAt("Temperature", 3, 0);
-        model.setValueAt(weather.weather.temperature, 3, 1);
-        model.setValueAt("Wind Direction", 4, 0);
-        model.setValueAt(weather.weather.wind.direction, 4, 1);
-          */
-
         TableModel model = new DefaultTableModel() {
 
             public int getColumnCount() {
