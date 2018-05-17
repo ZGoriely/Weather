@@ -9,6 +9,7 @@ import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
@@ -23,9 +24,9 @@ import java.util.concurrent.TimeUnit;
 public class DaysScreen implements Screen {
     @Inject
     ViewModelSource<Loadable<DaysViewModel>> daysWeatherSource;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton leftButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
     @ApplyStyle(BackgroundStyle.class)
     private JTextPane dateText;

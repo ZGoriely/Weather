@@ -35,8 +35,7 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
 
                         )
 
-        )
-                .observeOn(SwingSchedulers.edt());
+        );
     }
 
     private Loadable<HomeViewModel> buildModel(FlagStatus flagStatus, Weather weather) {

@@ -9,6 +9,8 @@ import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
@@ -23,9 +25,9 @@ public class HoursScreen implements Screen {
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
     private JList<Object> list;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton leftButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
     @ApplyStyle(BackgroundStyle.class)
     private JTextPane dateText;

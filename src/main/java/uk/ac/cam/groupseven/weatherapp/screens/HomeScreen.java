@@ -8,11 +8,19 @@ import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
@@ -23,18 +31,18 @@ public class HomeScreen implements Screen {
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
-    private JTextPane weatherText;
+    private JTextPane tempText;
     @ApplyStyle(BackgroundStyle.class)
-    private JTextArea flagText;
-    @ApplyStyle(BackgroundStyle.class)
+    private JTextPane flagText;
+    @ApplyStyle(ButtonStyle.class)
     private JButton refreshButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton crestButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton leftButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton additionalInformationButton;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel topPanel;
@@ -42,6 +50,16 @@ public class HomeScreen implements Screen {
     private JPanel midPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel tempIconPanel;
+    @ApplyStyle(BackgroundStyle.class)
+    private JTextPane windText;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel windIconText;
+    @ApplyStyle(ButtonStyle.class)
+    private JPanel weatherPanel;
+    //@ApplyStyle(ButtonStyle.class)
+    private JLabel flagIcon;
 
     public JPanel getPanel() {
         return panel;
@@ -61,14 +79,22 @@ public class HomeScreen implements Screen {
     private void updateScreen(Loadable<HomeViewModel> viewModelLoadable) {
         if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
-            weatherText.setText("");
-        } else if (viewModelLoadable.getError() != null) {
+            tempText.setText("");
+        } else if (viewModel.getError() != null) {
             flagText.setText("An error occurred");
-            weatherText.setText("");
-        } else if(viewModelLoadable.getViewModel()!=null) {
-            HomeViewModel viewModel = viewModelLoadable.getViewModel();
-            flagText.setText(viewModel.getFlag().getDisplayName());
-            weatherText.setText("Temperature: "+Float.toString(viewModel.getTemperature())+", wind speed: "+Float.toString(viewModel.getWindSpeed())+", wind direction: "+viewModel.getWindDir()); /* TODO replace this with some stuff that puts the values where you want them */
+            tempText.setText("");
+        } else {
+            try {
+                BufferedImage flagImage = ImageIO.read(new File("res/flag/blu.png"));
+                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(200,200, Image.SCALE_FAST));
+                flagIcon.setIcon(flag);
+            }
+            catch (IOException e) {
+                System.out.println("Image not found");
+                e.printStackTrace();
+            }
+            flagText.setText(viewModel.getFlagText());
+            tempText.setText("Temperature: "+Float.toString(viewModel.getTemperature())+", wind speed: "+Float.toString(viewModel.getWindSpeed())+", wind direction: "+viewModel.getWindDir()); /* TODO replace this with some stuff that puts the values where you want them */
         }
 
     }
