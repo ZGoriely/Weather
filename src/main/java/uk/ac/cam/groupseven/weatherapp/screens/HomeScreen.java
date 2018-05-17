@@ -2,8 +2,11 @@ package uk.ac.cam.groupseven.weatherapp.screens;
 
 import com.google.inject.Inject;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
+import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.disposables.EmptyDisposable;
+import uk.ac.cam.groupseven.weatherapp.LoadingIcon;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
@@ -16,13 +19,10 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
@@ -62,6 +62,9 @@ public class HomeScreen implements Screen {
     private JPanel weatherPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JLabel flagIcon;
+    @Inject
+    private LoadingIcon loadingIcon;
+    private Disposable loadingObservable = EmptyDisposable.INSTANCE;
 
     public JPanel getPanel() {
         return panel;
@@ -69,6 +72,8 @@ public class HomeScreen implements Screen {
 
     @Override
     public Disposable start() {
+        refreshButton.setIcon(loadingIcon);
+        setLoading(true);
         crestImageSource.getViewModel((getRefreshObservable())).subscribe(this::updateCrest);
         return
                 homeWeatherSource
@@ -83,11 +88,13 @@ public class HomeScreen implements Screen {
         if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
             tempText.setText("");
+            setLoading(true);
         } else if (viewModelLoadable.getError() != null) {
             flagText.setText("An error occurred");
             tempText.setText("");
         } else {
             try {
+                setLoading(false);
                 // Set temp icon
                 BufferedImage thermometerImage = ImageIO.read(new File("res/icons/thermometer.png"));
                 ImageIcon thermometer = new ImageIcon(thermometerImage.getScaledInstance(200,200, Image.SCALE_FAST));
@@ -131,6 +138,20 @@ public class HomeScreen implements Screen {
                 Observable.just(new Object()) //Refresh immediately
                         .concatWith(SwingObservable.actions(refreshButton))//Refresh when button pressed
                         .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); //Refresh every 15 seconds
+    }
+
+    private void setLoading(boolean loading) {
+        loadingObservable.dispose();
+        if (loading) {
+            loadingObservable = Observable
+                    .intervalRange(loadingIcon.getRotation(), loadingIcon.getRotation() + 360, 0, 10, TimeUnit.MILLISECONDS)
+                    .repeat()
+                    .subscribeOn(SwingSchedulers.edt())
+                    .subscribe(x -> {
+                        loadingIcon.setRotation(Math.toIntExact(x) * 5);
+                        refreshButton.repaint();
+                    });
+        }
     }
 
 }

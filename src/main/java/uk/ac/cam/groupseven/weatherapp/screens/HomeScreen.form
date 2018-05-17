@@ -43,7 +43,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Refresh"/>
+              <text value=""/>
             </properties>
           </component>
           <hspacer id="971e3">

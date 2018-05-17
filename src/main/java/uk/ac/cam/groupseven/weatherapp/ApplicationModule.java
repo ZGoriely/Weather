@@ -22,6 +22,9 @@ public class ApplicationModule implements Module {
         binder.bind(Path.class).annotatedWith(Names.named("crestDirectory"))
                 .toInstance(Paths.get("./res/crests"));
 
+        binder.bind(Path.class).annotatedWith(Names.named("refreshIcon"))
+                .toInstance(Paths.get("./res/icons/refresh_white_18dp.png"));
+
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
         }).to(HomeViewModelSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HourViewModel>>>() {
