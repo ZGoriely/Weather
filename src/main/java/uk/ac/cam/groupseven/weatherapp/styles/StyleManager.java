@@ -25,30 +25,45 @@ public class StyleManager {
                 field.setAccessible(true);
                 Object fieldObject = field.get(object);
                 if (field.isAnnotationPresent(ApplyStyle.class) || field.isAnnotationPresent(ApplyStyles.class)) {
-                    applyStyles(fieldObject);
+                    if (fieldObject != null) {
+                        applyStyles(fieldObject);
+                        if (JComponent.class.isAssignableFrom(field.getType())) {
+                            JComponent component = (JComponent) fieldObject;
 
-                    if (JComponent.class.isAssignableFrom(field.getType())) {
-                        JComponent component = (JComponent) fieldObject;
 
-
-                        for (ApplyStyle applyStyle : field.getAnnotationsByType(ApplyStyle.class)) {
-                            Class<? extends Style> styleClass = applyStyle.value();
-                            Style style = instances.computeIfAbsent(styleClass, x -> {
-                                try {
-                                    return styleClass.newInstance();
-                                } catch (InstantiationException | IllegalAccessException e) {
-                                    e.printStackTrace();
-                                    return null;
-                                }
-                            });
-                            if (style != null) {
-                                style.styleComponent(component);
+                            for (ApplyStyle applyStyle : field.getAnnotationsByType(ApplyStyle.class)) {
+                                ApplyStyle(instances, component, applyStyle);
                             }
+                        } else if (field.isAnnotationPresent(ApplyStyle.class)) {
+                            System.out.println(String.format("Warning: Could not style %s as it was not a component", field.toString()));
+
                         }
+
+                    } else {
+                        System.out.println(String.format("Warning: Could not style %s as it was null", field.toString()));
                     }
+
+
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
+            }
+        }
+
+    }
+
+    private static void ApplyStyle(ConcurrentHashMap<Class<?>, Style> instances, JComponent component, ApplyStyle applyStyle) {
+        for (Class<? extends Style> styleClass : applyStyle.value()) {
+            Style style = instances.computeIfAbsent(styleClass, x -> {
+                try {
+                    return styleClass.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            });
+            if (style != null) {
+                style.styleComponent(component);
             }
         }
 

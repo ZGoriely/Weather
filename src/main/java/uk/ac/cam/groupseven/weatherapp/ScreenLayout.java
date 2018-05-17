@@ -23,6 +23,7 @@ public class ScreenLayout {
     @ApplyStyles
     @Inject
     CrestScreen crestScreen;
+    @ApplyStyles
     @Inject
     DaysScreen daysScreen;
     // @Inject

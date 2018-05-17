@@ -35,6 +35,12 @@ public class HomeScreen implements Screen {
     private JButton rightButton;
     @ApplyStyle(BackgroundStyle.class)
     private JButton additionalInformationButton;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel topPanel;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel midPanel;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel bottomPanel;
 
     public JPanel getPanel() {
         return panel;
