@@ -11,6 +11,8 @@ import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HourViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
@@ -18,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 public class HoursScreen implements Screen {
     @Inject
-    ViewModelSource<HourWeather> viewModelSource;
+    ViewModelSource<Loadable<HourViewModel>> viewModelSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
@@ -46,14 +48,16 @@ public class HoursScreen implements Screen {
                 .mergeWith(SwingObservable.actions(rightButton).map(x -> ScreenLayout.Direction.RIGHT));
     }
 
-    private void updateScreen(HourWeather viewModel) {
+    private void updateScreen(Loadable<HourViewModel> viewModelLoadable) {
         list.setListData(new Object[0]);
-        if (viewModel.loading) {
+        if (viewModelLoadable.getLoading()) {
             //TODO
-        } else if (viewModel.error != null) {
+        } else if (viewModelLoadable.getError() != null) {
             //TODO
-        } else if (viewModel.precipitationTexts != null) {
-            list.setListData(viewModel.precipitationTexts.toArray());
+        } else  {
+            HourViewModel viewModel = viewModelLoadable.getViewModel();
+            assert viewModel != null;
+            list.setListData(viewModel.getPrecipitationTexts().toArray());
         }
 
     }

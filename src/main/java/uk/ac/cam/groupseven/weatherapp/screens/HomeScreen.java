@@ -10,6 +10,8 @@ import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.imageio.ImageIO;
@@ -23,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
     @Inject
-    ViewModelSource<HomeWeather> homeWeatherSource;
+    ViewModelSource<Loadable<HomeViewModel>> homeWeatherSource;
     @Inject
     ViewModelSource<ImageIcon> crestImageSource;
     @ApplyStyle(BackgroundStyle.class)
@@ -74,8 +76,8 @@ public class HomeScreen implements Screen {
 
     }
 
-    private void updateScreen(HomeWeather viewModel) {
-        if (viewModel.getLoading()) {
+    private void updateScreen(Loadable<HomeViewModel> viewModelLoadable) {
+        if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
             tempText.setText("");
         } else if (viewModel.getError() != null) {
@@ -92,7 +94,7 @@ public class HomeScreen implements Screen {
                 e.printStackTrace();
             }
             flagText.setText(viewModel.getFlagText());
-            tempText.setText(viewModel.getWeatherText());
+            tempText.setText("Temperature: "+Float.toString(viewModel.getTemperature())+", wind speed: "+Float.toString(viewModel.getWindSpeed())+", wind direction: "+viewModel.getWindDir()); /* TODO replace this with some stuff that puts the values where you want them */
         }
 
     }
