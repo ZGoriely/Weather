@@ -16,5 +16,7 @@ public class CenterTextStyle extends BackgroundStyle implements Style {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        Font font = new Font("Helvetica", Font.PLAIN, 28);
+        component.setFont(font);
     }
 }
