@@ -9,14 +9,18 @@ import uk.ac.cam.groupseven.weatherapp.screens.CrestScreen;
 import uk.ac.cam.groupseven.weatherapp.screens.DaysScreen;
 import uk.ac.cam.groupseven.weatherapp.screens.HomeScreen;
 import uk.ac.cam.groupseven.weatherapp.screens.HoursScreen;
+import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyles;
 
 import javax.swing.*;
 
 public class ScreenLayout {
+    @ApplyStyles
     @Inject
     HomeScreen homeScreen;
+    @ApplyStyles
     @Inject
     HoursScreen hoursScreen;
+    @ApplyStyles
     @Inject
     CrestScreen crestScreen;
     @Inject

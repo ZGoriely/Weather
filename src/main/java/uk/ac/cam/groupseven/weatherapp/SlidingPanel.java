@@ -5,6 +5,7 @@ import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyles;
 
 import javax.inject.Named;
 import javax.swing.*;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class SlidingPanel extends JPanel {
     private SlidingLayoutManager slidingLayoutManager;
     private float offset = 0;
+    @ApplyStyles
     private ScreenLayout screenLayout;
     private Disposable currentAnimation = null;
 
