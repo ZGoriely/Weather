@@ -124,7 +124,9 @@
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <opaque value="false"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="d1d53" class="javax.swing.JTextPane" binding="flagText">
@@ -137,15 +139,17 @@
                   <text value=""/>
                 </properties>
               </component>
-              <grid id="55062" binding="flagPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              <component id="22131" class="javax.swing.JLabel" binding="flagIcon">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="200"/>
+                  </grid>
                 </constraints>
-                <properties/>
-                <border type="none"/>
-                <children/>
-              </grid>
+                <properties>
+                  <opaque value="true"/>
+                  <text value=""/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>

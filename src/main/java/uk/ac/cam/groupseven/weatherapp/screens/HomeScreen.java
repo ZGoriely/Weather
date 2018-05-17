@@ -12,9 +12,13 @@ import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
@@ -45,8 +49,6 @@ public class HomeScreen implements Screen {
     @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
     @ApplyStyle(BackgroundStyle.class)
-    private JPanel flagPanel;
-    @ApplyStyle(BackgroundStyle.class)
     private JPanel tempIconPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JTextPane windText;
@@ -54,6 +56,8 @@ public class HomeScreen implements Screen {
     private JPanel windIconText;
     @ApplyStyle(ButtonStyle.class)
     private JPanel weatherPanel;
+    //@ApplyStyle(ButtonStyle.class)
+    private JLabel flagIcon;
 
     public JPanel getPanel() {
         return panel;
@@ -62,7 +66,6 @@ public class HomeScreen implements Screen {
     @Override
     public Disposable start() {
         crestImageSource.getViewModel((getRefreshObservable())).subscribe(this::updateCrest);
-        leftButton.setBorder(new LineBorder(Color.WHITE));
         return
                 homeWeatherSource
                         .getViewModel(getRefreshObservable())
@@ -79,6 +82,15 @@ public class HomeScreen implements Screen {
             flagText.setText("An error occurred");
             tempText.setText("");
         } else {
+            try {
+                BufferedImage flagImage = ImageIO.read(new File("res/flag/blu.png"));
+                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(200,200, Image.SCALE_FAST));
+                flagIcon.setIcon(flag);
+            }
+            catch (IOException e) {
+                System.out.println("Image not found");
+                e.printStackTrace();
+            }
             flagText.setText(viewModel.getFlagText());
             tempText.setText(viewModel.getWeatherText());
         }
