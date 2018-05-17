@@ -90,25 +90,24 @@ public class HomeScreen implements Screen {
             flagText.setText("loading");
             tempText.setText("Temperature: ...");
             windText.setText("Wind Speed: ...");
-        }
+            setLoading(true);
 
-        else if (viewModelLoadable.getError() != null) {
+        } else if (viewModelLoadable.getError() != null) {
+            setLoading(false);
             flagText.setText("Error");
             windText.setText("Error");
             tempText.setText("Error");
-        }
-
-        else {
+        } else {
+            setLoading(false);
             // Get weather info and set text
             FlagStatus flagStatus = viewModel.getFlag();
             flagText.setText("Flag: " + flagStatus.getDisplayName());
-            tempText.setText("Temperature: "+ Float.toString(viewModel.getTemperature()));
+            tempText.setText("Temperature: " + Float.toString(viewModel.getTemperature()));
             windText.setText("Wind Speed: " + Float.toString(viewModel.getWindSpeed()));
             try {
-                setLoading(false);
                 // Set temp icon
                 BufferedImage thermometerImage = ImageIO.read(new File("res/icons/thermometer.png"));
-                ImageIcon thermometer = new ImageIcon(thermometerImage.getScaledInstance(150,150, Image.SCALE_FAST));
+                ImageIcon thermometer = new ImageIcon(thermometerImage.getScaledInstance(150, 150, Image.SCALE_FAST));
                 tempIcon.setIcon(thermometer);
 
                 //Set wind icon
@@ -117,8 +116,8 @@ public class HomeScreen implements Screen {
                 windIcon.setIcon(wind);
 
                 // Set flag icon
-                BufferedImage flagImage = ImageIO.read(new File("res/flag/"+flagStatus.getCode()+".png"));
-                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(250,250, Image.SCALE_FAST));
+                BufferedImage flagImage = ImageIO.read(new File("res/flag/" + flagStatus.getCode() + ".png"));
+                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
                 flagIcon.setIcon(flag);
             }
             catch (IOException e) {
@@ -149,13 +148,24 @@ public class HomeScreen implements Screen {
 
     private void setLoading(boolean loading) {
         loadingObservable.dispose();
+        while (loadingIcon.getRotation() > 360) {
+            loadingIcon.setRotation(loadingIcon.getRotation() - 360);
+        }
         if (loading) {
             loadingObservable = Observable
-                    .intervalRange(loadingIcon.getRotation(), loadingIcon.getRotation() + 360, 0, 10, TimeUnit.MILLISECONDS)
+                    .intervalRange(loadingIcon.getRotation() / 10, (loadingIcon.getRotation() + 360), 0, 10, TimeUnit.MILLISECONDS)
                     .repeat()
                     .subscribeOn(SwingSchedulers.edt())
                     .subscribe(x -> {
-                        loadingIcon.setRotation(Math.toIntExact(x) * 5);
+                        loadingIcon.setRotation(Math.toIntExact(x) * 10);
+                        refreshButton.repaint();
+                    });
+        } else {
+            loadingObservable = Observable
+                    .intervalRange(loadingIcon.getRotation() / 10, 360 / 10, 0, 10, TimeUnit.MILLISECONDS)
+                    .subscribeOn(SwingSchedulers.edt())
+                    .subscribe(x -> {
+                        loadingIcon.setRotation(Math.toIntExact(x) * 10);
                         refreshButton.repaint();
                     });
         }

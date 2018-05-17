@@ -11,8 +11,6 @@ import uk.ac.cam.groupseven.weatherapp.models.Wind;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 
-import java.util.concurrent.TimeUnit;
-
 public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewModel>> {
     @Inject
     private RowingInfoSource rowingInfoSource;
@@ -35,7 +33,7 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
 
                         )
 
-        )
+                )
                 .observeOn(SwingSchedulers.edt());
     }
 
@@ -50,7 +48,7 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
             if(wind.speedMPS != null) windSpeed = wind.speedMPS;
             if(wind.direction != null) windDir = wind.direction;
         }
-        if(weather.temperature != null) temperature = weather.temperature;
+        if (weather.temperature != null) temperature = weather.temperature;
 
         return new Loadable<>(new HomeViewModel(flagStatus, temperature, windSpeed, windDir));
     }
