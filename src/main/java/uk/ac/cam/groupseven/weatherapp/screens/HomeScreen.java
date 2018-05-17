@@ -6,6 +6,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
+import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
@@ -32,8 +33,6 @@ public class HomeScreen implements Screen {
     ViewModelSource<ImageIcon> crestImageSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
-    @ApplyStyle(BackgroundStyle.class)
-    private JTextArea tempText;
     @ApplyStyle(CenterTextStyle.class)
     private JTextPane flagText;
     @ApplyStyle(ButtonStyle.class)
@@ -54,8 +53,10 @@ public class HomeScreen implements Screen {
     private JPanel bottomPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JLabel tempIcon;
-    @ApplyStyle(BackgroundStyle.class)
-    private JTextArea windText;
+    @ApplyStyle(CenterTextStyle.class)
+    private JTextPane tempText;
+    @ApplyStyle(CenterTextStyle.class)
+    private JTextPane windText;
     @ApplyStyle(BackgroundStyle.class)
     private JLabel windIcon;
     @ApplyStyle(ButtonStyle.class)
@@ -82,11 +83,18 @@ public class HomeScreen implements Screen {
         HomeViewModel viewModel = viewModelLoadable.getViewModel();
         if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
-            tempText.setText("");
+            tempText.setText("Temperature: ...");
+            windText.setText("Wind Speed: ...");
         } else if (viewModelLoadable.getError() != null) {
-            flagText.setText("An error occurred");
-            tempText.setText("");
+            flagText.setText("Error");
+            windText.setText("Error");
+            tempText.setText("Error");
         } else {
+
+            FlagStatus flagStatus = viewModel.getFlag();
+            flagText.setText("Flag: " + flagStatus.getDisplayName());
+            tempText.setText("Temperature: "+ Float.toString(viewModel.getTemperature()));
+            windText.setText("Wind Speed: " + Float.toString(viewModel.getWindSpeed()));
             try {
                 // Set temp icon
                 BufferedImage thermometerImage = ImageIO.read(new File("res/icons/thermometer.png"));
@@ -99,7 +107,7 @@ public class HomeScreen implements Screen {
                 windIcon.setIcon(wind);
 
                 // Set flag icon
-                BufferedImage flagImage = ImageIO.read(new File("res/flag/blu.png"));
+                BufferedImage flagImage = ImageIO.read(new File("res/flag/"+flagStatus.getCode()+".png"));
                 ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(150,150, Image.SCALE_FAST));
                 flagIcon.setIcon(flag);
             }
@@ -107,10 +115,6 @@ public class HomeScreen implements Screen {
                 System.out.println("Image not found");
                 e.printStackTrace();
             }
-            flagText.setText("The flag is green");
-            tempText.setText("Temperature: "+Float.toString(viewModel.getTemperature()));
-            //tempText.setText("Temperature: 24ºC");
-            windText.setText("Wind Speed: Fast as fuck");
         }
 
     }
