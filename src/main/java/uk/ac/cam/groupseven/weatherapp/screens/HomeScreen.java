@@ -25,7 +25,7 @@ public class HomeScreen implements Screen {
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
-    private JTextPane weatherText;
+    private JTextPane tempText;
     @ApplyStyle(BackgroundStyle.class)
     private JTextArea flagText;
     @ApplyStyle(ButtonStyle.class)
@@ -44,6 +44,10 @@ public class HomeScreen implements Screen {
     private JPanel midPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
+    private JPanel flagPanel;
+    private JPanel tempIconPanel;
+    private JTextPane windText;
+    private JPanel windIconText;
 
     public JPanel getPanel() {
         return panel;
@@ -64,13 +68,13 @@ public class HomeScreen implements Screen {
     private void updateScreen(HomeWeather viewModel) {
         if (viewModel.getLoading()) {
             flagText.setText("loading");
-            weatherText.setText("");
+            tempText.setText("");
         } else if (viewModel.getError() != null) {
             flagText.setText("An error occurred");
-            weatherText.setText("");
+            tempText.setText("");
         } else {
             flagText.setText(viewModel.getFlagText());
-            weatherText.setText(viewModel.getWeatherText());
+            tempText.setText(viewModel.getWeatherText());
         }
 
     }
