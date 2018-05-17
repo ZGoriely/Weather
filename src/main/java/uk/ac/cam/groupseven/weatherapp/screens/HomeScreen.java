@@ -9,7 +9,6 @@ import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
@@ -77,10 +76,11 @@ public class HomeScreen implements Screen {
     }
 
     private void updateScreen(Loadable<HomeViewModel> viewModelLoadable) {
+        HomeViewModel viewModel = viewModelLoadable.getViewModel();
         if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
             tempText.setText("");
-        } else if (viewModel.getError() != null) {
+        } else if (viewModelLoadable.getError() != null) {
             flagText.setText("An error occurred");
             tempText.setText("");
         } else {
@@ -93,7 +93,7 @@ public class HomeScreen implements Screen {
                 System.out.println("Image not found");
                 e.printStackTrace();
             }
-            flagText.setText(viewModel.getFlagText());
+            flagText.setText(viewModel.getFlag().getDisplayName());
             tempText.setText("Temperature: "+Float.toString(viewModel.getTemperature())+", wind speed: "+Float.toString(viewModel.getWindSpeed())+", wind direction: "+viewModel.getWindDir()); /* TODO replace this with some stuff that puts the values where you want them */
         }
 
