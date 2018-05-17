@@ -8,10 +8,13 @@ import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
@@ -25,15 +28,15 @@ public class HomeScreen implements Screen {
     private JTextPane weatherText;
     @ApplyStyle(BackgroundStyle.class)
     private JTextArea flagText;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton refreshButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton crestButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton leftButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton additionalInformationButton;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel topPanel;
@@ -49,6 +52,7 @@ public class HomeScreen implements Screen {
     @Override
     public Disposable start() {
         crestImageSource.getViewModel((getRefreshObservable())).subscribe(this::updateCrest);
+        leftButton.setBorder(new LineBorder(Color.WHITE));
         return
                 homeWeatherSource
                         .getViewModel(getRefreshObservable())
