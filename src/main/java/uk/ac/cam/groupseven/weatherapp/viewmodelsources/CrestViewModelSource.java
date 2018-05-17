@@ -2,6 +2,7 @@ package uk.ac.cam.groupseven.weatherapp.viewmodelsources;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
 import uk.ac.cam.groupseven.weatherapp.models.Crest;
@@ -37,6 +38,7 @@ public class CrestViewModelSource implements ViewModelSource<CrestViewModel> {
                         })
                         .map(CrestViewModel::new)
                         .onErrorReturn(CrestViewModel::new)
+                        .observeOn(SwingSchedulers.edt())
 
         );
     }

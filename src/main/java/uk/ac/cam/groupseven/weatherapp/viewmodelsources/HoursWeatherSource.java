@@ -1,6 +1,7 @@
 package uk.ac.cam.groupseven.weatherapp.viewmodelsources;
 
 import com.google.inject.Inject;
+import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
@@ -20,7 +21,8 @@ public class HoursWeatherSource implements ViewModelSource<HourWeather> {
                 .flatMap(x -> weatherApiSource.getWeatherInHours(x))
                 .toList()
                 .map(this::buildModel)
-                .toObservable();
+                .toObservable()
+                .observeOn(SwingSchedulers.edt());
 
     }
 

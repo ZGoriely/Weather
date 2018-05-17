@@ -7,6 +7,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.EmptyDisposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
+import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
@@ -16,11 +18,20 @@ import java.util.concurrent.TimeUnit;
 public class HoursScreen implements Screen {
     @Inject
     ViewModelSource<HourWeather> viewModelSource;
+    @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
+    @ApplyStyle(BackgroundStyle.class)
     private JList<Object> list;
+    @ApplyStyle(BackgroundStyle.class)
     private JButton leftButton;
+    @ApplyStyle(BackgroundStyle.class)
     private JButton rightButton;
+    @ApplyStyle(BackgroundStyle.class)
     private JTextPane dateText;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel midPanel;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel topPanel;
 
     @Override
     public Disposable start() {

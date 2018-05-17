@@ -2,6 +2,7 @@ package uk.ac.cam.groupseven.weatherapp.viewmodelsources;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
 
@@ -20,6 +21,7 @@ public class UserCrestViewModelSource implements ViewModelSource<ImageIcon> {
     public Observable<ImageIcon> getViewModel(Observable<Object> refresh) {
 
         return crestSource.getUserCrests().map(crest ->
-                new ImageIcon(imageDirectory.resolve(crest.getCode() + ".gif").toAbsolutePath().toString()));
+                new ImageIcon(imageDirectory.resolve(crest.getCode() + ".gif").toAbsolutePath().toString()))
+                .observeOn(SwingSchedulers.edt());
     }
 }

@@ -1,6 +1,7 @@
 package uk.ac.cam.groupseven.weatherapp.viewmodelsources;
 
 import com.google.inject.Inject;
+import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.RowingInfoSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.WeatherSource;
@@ -28,7 +29,8 @@ public class HomeViewModelSource implements ViewModelSource<HomeWeather> {
 
                         )
 
-        );
+        )
+                .observeOn(SwingSchedulers.edt());
     }
 
     private HomeWeather buildModel(FlagStatus flagStatus, Weather weather) {
