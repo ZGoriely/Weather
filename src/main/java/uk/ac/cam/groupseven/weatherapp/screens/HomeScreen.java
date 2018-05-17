@@ -115,7 +115,7 @@ public class HomeScreen implements Screen {
             try {
                 // Set temp icon
                 BufferedImage thermometerImage = ImageIO.read(new File("res/icons/thermometer.png"));
-                ImageIcon thermometer = new ImageIcon(thermometerImage.getScaledInstance(200,200, Image.SCALE_FAST));
+                ImageIcon thermometer = new ImageIcon(thermometerImage.getScaledInstance(150,150, Image.SCALE_FAST));
                 tempIcon.setIcon(thermometer);
 
                 //Set wind icon
@@ -125,7 +125,7 @@ public class HomeScreen implements Screen {
 
                 // Set flag icon
                 BufferedImage flagImage = ImageIO.read(new File("res/flag/"+flagStatus.getCode()+".png"));
-                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(150,150, Image.SCALE_FAST));
+                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(250,250, Image.SCALE_FAST));
                 flagIcon.setIcon(flag);
             }
             catch (IOException e) {
