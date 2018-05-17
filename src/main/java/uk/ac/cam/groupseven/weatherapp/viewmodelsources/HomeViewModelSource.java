@@ -21,7 +21,7 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
 
     public Observable<Loadable<HomeViewModel>> getViewModel(Observable<Object> refresh) {
         return refresh
-                .throttleFirst(6, TimeUnit.SECONDS)
+                //.throttleFirst(6, TimeUnit.SECONDS)
                 .flatMap(x ->
                 Observable
                         .just(new Loadable<HomeViewModel>()) //Return loading followed by the actual data
@@ -35,7 +35,8 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
 
                         )
 
-        );
+        )
+                .observeOn(SwingSchedulers.edt());
     }
 
     private Loadable<HomeViewModel> buildModel(FlagStatus flagStatus, Weather weather) {
@@ -49,6 +50,7 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
             if(wind.speedMPS != null) windSpeed = wind.speedMPS;
             if(wind.direction != null) windDir = wind.direction;
         }
+        if(weather.temperature != null) temperature = weather.temperature;
 
         return new Loadable<>(new HomeViewModel(flagStatus, temperature, windSpeed, windDir));
     }
