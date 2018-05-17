@@ -9,6 +9,7 @@ import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.CenterTextStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
@@ -18,8 +19,10 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
@@ -30,8 +33,8 @@ public class HomeScreen implements Screen {
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
-    private JTextPane tempText;
-    @ApplyStyle(BackgroundStyle.class)
+    private JTextArea tempText;
+    @ApplyStyle(CenterTextStyle.class)
     private JTextPane flagText;
     @ApplyStyle(ButtonStyle.class)
     private JButton refreshButton;
@@ -50,14 +53,14 @@ public class HomeScreen implements Screen {
     @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
     @ApplyStyle(BackgroundStyle.class)
-    private JPanel tempIconPanel;
+    private JLabel tempIcon;
     @ApplyStyle(BackgroundStyle.class)
-    private JTextPane windText;
+    private JTextArea windText;
     @ApplyStyle(BackgroundStyle.class)
-    private JPanel windIconText;
+    private JLabel windIcon;
     @ApplyStyle(ButtonStyle.class)
     private JPanel weatherPanel;
-    //@ApplyStyle(ButtonStyle.class)
+    @ApplyStyle(BackgroundStyle.class)
     private JLabel flagIcon;
 
     public JPanel getPanel() {
@@ -85,16 +88,29 @@ public class HomeScreen implements Screen {
             tempText.setText("");
         } else {
             try {
+                // Set temp icon
+                BufferedImage thermometerImage = ImageIO.read(new File("res/icons/thermometer.png"));
+                ImageIcon thermometer = new ImageIcon(thermometerImage.getScaledInstance(200,200, Image.SCALE_FAST));
+                tempIcon.setIcon(thermometer);
+
+                //Set wind icon
+                BufferedImage windImage = ImageIO.read(new File("res/icons/wind.png"));
+                ImageIcon wind = new ImageIcon(windImage.getScaledInstance(150,150, Image.SCALE_FAST));
+                windIcon.setIcon(wind);
+
+                // Set flag icon
                 BufferedImage flagImage = ImageIO.read(new File("res/flag/blu.png"));
-                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(200,200, Image.SCALE_FAST));
+                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(150,150, Image.SCALE_FAST));
                 flagIcon.setIcon(flag);
             }
             catch (IOException e) {
                 System.out.println("Image not found");
                 e.printStackTrace();
             }
-            flagText.setText(viewModel.getFlag().getDisplayName());
-            tempText.setText("Temperature: "+Float.toString(viewModel.getTemperature())+", wind speed: "+Float.toString(viewModel.getWindSpeed())+", wind direction: "+viewModel.getWindDir()); /* TODO replace this with some stuff that puts the values where you want them */
+            flagText.setText("The flag is green");
+            tempText.setText("Temperature: "+Float.toString(viewModel.getTemperature()));
+            //tempText.setText("Temperature: 24ºC");
+            windText.setText("Wind Speed: Fast as fuck");
         }
 
     }
