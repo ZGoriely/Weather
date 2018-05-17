@@ -8,7 +8,8 @@ import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
     @Inject
-    ViewModelSource<HomeWeather> homeWeatherSource;
+    ViewModelSource<Loadable<HomeViewModel>> homeWeatherSource;
     @Inject
     ViewModelSource<ImageIcon> crestImageSource;
     @ApplyStyle(BackgroundStyle.class)
@@ -57,14 +58,15 @@ public class HomeScreen implements Screen {
 
     }
 
-    private void updateScreen(HomeWeather viewModel) {
-        if (viewModel.getLoading()) {
+    private void updateScreen(Loadable<HomeViewModel> viewModelLoadable) {
+        if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
             weatherText.setText("");
-        } else if (viewModel.getError() != null) {
+        } else if (viewModelLoadable.getError() != null) {
             flagText.setText("An error occurred");
             weatherText.setText("");
-        } else {
+        } else if(viewModelLoadable.getViewModel()!=null) {
+            HomeViewModel viewModel = viewModelLoadable.getViewModel();
             flagText.setText(viewModel.getFlagText());
             weatherText.setText(viewModel.getWeatherText());
         }

@@ -5,27 +5,30 @@ import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HourViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class DaysWeatherSource implements ViewModelSource<DaysWeather> {
+public class HoursViewModelSource implements ViewModelSource<Loadable<HourViewModel>> {
     @Inject
     private OpenWeatherSource weatherApiSource;
 
     @Override
-    public Observable<DaysWeather> getViewModel(Observable<Object> refresh) {
-        return Observable.range(0, 24)
-                .flatMap(x -> weatherApiSource.getWeatherInDays(x, 0)) /* TODO SORT THIS OUT - HAVE ARBITRARILY USED 00:00 AS TIME OF DAY */
-                .toList()
-                .map(this::buildModel)
-                .toObservable()
+    public Observable<Loadable<HourViewModel>> getViewModel(Observable<Object> refresh) {
+        return refresh.flatMapSingle(o ->
+                Observable.range(0, 24)
+                        .flatMap(x -> weatherApiSource.getWeatherInHours(x))
+                        .toList()
+                        .map(this::buildModel)
+                        .onErrorReturn(Loadable::new)
+        )
                 .observeOn(SwingSchedulers.edt());
     }
 
-    private DaysWeather buildModel(List<Weather> weatherList) {
+    private Loadable<HourViewModel> buildModel(List<Weather> weatherList) {
         ArrayList<String> weatherTexts = new ArrayList<>();
         for (int i = 0; i < weatherList.size(); i++) {
             switch (weatherList.get(i).precipitation) {
@@ -40,7 +43,7 @@ public class DaysWeatherSource implements ViewModelSource<DaysWeather> {
                     break;
             }
         }
-        return new DaysWeather(weatherTexts);
+        return new Loadable<>(new HourViewModel(weatherTexts));
 
     }
 }

@@ -7,18 +7,23 @@ import uk.ac.cam.groupseven.weatherapp.datasources.RowingInfoSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.WeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 
-public class HomeViewModelSource implements ViewModelSource<HomeWeather> {
+import java.util.concurrent.TimeUnit;
+
+public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewModel>> {
     @Inject
     private RowingInfoSource rowingInfoSource;
     @Inject
     private WeatherSource weatherSource;
 
-    public Observable<HomeWeather> getViewModel(Observable<Object> refresh) {
-        return refresh.flatMap(x ->
+    public Observable<Loadable<HomeViewModel>> getViewModel(Observable<Object> refresh) {
+        return refresh
+                .throttleFirst(6, TimeUnit.SECONDS)
+                .flatMap(x ->
                 Observable
-                        .just(HomeWeather.Companion.loading()) //Return loading followed by the actual data
+                        .just(new Loadable<HomeViewModel>()) //Return loading followed by the actual data
                         .concatWith(
                                 rowingInfoSource.getFlagStatus()//Get flag and observe result
                                         .flatMap(
@@ -33,7 +38,7 @@ public class HomeViewModelSource implements ViewModelSource<HomeWeather> {
                 .observeOn(SwingSchedulers.edt());
     }
 
-    private HomeWeather buildModel(FlagStatus flagStatus, Weather weather) {
+    private Loadable<HomeViewModel> buildModel(FlagStatus flagStatus, Weather weather) {
         String flagText = "The colour is " + flagStatus.getDisplayName();
 
         String weatherText = "Unknown weather";
@@ -51,7 +56,7 @@ public class HomeViewModelSource implements ViewModelSource<HomeWeather> {
             }
         }
 
-        return new HomeWeather(flagText, weatherText);
+        return new Loadable<>(new HomeViewModel(flagText, weatherText));
     }
 
 

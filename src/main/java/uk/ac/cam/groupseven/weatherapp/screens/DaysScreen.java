@@ -10,7 +10,8 @@ import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DaysScreen implements Screen {
     @Inject
-    ViewModelSource<DaysWeather> daysWeatherSource;
+    ViewModelSource<Loadable<DaysViewModel>> daysWeatherSource;
     @ApplyStyle(BackgroundStyle.class)
     private JButton leftButton;
     @ApplyStyle(BackgroundStyle.class)
@@ -44,11 +45,11 @@ public class DaysScreen implements Screen {
         return EmptyDisposable.INSTANCE;
     }
 
-    private void updateScreen(DaysWeather viewModel) {
-        if (viewModel.loading) {
+    private void updateScreen(Loadable<DaysViewModel> viewModelLoadable) {
+        if (viewModelLoadable.getLoading()) {
             // loading screen
             dateText.setText("loading");
-        } else if (viewModel.error != null) {
+        } else if (viewModelLoadable.getError() != null) {
             // Error screen
             dateText.setText("Error");
         } else {
@@ -56,11 +57,12 @@ public class DaysScreen implements Screen {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDateTime now = LocalDateTime.now();
             dateText.setText(dtf.format((now)));
+            DaysViewModel viewModel = viewModelLoadable.getViewModel();
             updateTable(viewModel);
         }
     }
 
-    private void updateTable(DaysWeather viewModel) {
+    private void updateTable(DaysViewModel viewModel) {
 
         // DefaultTableModel tableModel = (DefaultTableModel) forecastTable.getModel();
         DefaultTableModel tableData = new DefaultTableModel();
@@ -74,8 +76,8 @@ public class DaysScreen implements Screen {
             tableData.addColumn(column);
         }
 
-        for (int i=0; i<viewModel.precipitationTexts.size(); i++) {
-            tableData.addRow(viewModel.precipitationTexts.get(i).split("[-]"));
+        for (int i = 0; i< viewModel.getPrecipitationTexts().size(); i++) {
+            tableData.addRow(viewModel.getPrecipitationTexts().get(i).split("[-]"));
         }
 
         forecastTable.setModel(tableData);
