@@ -81,16 +81,33 @@ public class HomeScreen implements Screen {
 
     private void updateScreen(Loadable<HomeViewModel> viewModelLoadable) {
         HomeViewModel viewModel = viewModelLoadable.getViewModel();
+        // Set refresh icon
+        try {
+            BufferedImage refreshImage = ImageIO.read(new File("res/icons/refresh.png"));
+            ImageIcon refresh = new ImageIcon(refreshImage.getScaledInstance(60,60, Image.SCALE_FAST));
+            refreshButton.setIcon(refresh);
+            refreshButton.setText("");
+        }
+        catch (IOException e) {
+            refreshButton.setText("Refresh");
+            refreshButton.setIcon(null);
+        }
+
+        // Set weather information
         if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
             tempText.setText("Temperature: ...");
             windText.setText("Wind Speed: ...");
-        } else if (viewModelLoadable.getError() != null) {
+        }
+
+        else if (viewModelLoadable.getError() != null) {
             flagText.setText("Error");
             windText.setText("Error");
             tempText.setText("Error");
-        } else {
+        }
 
+        else {
+            // Get weather info and set text
             FlagStatus flagStatus = viewModel.getFlag();
             flagText.setText("Flag: " + flagStatus.getDisplayName());
             tempText.setText("Temperature: "+ Float.toString(viewModel.getTemperature()));
