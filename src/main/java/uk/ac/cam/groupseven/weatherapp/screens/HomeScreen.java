@@ -27,7 +27,7 @@ public class HomeScreen implements Screen {
     @ApplyStyle(BackgroundStyle.class)
     private JTextPane tempText;
     @ApplyStyle(BackgroundStyle.class)
-    private JTextArea flagText;
+    private JTextPane flagText;
     @ApplyStyle(ButtonStyle.class)
     private JButton refreshButton;
     @ApplyStyle(ButtonStyle.class)
@@ -44,10 +44,16 @@ public class HomeScreen implements Screen {
     private JPanel midPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
+    @ApplyStyle(BackgroundStyle.class)
     private JPanel flagPanel;
+    @ApplyStyle(BackgroundStyle.class)
     private JPanel tempIconPanel;
+    @ApplyStyle(BackgroundStyle.class)
     private JTextPane windText;
+    @ApplyStyle(BackgroundStyle.class)
     private JPanel windIconText;
+    @ApplyStyle(ButtonStyle.class)
+    private JPanel weatherPanel;
 
     public JPanel getPanel() {
         return panel;
