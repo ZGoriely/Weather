@@ -67,8 +67,8 @@ public class HomeScreen implements Screen {
             weatherText.setText("");
         } else if(viewModelLoadable.getViewModel()!=null) {
             HomeViewModel viewModel = viewModelLoadable.getViewModel();
-            flagText.setText(viewModel.getFlagText());
-            weatherText.setText(viewModel.getWeatherText());
+            flagText.setText(viewModel.getFlag().getDisplayName());
+            weatherText.setText("Temperature: "+Float.toString(viewModel.getTemperature())+", wind speed: "+Float.toString(viewModel.getWindSpeed())+", wind direction: "+viewModel.getWindDir()); /* TODO replace this with some stuff that puts the values where you want them */
         }
 
     }
