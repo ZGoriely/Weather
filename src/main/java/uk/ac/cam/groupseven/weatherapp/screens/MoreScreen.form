@@ -81,7 +81,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="b1129" class="javax.swing.JTable" binding="infoTable" custom-create="true">
+              <component id="b1129" class="javax.swing.JTable" binding="infoTable">
                 <constraints/>
                 <properties>
                   <showVerticalLines value="false"/>
