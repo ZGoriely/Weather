@@ -112,15 +112,14 @@ public class HomeScreen implements Screen {
 
                 //Set wind icon
                 BufferedImage windImage = ImageIO.read(new File("res/icons/wind.png"));
-                ImageIcon wind = new ImageIcon(windImage.getScaledInstance(150,150, Image.SCALE_FAST));
+                ImageIcon wind = new ImageIcon(windImage.getScaledInstance(150, 150, Image.SCALE_FAST));
                 windIcon.setIcon(wind);
 
                 // Set flag icon
                 BufferedImage flagImage = ImageIO.read(new File("res/flag/" + flagStatus.getCode() + ".png"));
                 ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
                 flagIcon.setIcon(flag);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("Image not found");
                 e.printStackTrace();
             }
@@ -153,16 +152,17 @@ public class HomeScreen implements Screen {
         }
         if (loading) {
             loadingObservable = Observable
-                    .intervalRange(loadingIcon.getRotation() / 10, (loadingIcon.getRotation() + 360), 0, 10, TimeUnit.MILLISECONDS)
+                    .intervalRange(loadingIcon.getRotation() / 10, (360), 0, 20, TimeUnit.MILLISECONDS)
                     .repeat()
                     .subscribeOn(SwingSchedulers.edt())
                     .subscribe(x -> {
                         loadingIcon.setRotation(Math.toIntExact(x) * 10);
                         refreshButton.repaint();
                     });
+
         } else {
             loadingObservable = Observable
-                    .intervalRange(loadingIcon.getRotation() / 10, 360 / 10, 0, 10, TimeUnit.MILLISECONDS)
+                    .intervalRange(loadingIcon.getRotation() / 10, (360 - loadingIcon.getRotation()) / 10, 0, 10, TimeUnit.MILLISECONDS)
                     .subscribeOn(SwingSchedulers.edt())
                     .subscribe(x -> {
                         loadingIcon.setRotation(Math.toIntExact(x) * 10);
