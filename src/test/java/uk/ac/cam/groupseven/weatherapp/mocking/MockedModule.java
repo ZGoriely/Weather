@@ -17,9 +17,9 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDateTime;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class MockedModule implements Module {
@@ -33,6 +33,9 @@ public class MockedModule implements Module {
         binder.bind(Path.class).annotatedWith(Names.named("crestDirectory"))
                 .toInstance(Paths.get("./res/crests"));
 
+        binder.bind(Path.class).annotatedWith(Names.named("refreshIcon"))
+                .toInstance(Paths.get("./res/icons/refresh_white_18dp.png"));
+
         binder.bind(CrestSource.class).to(CrestSourceMock.class);
         binder.bind(RowingInfoSource.class).to(RowingInfoSourceMock.class);
         binder.bind(WeatherSource.class).to(WeatherSourceMock.class);
@@ -42,7 +45,8 @@ public class MockedModule implements Module {
         binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE, 0, 0.0f, 0.0f, 0, new Wind(0.0f, ""), LocalDateTime.now(), LocalDateTime.now()));
         binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
 
-        binder.bind(new TypeLiteral<Loadable<HomeViewModel>>(){}).toInstance(new Loadable<>(new HomeViewModel("The colour is Green", "Sunny skies")));
+        binder.bind(new TypeLiteral<Loadable<HomeViewModel>>() {
+        }).toInstance(new Loadable<>(new HomeViewModel(FlagStatus.GREEN, 12.0f, 1.0f, "")));
         binder.bind(new TypeLiteral<Loadable<HourViewModel>>(){}).toInstance(new Loadable<>(new HourViewModel(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun"))));
         binder.bind(new TypeLiteral<Loadable<DaysViewModel>>(){}).toInstance(new Loadable<>(new DaysViewModel(
