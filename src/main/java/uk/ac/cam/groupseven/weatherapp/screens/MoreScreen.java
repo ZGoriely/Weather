@@ -7,6 +7,7 @@ import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.models.Crest;
+import uk.ac.cam.groupseven.weatherapp.styles.*;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.MoreViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
@@ -14,6 +15,7 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.*;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
@@ -21,9 +23,13 @@ public class MoreScreen implements Screen {
     @Inject
     private ViewModelSource<Loadable<MoreViewModel>> moreWeatherSource;
 
+    @ApplyStyle(ButtonStyle.class)
     private JButton upButton;
+    @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
+    @ApplyStyle(BackgroundStyle.class)
     private JTextPane WeatherGraphic;
+    @ApplyStyle(ButtonStyle.class)
     private JTable infoTable;
     private JTextField placeholderTextField;
 
