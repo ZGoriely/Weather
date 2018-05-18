@@ -6,10 +6,9 @@ import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.RowingInfoSource;
+import uk.ac.cam.groupseven.weatherapp.datasources.WaterLevelSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.WeatherSource;
-import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
-import uk.ac.cam.groupseven.weatherapp.models.Weather;
-import uk.ac.cam.groupseven.weatherapp.models.Wind;
+import uk.ac.cam.groupseven.weatherapp.models.*;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.*;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.CrestViewModelSource;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.UserCrestViewModelSource;
@@ -41,6 +40,7 @@ public class MockedModule implements Module {
         binder.bind(WeatherSource.class).to(WeatherSourceMock.class);
         binder.bind(ScreenLayout.class).to(ScreenLayoutMock.class);
         binder.bind(Screen.class).to(ScreenMock.class);
+        binder.bind(WaterLevelSource.class).to(WaterLevelSourceMock.class);
 
         binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE, 0, 0.0f, 0.0f, 0, new Wind(0.0f, ""), LocalDateTime.now(), LocalDateTime.now()));
         binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
@@ -51,6 +51,12 @@ public class MockedModule implements Module {
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun"))));
         binder.bind(new TypeLiteral<Loadable<DaysViewModel>>(){}).toInstance(new Loadable<>(new DaysViewModel(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun"))));
+        binder.bind(new TypeLiteral<Loadable<MoreViewModel>>() {
+        }).toInstance(new Loadable<>(new MoreViewModel(
+                new Weather(Weather.Precipitation.NONE, 0, 0.0f, 0.0f, 0, new Wind(0.0f, ""), LocalDateTime.now(), LocalDateTime.now()),
+                new WaterLevel(0.95F),
+                new LightingTimes("07:00", "21:00", "07:00", "21:00")
+        )));
 
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
         }).to(new TypeLiteral<ViewModelSourceMock<Loadable<HomeViewModel>>>() {
@@ -65,6 +71,9 @@ public class MockedModule implements Module {
         });
         binder.bind(new TypeLiteral<ViewModelSource<ImageIcon>>() {
         }).to(UserCrestViewModelSource.class);
+        binder.bind(new TypeLiteral<ViewModelSource<Loadable<MoreViewModel>>>() {
+        }).to(new TypeLiteral<ViewModelSourceMock<Loadable<MoreViewModel>>>() {
+        });
 
     }
 }
