@@ -7,22 +7,18 @@ import uk.ac.cam.groupseven.weatherapp.datasources.RowingInfoSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.WeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
-import uk.ac.cam.groupseven.weatherapp.models.Wind;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
 
-public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewModel>> {
+public class HomeViewModelSource implements ViewModelSource<HomeWeather> {
     @Inject
     private RowingInfoSource rowingInfoSource;
     @Inject
     private WeatherSource weatherSource;
 
-    public Observable<Loadable<HomeViewModel>> getViewModel(Observable<Object> refresh) {
-        return refresh
-                //.throttleFirst(6, TimeUnit.SECONDS)
-                .flatMap(x ->
+    public Observable<HomeWeather> getViewModel(Observable<Object> refresh) {
+        return refresh.flatMap(x ->
                 Observable
-                        .just(new Loadable<HomeViewModel>()) //Return loading followed by the actual data
+                        .just(HomeWeather.Companion.loading()) //Return loading followed by the actual data
                         .concatWith(
                                 rowingInfoSource.getFlagStatus()//Get flag and observe result
                                         .flatMap(
@@ -33,24 +29,28 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
 
                         )
 
-                )
-                .observeOn(SwingSchedulers.edt());
+        );
     }
 
-    private Loadable<HomeViewModel> buildModel(FlagStatus flagStatus, Weather weather) {
-        float temperature = 0.0f;
-        float windSpeed = 0.0f;
-        String windDir = "None";
+    private HomeWeather buildModel(FlagStatus flagStatus, Weather weather) {
+        String flagText = "The colour is " + flagStatus.getDisplayName();
 
-
-        if (weather.wind != null) {
-            Wind wind = weather.wind;
-            if(wind.speedMPS != null) windSpeed = wind.speedMPS;
-            if(wind.direction != null) windDir = wind.direction;
+        String weatherText = "Unknown weather";
+        if (weather.precipitation != null) {
+            switch (weather.precipitation) {
+                case NONE:
+                    weatherText = "Sunny skies";
+                    break;
+                case RAIN:
+                    weatherText = "Rainy skies";
+                    break;
+                case SNOW:
+                    weatherText = "Its snowing";
+                    break;
+            }
         }
-        if (weather.temperature != null) temperature = weather.temperature;
 
-        return new Loadable<>(new HomeViewModel(flagStatus, temperature, windSpeed, windDir));
+        return new HomeWeather(flagText, weatherText);
     }
 
 

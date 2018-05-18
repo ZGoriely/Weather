@@ -10,10 +10,8 @@ import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
 import uk.ac.cam.groupseven.weatherapp.models.Crest;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
@@ -29,11 +27,13 @@ public class CrestScreen implements Screen {
     @Inject
     CrestSource crestSource;
     @Inject
-    ViewModelSource<Loadable<CrestViewModel>> crestViewModelSource;
+    ViewModelSource<CrestViewModel> crestViewModelSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
-    @ApplyStyle(ButtonStyle.class)
+    @ApplyStyle(BackgroundStyle.class)
     private JButton returnHomeButton;
+    @ApplyStyle(BackgroundStyle.class)
+    private JScrollPane crestScrollPanel;
     @ApplyStyle(TableStyle.class)
     private JTable crestTable;
     @ApplyStyle(BackgroundStyle.class)
@@ -69,15 +69,15 @@ public class CrestScreen implements Screen {
         );
     }
 
-    private void updateScreen(Loadable<CrestViewModel> viewModelLoadable) {
-        CrestViewModel viewModel = viewModelLoadable.getViewModel();
-        TreeMap<String, ImageIcon> crests = viewModel.getImages();
+    private void updateScreen(CrestViewModel viewModel) {
+        TreeMap<String, ImageIcon> crests = viewModel.images;
         int numCrests = crests.size();
         crestLabels = new LinkedList<>(crests.keySet());
         Collections.sort(crestLabels);
 
         int width = tableWidth;
         int height = (numCrests + width - 1) / width;
+        System.out.println(width + " " + height);
 
         Object[][] data = new Object[width][height];
         for (int i = 0; i < numCrests; i++) {
