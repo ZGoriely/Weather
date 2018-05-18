@@ -25,6 +25,10 @@ public class ApplicationModule implements Module {
         binder.bind(Path.class).annotatedWith(Names.named("refreshIcon"))
                 .toInstance(Paths.get("./res/icons/refresh_white_18dp.png"));
 
+
+        binder.bind(Integer.class).annotatedWith(Names.named("morningHour")).toInstance(8);
+        binder.bind(Integer.class).annotatedWith(Names.named("afternoonHour")).toInstance(16);
+
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
         }).to(HomeViewModelSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HourViewModel>>>() {
