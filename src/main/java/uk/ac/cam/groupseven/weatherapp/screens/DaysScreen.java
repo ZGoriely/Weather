@@ -9,7 +9,6 @@ import io.reactivex.internal.disposables.EmptyDisposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.*;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.DayWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
@@ -75,13 +74,13 @@ public class DaysScreen implements Screen {
     }
 
     private void updateTable(DaysViewModel viewModel, DefaultTableModel tableModel) {
-        for (int i = 0; i< viewModel.getPrecipitationTexts().size(); i++) {
-            DayWeather dayWeather = viewModel.getPrecipitationTexts().get(i);
-            Object[] row = new Object[]{dayWeather.getDate(),
-                                        dayWeather.getMorningTemperature(),
-                                        dayWeather.getMorningWind(),
-                                        dayWeather.getAfternoonTemperature(),
-                                        dayWeather.getAfternoonWind()};
+        for (int i=0; i<viewModel.getTimes().size(); i++) {
+            Object[] row = new Object[5];
+            row[0] = viewModel.getTimes().get(i).toString();
+            row[1] = viewModel.getTemperatures().get(2*i);
+            row[2] = viewModel.getWindSpeeds().get(2*i);
+            row[3] = viewModel.getTemperatures().get(2*i+1);
+            row[4] = viewModel.getWindSpeeds().get(2*i+1);
             tableModel.addRow(row);
         }
     }
