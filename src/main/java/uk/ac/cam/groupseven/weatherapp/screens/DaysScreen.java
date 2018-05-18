@@ -1,25 +1,28 @@
 package uk.ac.cam.groupseven.weatherapp.screens;
 
 import com.google.inject.Inject;
+import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.EmptyDisposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
-import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.*;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DayWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class DaysScreen implements Screen {
@@ -36,55 +39,82 @@ public class DaysScreen implements Screen {
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
-    private JScrollPane tableScroll;
-    @ApplyStyle(BackgroundStyle.class)
     private JPanel midPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel topPanel;
 
     @Override
     public Disposable start() {
-        return EmptyDisposable.INSTANCE;
+        return
+                daysWeatherSource
+                        .getViewModel(getRefreshObservable())
+                        .subscribe(this::updateScreen);
     }
 
     private void updateScreen(Loadable<DaysViewModel> viewModelLoadable) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        dateText.setText(dtf.format((now)));
+        DefaultTableModel tableModel = (DefaultTableModel) resetTable();
+
         if (viewModelLoadable.getLoading()) {
             // loading screen
-            dateText.setText("loading");
+            tableModel.addRow(Collections.nCopies(5, "Loading").toArray());
+
         } else if (viewModelLoadable.getError() != null) {
             // Error screen
-            dateText.setText("Error");
+            tableModel.addRow(Collections.nCopies(5, "Error").toArray());
+
         } else {
             // Display screen
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDateTime now = LocalDateTime.now();
-            dateText.setText(dtf.format((now)));
             DaysViewModel viewModel = viewModelLoadable.getViewModel();
-            updateTable(viewModel);
+            updateTable(viewModel, tableModel);
+        }
+        forecastTable.setModel(tableModel);
+        tableModel.fireTableDataChanged();
+    }
+
+    private void updateTable(DaysViewModel viewModel, DefaultTableModel tableModel) {
+        for (int i = 0; i< viewModel.getPrecipitationTexts().size(); i++) {
+            DayWeather dayWeather = viewModel.getPrecipitationTexts().get(i);
+            Object[] row = new Object[]{dayWeather.getDate(),
+                                        dayWeather.getMorningTemperature(),
+                                        dayWeather.getMorningWind(),
+                                        dayWeather.getAfternoonTemperature(),
+                                        dayWeather.getAfternoonWind()};
+            tableModel.addRow(row);
         }
     }
 
-    private void updateTable(DaysViewModel viewModel) {
+    private TableModel resetTable() {
+        DefaultTableModel tableModel = new DefaultTableModel();
 
-        // DefaultTableModel tableModel = (DefaultTableModel) forecastTable.getModel();
-        DefaultTableModel tableData = new DefaultTableModel();
-
-        // TODO: Update to properly use viewModel
         String[] columnNames = {"Date",
+                "Temperature",
+                "Wind speed",
                 "Temperature",
                 "Wind speed"};
 
-        for (String column : columnNames) {
-            tableData.addColumn(column);
+        for (String col : columnNames) {
+            tableModel.addColumn(col);
         }
+        forecastTable.setModel(tableModel);
 
-        for (int i = 0; i< viewModel.getPrecipitationTexts().size(); i++) {
-            DayWeather dayWeather = viewModel.getPrecipitationTexts().get(i);
-        }
+        TableColumnModel cm = forecastTable.getColumnModel();
+        ColumnGroup g_morn = new ColumnGroup("Morning");
+        g_morn.add(cm.getColumn(1));
+        g_morn.add(cm.getColumn(2));
+        ColumnGroup g_noon = new ColumnGroup("Afternoon");
+        g_noon.add(cm.getColumn(3));
+        g_noon.add(cm.getColumn(4));
 
-        forecastTable.setModel(tableData);
+        GroupableTableHeader header = new GroupableTableHeader(cm);
+        header.addColumnGroup(g_morn);
+        header.addColumnGroup(g_noon);
 
-        tableData.fireTableDataChanged();
+        forecastTable.setTableHeader(header);
+
+        return tableModel;
     }
 
     private Observable<Object> getRefreshObservable() {
