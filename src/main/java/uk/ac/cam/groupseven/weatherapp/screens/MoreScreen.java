@@ -12,10 +12,15 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.MoreViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
@@ -29,8 +34,10 @@ public class MoreScreen implements Screen {
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
     private JTextPane WeatherGraphic;
-    @ApplyStyle(ButtonStyle.class)
+    @ApplyStyle(TableStyle.class)
     private JTable infoTable;
+    @ApplyStyle(ButtonStyle.class)
+    private JScrollPane infoPane;
     private JTextField placeholderTextField;
 
     @Override
@@ -53,15 +60,22 @@ public class MoreScreen implements Screen {
         MoreViewModel viewModel = loadable.getViewModel();
 
 
-        Object[][] data = new Object[7][2];
-        data[0][0] = new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString());
-        data[1][0] = new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString());
-        data[2][0] = new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString());
-        data[3][0] = new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString());
-        data[4][0] = new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString());
-        data[4][0] = new ImageIcon(Paths.get("./res/icons/").resolve("wind.png").toAbsolutePath().toString());
-        data[5][0] = new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString());
-        data[6][0] = new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString());
+        Object[][] data = new Object[8][2];
+        int iconSize = 100;
+        //Set icons
+        try {
+            data[0][0] = new ImageIcon(ImageIO.read(new File("res/icons/waterLevel.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+            data[1][0] = new ImageIcon(ImageIO.read(new File("res/icons/precipitation.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+            data[2][0] = new ImageIcon(ImageIO.read(new File("res/icons/clouds.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+            data[3][0] = new ImageIcon(ImageIO.read(new File("res/icons/pressure.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+            data[4][0] = new ImageIcon(ImageIO.read(new File("res/icons/humidity.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+            data[5][0] = new ImageIcon(ImageIO.read(new File("res/icons/wind.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+            data[6][0] = new ImageIcon(ImageIO.read(new File("res/icons/sunrise.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+            data[7][0] = new ImageIcon(ImageIO.read(new File("res/icons/sunset.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+        }
+        catch (IOException e) {
+            System.out.println(e.getStackTrace());
+        }
 
         if (loadable.getError() != null) {
             for (int i = 0; i < data.length; i++) {
@@ -74,15 +88,16 @@ public class MoreScreen implements Screen {
             }
             return;
         }
-
-        data[0][1] = viewModel.getWaterLevel().level + " metres";
-        data[1][1] = viewModel.getWeather().precipitation.toString();
-        data[2][1] = viewModel.getWeather().cloudCover + "%";
-        data[3][1] = viewModel.getWeather().temperature + " C";
-        data[4][1] = viewModel.getWeather().wind.direction;
-        data[4][1] = viewModel.getWeather().wind.speedMPS + " m/s";
-        data[5][1] = viewModel.getLightingLimes().todayUpTime;
-        data[6][1] = viewModel.getLightingLimes().todayDownTime;
+        for (int i = 0; i < 8; i++ ) data[i][1] = "";
+        String text = "Water level:\n" + viewModel.getWaterLevel().level + " metres";
+        data[0][1] = text;
+        data[1][1] = "Precipitation:\n" + viewModel.getWeather().precipitation.toString();
+        data[2][1] = "Cloud cover:\n" + viewModel.getWeather().cloudCover + "%";
+        data[3][1] = "Pressure:\n" + viewModel.getWeather().pressure + "hPa";
+        data[4][1] = "Humidity:\n" + viewModel.getWeather().humidity + "%";
+        data[5][1] = "Wind direction:\n" + viewModel.getWeather().wind.direction;
+        data[6][1] = "Sunrise:\n" + viewModel.getLightingLimes().todayUpTime;
+        data[7][1] = "Sunset:\n" + viewModel.getLightingLimes().todayDownTime;
 
 
         TableModel model = new DefaultTableModel() {
@@ -115,8 +130,10 @@ public class MoreScreen implements Screen {
         };
 
         infoTable.setModel(model);
-        infoTable.setRowHeight((new ImageIcon(Paths.get("./res/crests").resolve(Crest.PELBY.getCode() + ".gif").toAbsolutePath().toString()).getIconHeight()));
-
+        infoTable.setRowHeight(((ImageIcon)data[0][0]).getIconHeight());
+        infoTable.setPreferredScrollableViewportSize(infoTable.getPreferredSize());
+        infoTable.getColumnModel().getColumn(0).setPreferredWidth(iconSize);
+        infoTable.getColumnModel().getColumn(1).setPreferredWidth(3*iconSize);
 
     }
 
@@ -126,3 +143,4 @@ public class MoreScreen implements Screen {
                         .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); //Refresh every 15 seconds
     }
 }
+
