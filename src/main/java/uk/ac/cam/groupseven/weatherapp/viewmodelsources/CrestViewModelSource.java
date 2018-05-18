@@ -7,13 +7,12 @@ import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
 import uk.ac.cam.groupseven.weatherapp.models.Crest;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 
 import javax.swing.*;
 import java.nio.file.Path;
 import java.util.TreeMap;
 
-public class CrestViewModelSource implements ViewModelSource<Loadable<CrestViewModel>> {
+public class CrestViewModelSource implements ViewModelSource<CrestViewModel> {
     @Inject
     CrestSource crestSource;
 
@@ -22,7 +21,7 @@ public class CrestViewModelSource implements ViewModelSource<Loadable<CrestViewM
     private Path imageDirectory;
 
     @Override
-    public Observable<Loadable<CrestViewModel>> getViewModel(Observable<Object> refresh) {
+    public Observable<CrestViewModel> getViewModel(Observable<Object> refresh) {
         return refresh.flatMapSingle(r ->
                 crestSource
                         .getAllCrests()
@@ -38,8 +37,7 @@ public class CrestViewModelSource implements ViewModelSource<Loadable<CrestViewM
 
                         })
                         .map(CrestViewModel::new)
-                        .map(Loadable::new)
-                        .onErrorReturn(Loadable::new)
+                        .onErrorReturn(CrestViewModel::new)
                         .observeOn(SwingSchedulers.edt())
 
         );

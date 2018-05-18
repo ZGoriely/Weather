@@ -4,7 +4,10 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.*;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeWeather;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HourWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.*;
 
 import javax.swing.*;
@@ -22,21 +25,16 @@ public class ApplicationModule implements Module {
         binder.bind(Path.class).annotatedWith(Names.named("crestDirectory"))
                 .toInstance(Paths.get("./res/crests"));
 
-        binder.bind(Path.class).annotatedWith(Names.named("refreshIcon"))
-                .toInstance(Paths.get("./res/icons/refresh_white_18dp.png"));
-
-        binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
+        binder.bind(new TypeLiteral<ViewModelSource<HomeWeather>>() {
         }).to(HomeViewModelSource.class);
-        binder.bind(new TypeLiteral<ViewModelSource<Loadable<HourViewModel>>>() {
-        }).to(HoursViewModelSource.class);
-        binder.bind(new TypeLiteral<ViewModelSource<Loadable<CrestViewModel>>>() {
+        binder.bind(new TypeLiteral<ViewModelSource<HourWeather>>() {
+        }).to(HoursWeatherSource.class);
+        binder.bind(new TypeLiteral<ViewModelSource<CrestViewModel>>() {
         }).to(CrestViewModelSource.class);
-        binder.bind(new TypeLiteral<ViewModelSource<Loadable<DaysViewModel>>>() {
-        }).to(DaysViewModelSource.class);
+        binder.bind(new TypeLiteral<ViewModelSource<DaysWeather>>() {
+        }).to(DaysWeatherSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<ImageIcon>>() {
         }).to(UserCrestViewModelSource.class);
-        binder.bind(new TypeLiteral<ViewModelSource<Loadable<MoreViewModel>>>() {
-        }).to(MoreViewModelSource.class);
 
         // bind Urls
         try {
