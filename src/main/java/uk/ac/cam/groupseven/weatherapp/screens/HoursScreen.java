@@ -1,6 +1,7 @@
 package uk.ac.cam.groupseven.weatherapp.screens;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -17,7 +18,6 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 public class HoursScreen implements Screen {
@@ -43,6 +43,13 @@ public class HoursScreen implements Screen {
     private JLabel timeLabel;
 
     private JList<Object> list;
+
+    @Inject
+    @Named("tempSmallIcon")
+    private ImageIcon scaledTempIcon;
+    @Inject
+    @Named("windSmallIcon")
+    private ImageIcon scaledWindIcon;
 
     @Override
     public Disposable start() {
@@ -114,12 +121,10 @@ public class HoursScreen implements Screen {
                     .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
             hoursTable.getColumnModel().getColumn(2)
                     .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
-            Image scaledTempIcon = new ImageIcon("./res/icons/thermometer.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-            Image scaledWindIcon = new ImageIcon("./res/icons/wind.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
 
             hoursTable.getColumnModel().getColumn(0).setHeaderValue("Time");
-            hoursTable.getColumnModel().getColumn(1).setHeaderValue(new ImageIcon(scaledTempIcon));
-            hoursTable.getColumnModel().getColumn(2).setHeaderValue(new ImageIcon(scaledWindIcon));
+            hoursTable.getColumnModel().getColumn(1).setHeaderValue(scaledTempIcon);
+            hoursTable.getColumnModel().getColumn(2).setHeaderValue(scaledWindIcon);
 
             hoursTable.invalidate();
         }

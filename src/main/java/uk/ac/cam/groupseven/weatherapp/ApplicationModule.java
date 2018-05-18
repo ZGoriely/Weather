@@ -22,6 +22,14 @@ public class ApplicationModule implements Module {
         binder.bind(Path.class).annotatedWith(Names.named("crestDirectory"))
                 .toInstance(Paths.get("./res/crests"));
 
+
+        binder.bind(ImageIcon.class).annotatedWith(Names.named("windSmallIcon")).toInstance(
+                new ImageIcon(new ImageIcon("./res/icons/wind.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT))
+        );
+        binder.bind(ImageIcon.class).annotatedWith(Names.named("tempSmallIcon")).toInstance(
+                new ImageIcon(new ImageIcon("./res/icons/thermometer.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT))
+        );
+
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
         }).to(HomeViewModelSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HourViewModel>>>() {
