@@ -1,6 +1,9 @@
 package uk.ac.cam.groupseven.weatherapp.viewmodels
 
-import uk.ac.cam.groupseven.weatherapp.models.Weather
-import java.util.ArrayList
+data class DaysViewModel(val precipitationTexts: List<DayWeather>)
 
-data class DaysViewModel(val precipitationTexts : List<String>)
+data class DayWeather(val date: String,
+                      val morningTemperature: String,
+                      val morningWind: String,
+                      val afternoonTemperature: String,
+                      val afternoonWind: String)

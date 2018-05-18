@@ -11,6 +11,7 @@ import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.DayWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
@@ -78,7 +79,7 @@ public class DaysScreen implements Screen {
         }
 
         for (int i = 0; i< viewModel.getPrecipitationTexts().size(); i++) {
-            tableData.addRow(viewModel.getPrecipitationTexts().get(i).split("[-]"));
+            DayWeather dayWeather = viewModel.getPrecipitationTexts().get(i);
         }
 
         forecastTable.setModel(tableData);
