@@ -74,7 +74,7 @@ public class HoursScreen implements Screen {
             assert viewModel != null;
 
 
-            timeLabel.setText(viewModel.getCurrentTime());
+            timeLabel.setText(viewModel.getCurrentTime().toString());
 
 
             hoursTable.setModel(new DefaultTableModel() {
@@ -96,11 +96,11 @@ public class HoursScreen implements Screen {
                     HourlyWeather hourlyWeather = viewModel.getHourlyWeather().get(row);
                     switch (column) {
                         case 0:
-                            return hourlyWeather.getTimeText();
+                            return hourlyWeather.getTime().toString(); /* May want to use different toString system for more human-readable times */
                         case 1:
-                            return hourlyWeather.getTemperatureText();
+                            return Float.toString(hourlyWeather.getTemperature());
                         case 2:
-                            return hourlyWeather.getWindText();
+                            return Float.toString(hourlyWeather.getWindSpeed());
                         default:
                             return null;
                     }
