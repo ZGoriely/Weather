@@ -1,14 +1,12 @@
 package uk.ac.cam.groupseven.weatherapp.viewmodels
 
-import java.time.LocalDateTime
-
 data class HourViewModel(
-        val currentTime: LocalDateTime,
-        val hourlyWeather: List<HourlyWeather>
+        val currentTime: String,
+        val hourlyWeather: MutableList<HourlyWeather>
 )
 
 data class HourlyWeather(
-        val time: LocalDateTime,
-        val temperature: Float,
-        val windSpeed: Float
+        val time: String,
+        val temperature: String,
+        val windSpeed: String
 )

@@ -3,7 +3,6 @@ package uk.ac.cam.groupseven.weatherapp.viewmodelsources;
 import com.google.inject.Inject;
 import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourViewModel;
@@ -13,8 +12,6 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,8 +43,8 @@ public class HoursViewModelSource implements ViewModelSource<Loadable<HourViewMo
 
     private HourlyWeather buildWeather(Weather weather) {
         String timeText = weather.fromTime.plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm"));
-        String temperatureText = String.format("%s°C", weather.temperature);
-        String windText = String.format("%s m/s", weather.wind.speedMPS);
+        String temperatureText = String.format("%.1f°C", weather.temperature);
+        String windText = String.format("%.1f m/s", weather.wind.speedMPS);
         return new HourlyWeather(timeText, temperatureText, windText);
 
     }

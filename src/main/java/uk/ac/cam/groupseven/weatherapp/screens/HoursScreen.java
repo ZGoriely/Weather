@@ -96,11 +96,11 @@ public class HoursScreen implements Screen {
                     HourlyWeather hourlyWeather = viewModel.getHourlyWeather().get(row);
                     switch (column) {
                         case 0:
-                            return hourlyWeather.getTime().toString(); /* May want to use different toString system for more human-readable times */
+                            return hourlyWeather.getTime();
                         case 1:
-                            return Float.toString(hourlyWeather.getTemperature());
+                            return hourlyWeather.getTemperature();
                         case 2:
-                            return Float.toString(hourlyWeather.getWindSpeed());
+                            return hourlyWeather.getWindSpeed();
                         default:
                             return null;
                     }
