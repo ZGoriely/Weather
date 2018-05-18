@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +39,7 @@ public class MoreScreen implements Screen {
     private JTable infoTable;
     @ApplyStyle(ButtonStyle.class)
     private JScrollPane infoPane;
+
     private JTextField placeholderTextField;
 
     @Override
@@ -59,7 +61,6 @@ public class MoreScreen implements Screen {
 
         MoreViewModel viewModel = loadable.getViewModel();
 
-
         Object[][] data = new Object[8][2];
         int iconSize = 100;
         //Set icons
@@ -77,6 +78,7 @@ public class MoreScreen implements Screen {
             e.printStackTrace();
         }
 
+
         if (loadable.getError() != null) {
             for (int i = 0; i < data.length; i++) {
                 data[i][1] = "error";
@@ -88,6 +90,7 @@ public class MoreScreen implements Screen {
             }
             return;
         }
+      
         for (int i = 0; i < 8; i++ ) data[i][1] = "";
         String text =  " Water level:\n" + viewModel.getWaterLevel().level + " metres";
         data[0][1] = text;
@@ -109,6 +112,7 @@ public class MoreScreen implements Screen {
         data[5][1] = " Wind direction:\n" + viewModel.getWeather().wind.direction;
         data[6][1] = " Sunrise:\n" + viewModel.getLightingLimes().todayUpTime;
         data[7][1] = " Sunset:\n" + viewModel.getLightingLimes().todayDownTime;
+
 
 
         TableModel model = new DefaultTableModel() {
@@ -145,7 +149,6 @@ public class MoreScreen implements Screen {
         infoTable.setPreferredScrollableViewportSize(infoTable.getPreferredSize());
         infoTable.getColumnModel().getColumn(0).setPreferredWidth(iconSize);
         infoTable.getColumnModel().getColumn(1).setPreferredWidth(3*iconSize);
-
     }
 
     private Observable<Object> getRefreshObservable() {
