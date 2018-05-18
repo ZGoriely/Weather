@@ -126,6 +126,8 @@ public class OpenWeatherSource implements WeatherSource {
 
             Weather forecast = null;
 
+            System.out.println("days: "+days+", time: "+timeInHours);
+
             if(timeInHours >= 24 || timeInHours < 0) throw new TimeOutOfRangeException(timeInHours);
 
             if(days > 5) throw new CrystalBallDepthExceededException(days, timeInHours);
@@ -134,10 +136,20 @@ public class OpenWeatherSource implements WeatherSource {
                     && (LocalDateTime.now().getHour() / 3 <= timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
                 throw new CrystalBallDepthExceededException(days, timeInHours);
 
+            if(days == 0
+                    && ((LocalDateTime.now().getHour() / 3) * 3 + 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
+                    && (LocalDateTime.now().getHour() / 3 > timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
+                throw new CrystalBallDepthExceededException(days, timeInHours);
+
             LocalDateTime forecastTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays((long)days).plusHours((long)timeInHours);
 
+            System.out.println(forecastTime);
+
             for(int i = 0; i < readings.getLength(); i++){
+                System.out.print(i+" ");
+                System.out.println(isCorrectReading(forecastTime, parseTimeNode(readings.item(i))));
                 if(isCorrectReading(forecastTime, parseTimeNode(readings.item(i)))) {
+                    System.out.println("It's reading "+i);
                     forecast = parseTimeNode(readings.item(i));
                 }
             }
@@ -162,7 +174,7 @@ public class OpenWeatherSource implements WeatherSource {
         private final int timeValue;
 
         public CrystalBallDepthExceededException(int dayValue, int timeValue){
-            super("Requested weather "+dayValue+" days and "+(timeValue - LocalDateTime.now().getHour())+" hours in the future ("+ timeValue+":00).\r\n Sadly, we're not *that* good - we're using the free API and can only forecast until (floor(current time / 3) * 3) o'clock on the 5th day ahead.");
+            super("Requested weather "+dayValue+" days and "+(timeValue - LocalDateTime.now().getHour())+" hours in the future ("+ timeValue+":00).\r\n Sadly, we're not *that* good - we're using the free API and can only forecast until (floor(current time / 3) * 3) o'clock on the 5th day ahead. AND NOT IN THE PAST!");
             this.dayValue = dayValue;
             this.timeValue = timeValue;
         }
