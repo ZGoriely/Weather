@@ -5,6 +5,7 @@ import com.google.inject.name.Named;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import sun.swing.BakedArrayList;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.*;
@@ -23,7 +24,7 @@ public class HoursScreen implements Screen {
     ViewModelSource<Loadable<HourViewModel>> viewModelSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton leftButton;
     @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
@@ -34,11 +35,11 @@ public class HoursScreen implements Screen {
     @ApplyStyle({BackgroundStyle.class, HoursTableStyle.class})
     private JTable hoursTable;
     @ApplyStyle(BackgroundStyle.class)
-    private JScrollPane scrollPanel;
-    @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
     @ApplyStyle({BackgroundStyle.class, BigTextStyle.class})
     private JLabel timeLabel;
+    @ApplyStyle(ButtonStyle.class)
+    private JScrollPane scrollPanel;
 
     private JList<Object> list;
 
