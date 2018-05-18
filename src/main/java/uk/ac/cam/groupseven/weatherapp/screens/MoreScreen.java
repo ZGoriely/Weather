@@ -74,7 +74,7 @@ public class MoreScreen implements Screen {
             data[7][0] = new ImageIcon(ImageIO.read(new File("res/icons/sunset.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
         }
         catch (IOException e) {
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
         }
 
         if (loadable.getError() != null) {
