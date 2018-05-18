@@ -87,16 +87,19 @@
         <children>
           <scrollpane id="50925" binding="scrollPanel">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="1" use-parent-layout="false"/>
             </constraints>
             <properties>
               <opaque value="false"/>
             </properties>
-            <border type="empty"/>
+            <border type="empty">
+              <size top="10" left="50" bottom="50" right="10"/>
+            </border>
             <children>
               <component id="38b39" class="javax.swing.JTable" binding="hoursTable">
                 <constraints/>
                 <properties>
+                  <fillsViewportHeight value="true"/>
                   <opaque value="false"/>
                 </properties>
               </component>
