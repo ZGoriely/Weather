@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
 
 public class ApplicationModule implements Module {
     @Override
@@ -29,6 +30,8 @@ public class ApplicationModule implements Module {
         binder.bind(ImageIcon.class).annotatedWith(Names.named("tempSmallIcon")).toInstance(
                 new ImageIcon(new ImageIcon("./res/icons/thermometer.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT))
         );
+
+        binder.bind(Calendar.class).toInstance(Calendar.getInstance());
 
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
         }).to(HomeViewModelSource.class);
