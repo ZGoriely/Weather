@@ -23,7 +23,7 @@ public class HoursScreen implements Screen {
     ViewModelSource<Loadable<HourViewModel>> viewModelSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton leftButton;
     @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
