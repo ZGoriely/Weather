@@ -4,7 +4,6 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
-.idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
@@ -18,6 +17,7 @@
 .idea/**/dynamic.xml
 
 # Gradle
+
 # CMake
 cmake-build-debug/
 cmake-build-release/
@@ -51,3 +51,7 @@ fabric.properties
 
 gradlew
 gradlew.bat
+.gradle/
+.idea/
+build/
+gradle/
