@@ -12,7 +12,12 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
@@ -22,19 +27,11 @@ public class HomeScreen implements Screen {
     ViewModelSource<ImageIcon> crestImageSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
-    @ApplyStyle(BackgroundStyle.class)
-    private JTextPane weatherText;
-    @ApplyStyle(BackgroundStyle.class)
-    private JTextArea flagText;
-    @ApplyStyle(BackgroundStyle.class)
+    private JTextPane flagText;
     private JButton refreshButton;
-    @ApplyStyle(BackgroundStyle.class)
     private JButton crestButton;
-    @ApplyStyle(BackgroundStyle.class)
     private JButton leftButton;
-    @ApplyStyle(BackgroundStyle.class)
     private JButton rightButton;
-    @ApplyStyle(BackgroundStyle.class)
     private JButton additionalInformationButton;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel topPanel;
@@ -42,6 +39,15 @@ public class HomeScreen implements Screen {
     private JPanel midPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
+    @ApplyStyle(BackgroundStyle.class)
+    private JLabel tempIcon;
+    private JTextPane tempText;
+    private JTextPane windText;
+    @ApplyStyle(BackgroundStyle.class)
+    private JLabel windIcon;
+    private JPanel weatherPanel;
+    @ApplyStyle(BackgroundStyle.class)
+    private JLabel flagIcon;
 
     public JPanel getPanel() {
         return panel;
@@ -59,16 +65,43 @@ public class HomeScreen implements Screen {
     }
 
     private void updateScreen(Loadable<HomeViewModel> viewModelLoadable) {
+        HomeViewModel viewModel = viewModelLoadable.getViewModel();
+        // Set refresh icon
+        try {
+            BufferedImage refreshImage = ImageIO.read(new File("res/icons/refresh.png"));
+            ImageIcon refresh = new ImageIcon(refreshImage.getScaledInstance(60, 60, Image.SCALE_FAST));
+            refreshButton.setIcon(refresh);
+            refreshButton.setText("");
+        } catch (IOException e) {
+            refreshButton.setText("Refresh");
+            refreshButton.setIcon(null);
+        }
+
+        // Set weather information
         if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
-            weatherText.setText("");
+            tempText.setText("Temperature: ...");
+            windText.setText("Wind Speed: ...");
         } else if (viewModelLoadable.getError() != null) {
-            flagText.setText("An error occurred");
-            weatherText.setText("");
-        } else if(viewModelLoadable.getViewModel()!=null) {
-            HomeViewModel viewModel = viewModelLoadable.getViewModel();
-            flagText.setText(viewModel.getFlagText());
-            weatherText.setText(viewModel.getWeatherText());
+            flagText.setText("Error");
+            windText.setText("Error");
+            tempText.setText("Error");
+        } else {
+            try {
+                // Set temp icon
+                BufferedImage thermometerImage = ImageIO.read(new File("res/icons/thermometer.png"));
+                ImageIcon thermometer = new ImageIcon(thermometerImage.getScaledInstance(200, 200, Image.SCALE_FAST));
+                tempIcon.setIcon(thermometer);
+
+                //Set wind icon
+                BufferedImage windImage = ImageIO.read(new File("res/icons/wind.png"));
+                ImageIcon wind = new ImageIcon(windImage.getScaledInstance(150, 150, Image.SCALE_FAST));
+                windIcon.setIcon(wind);
+
+            } catch (IOException e) {
+                System.out.println("Image not found");
+                e.printStackTrace();
+            }
         }
 
     }

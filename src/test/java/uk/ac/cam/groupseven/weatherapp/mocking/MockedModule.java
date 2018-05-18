@@ -17,9 +17,9 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDateTime;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class MockedModule implements Module {
@@ -44,7 +44,14 @@ public class MockedModule implements Module {
 
         binder.bind(new TypeLiteral<Loadable<HomeViewModel>>(){}).toInstance(new Loadable<>(new HomeViewModel("The colour is Green", "Sunny skies")));
         binder.bind(new TypeLiteral<Loadable<HourViewModel>>(){}).toInstance(new Loadable<>(new HourViewModel(
-                Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun"))));
+                "8:50",
+                Arrays.asList(
+                        new HourlyWeather("9:00", "10'C", "5m/s"),
+                        new HourlyWeather("10:00", "13'C", "6m/s"),
+                        new HourlyWeather("11:00", "16'C", "12m/s"),
+                        new HourlyWeather("12:00", "17'C", "8m/s"),
+                        new HourlyWeather("13:00", "18'C", "9m/s")
+                ))));
         binder.bind(new TypeLiteral<Loadable<DaysViewModel>>(){}).toInstance(new Loadable<>(new DaysViewModel(
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun"))));
 
