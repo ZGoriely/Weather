@@ -6,44 +6,46 @@ import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.OpenWeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HourlyWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 
 
 public class HoursViewModelSource implements ViewModelSource<Loadable<HourViewModel>> {
     @Inject
     private OpenWeatherSource weatherApiSource;
+    @Inject
+    private Calendar calendar;
 
     @Override
     public Observable<Loadable<HourViewModel>> getViewModel(Observable<Object> refresh) {
         return refresh.flatMapSingle(o ->
-                Observable.range(0, 24)
-                        .flatMap(x -> weatherApiSource.getWeatherInHours(x))
+                Observable.range(0, 6)
+                        .flatMap(x -> weatherApiSource.getWeatherInHours(x * 3))
+                        .map(this::buildWeather)
                         .toList()
                         .map(this::buildModel)
+                        .map(Loadable<HourViewModel>::new)
                         .onErrorReturn(Loadable::new)
         )
                 .observeOn(SwingSchedulers.edt());
     }
 
-    private Loadable<HourViewModel> buildModel(List<Weather> weatherList) {
-        ArrayList<String> weatherTexts = new ArrayList<>();
-        for (int i = 0; i < weatherList.size(); i++) {
-            switch (weatherList.get(i).precipitation) {
-                case RAIN:
-                    weatherTexts.add(String.format("%s:00 - Rain", i));
-                    break;
-                case SNOW:
-                    weatherTexts.add(String.format("%s:00 - Snow", i));
-                    break;
-                case NONE:
-                    weatherTexts.add(String.format("%s:00 - Sun", i));
-                    break;
-            }
-        }
-        return new Loadable<>(new HourViewModel(weatherTexts));
+    private HourViewModel buildModel(List<HourlyWeather> hourlyWeathers) {
+
+        String timeText = new SimpleDateFormat("HH:mm").format(calendar.getTime());
+        return new HourViewModel(timeText, hourlyWeathers);
+    }
+
+    private HourlyWeather buildWeather(Weather weather) {
+        String timeText = weather.fromTime.plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm"));
+        String temperatureText = String.format("%.1f°C", weather.temperature);
+        String windText = String.format("%.1f m/s", weather.wind.speedMPS);
+        return new HourlyWeather(timeText, temperatureText, windText);
 
     }
 }

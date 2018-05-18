@@ -33,6 +33,7 @@ public class HomeScreen implements Screen {
     ViewModelSource<ImageIcon> crestImageSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
+
     @ApplyStyle(CenterTextStyle.class)
     private JTextPane flagText;
     @ApplyStyle(ButtonStyle.class)
@@ -44,6 +45,7 @@ public class HomeScreen implements Screen {
     @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
     @ApplyStyle(ButtonStyle.class)
+
     private JButton additionalInformationButton;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel topPanel;
@@ -53,6 +55,7 @@ public class HomeScreen implements Screen {
     private JPanel bottomPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JLabel tempIcon;
+
     @ApplyStyle(CenterTextStyle.class)
     private JTextPane tempText;
     @ApplyStyle(CenterTextStyle.class)
@@ -86,6 +89,7 @@ public class HomeScreen implements Screen {
 
     private void updateScreen(Loadable<HomeViewModel> viewModelLoadable) {
         HomeViewModel viewModel = viewModelLoadable.getViewModel();
+
         if (viewModelLoadable.getLoading()) {
             flagText.setText("loading");
             tempText.setText("Temperature: ...");
@@ -119,6 +123,7 @@ public class HomeScreen implements Screen {
                 BufferedImage flagImage = ImageIO.read(new File("res/flag/" + flagStatus.getCode() + ".png"));
                 ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
                 flagIcon.setIcon(flag);
+              
             } catch (IOException e) {
                 System.out.println("Image not found");
                 e.printStackTrace();
