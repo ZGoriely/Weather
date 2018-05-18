@@ -1,30 +1,24 @@
 package uk.ac.cam.groupseven.weatherapp.screens;
 
 import com.google.inject.Inject;
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.*;
-import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DayWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class DaysScreen implements Screen {
@@ -36,7 +30,7 @@ public class DaysScreen implements Screen {
     private JButton rightButton;
     @ApplyStyle(BackgroundStyle.class)
     private JTextPane dateText;
-    @ApplyStyle({BackgroundStyle.class})
+    @ApplyStyle({TableStyle.class, BackgroundStyle.class})
     private JTable forecastTable;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
@@ -47,7 +41,10 @@ public class DaysScreen implements Screen {
 
     @Override
     public Disposable start() {
-        return daysWeatherSource.getViewModel(getRefreshObservable()).subscribe(this::updateScreen);
+        return
+                daysWeatherSource
+                        .getViewModel(getRefreshObservable())
+                        .subscribe(this::updateScreen);
     }
 
     private void updateScreen(Loadable<DaysViewModel> viewModelLoadable) {
@@ -73,7 +70,17 @@ public class DaysScreen implements Screen {
         tableModel.fireTableDataChanged();
     }
 
-    private void updateTable(DaysViewModel viewModel) {
+    private void updateTable(DaysViewModel viewModel, DefaultTableModel tableModel) {
+        for (DayWeather dayWeather : viewModel.getDayWeathers()) {
+            Object[] row = new Object[5];
+            row[0] = dayWeather.getDate();
+            row[1] = dayWeather.getMorningTemperature();
+            row[2] = dayWeather.getMorningWind();
+            row[3] = dayWeather.getAfternoonTemperature();
+            row[4] = dayWeather.getAfternoonWind();
+            tableModel.addRow(row);
+        }
+    }
 
     private TableModel resetTable() {
         DefaultTableModel tableModel = new DefaultTableModel();
