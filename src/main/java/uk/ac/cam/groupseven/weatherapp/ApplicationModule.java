@@ -23,7 +23,6 @@ public class ApplicationModule implements Module {
         binder.bind(Path.class).annotatedWith(Names.named("crestDirectory"))
                 .toInstance(Paths.get("./res/crests"));
 
-
         binder.bind(ImageIcon.class).annotatedWith(Names.named("windSmallIcon")).toInstance(
                 new ImageIcon(new ImageIcon("./res/icons/wind.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT))
         );
@@ -32,6 +31,9 @@ public class ApplicationModule implements Module {
         );
 
         binder.bind(Calendar.class).toInstance(Calendar.getInstance());
+
+        binder.bind(Path.class).annotatedWith(Names.named("refreshIcon"))
+                .toInstance(Paths.get("./res/icons/refresh_white_18dp.png"));
 
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
         }).to(HomeViewModelSource.class);

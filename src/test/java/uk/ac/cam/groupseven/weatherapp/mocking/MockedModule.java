@@ -39,6 +39,9 @@ public class MockedModule implements Module {
         binder.bind(ImageIcon.class).annotatedWith(Names.named("tempSmallIcon")).toInstance(
                 new ImageIcon(new ImageIcon("./res/icons/thermometer.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT))
         );
+      
+        binder.bind(Path.class).annotatedWith(Names.named("refreshIcon"))
+                .toInstance(Paths.get("./res/icons/refresh_white_18dp.png"));
 
         binder.bind(CrestSource.class).to(CrestSourceMock.class);
         binder.bind(RowingInfoSource.class).to(RowingInfoSourceMock.class);
@@ -50,7 +53,8 @@ public class MockedModule implements Module {
         binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
 
         binder.bind(new TypeLiteral<Loadable<HomeViewModel>>() {
-        }).toInstance(new Loadable<>(new HomeViewModel("The colour is Green", "Sunny skies")));
+        }).toInstance(new Loadable<>(new HomeViewModel(FlagStatus.GREEN, 12.0f, 1.0f, "")));
+      
         binder.bind(new TypeLiteral<Loadable<HourViewModel>>() {
         }).toInstance(new Loadable<>(new HourViewModel(
                 "8:50",
@@ -61,9 +65,12 @@ public class MockedModule implements Module {
                         new HourlyWeather("12:00", "17'C", "8m/s"),
                         new HourlyWeather("13:00", "18'C", "9m/s")
                 ))));
-        binder.bind(new TypeLiteral<Loadable<DaysViewModel>>() {
-        }).toInstance(new Loadable<>(new DaysViewModel(
+
+        binder.bind(new TypeLiteral<Loadable<DaysViewModel>>(){}).toInstance(new Loadable<>(new DaysViewModel(
+
                 Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun"))));
+                                     
+
 
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
         }).to(new TypeLiteral<ViewModelSourceMock<Loadable<HomeViewModel>>>() {

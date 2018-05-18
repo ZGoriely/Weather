@@ -79,7 +79,6 @@ public class CrestScreen implements Screen {
 
         int width = tableWidth;
         int height = (numCrests + width - 1) / width;
-        System.out.println(width + " " + height);
 
         Object[][] data = new Object[width][height];
         for (int i = 0; i < numCrests; i++) {
