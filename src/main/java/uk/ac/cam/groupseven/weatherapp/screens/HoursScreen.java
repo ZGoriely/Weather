@@ -7,11 +7,8 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
-import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.*;
 
-import uk.ac.cam.groupseven.weatherapp.styles.BigTextStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.HoursTableStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourlyWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
