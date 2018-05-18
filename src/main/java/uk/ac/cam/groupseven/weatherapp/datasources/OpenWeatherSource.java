@@ -8,6 +8,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import sun.misc.IOUtils;
+import sun.nio.ch.IOUtil;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.models.Wind;
@@ -15,6 +17,8 @@ import uk.ac.cam.groupseven.weatherapp.models.Wind;
 import javax.inject.Named;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -27,6 +31,39 @@ public class OpenWeatherSource implements WeatherSource {
     private URL apiUrl;
     private InputStream apiResponse;
 
+    private byte[] weatherXML = null;
+    private LocalDateTime lastUpdated = null;
+
+    private InputStream getWeatherInputStream(){ /* Used to allow interface to selectively load new data - don't reload more than once every 6 seconds (free weather API). */
+        if(lastUpdated == null || weatherXML == null || lastUpdated.until(LocalDateTime.now(), ChronoUnit.SECONDS) >= 6) {
+            try {
+                byte[] newWeatherXML; // Create new buffer so as to not discard old weather data before new weather data is fetched.
+                newWeatherXML = new byte[32 * 1024]; // Unless API drastically changes, 32,768 bytes is enough for xml response.
+
+                apiResponse = apiUrl.openStream();
+                newWeatherXML = IOUtils.readFully(apiResponse, newWeatherXML.length, false); // Just trust the false.
+
+                weatherXML = newWeatherXML; // This way, an exception in apiResponse.read() will leave the old weatherXML untouched.
+                lastUpdated = LocalDateTime.now(); // Update the 'last updated' time.
+
+                /*
+                System.out.println();
+                for (int i = 0; i < weatherXML.length; i++){
+                    System.out.print(String.format("%c", (char)weatherXML[i]));
+                }
+                System.out.println();
+                */
+            }
+            catch (IOException e){
+                System.out.println("Error whilst fetching latest weather data: "+e.getMessage());
+            }
+        }
+        return new ByteArrayInputStream(weatherXML);
+    }
+
+
+
+
     @Override
     public Observable<Weather> getWeatherNow() {
 
@@ -34,9 +71,9 @@ public class OpenWeatherSource implements WeatherSource {
         return Observable.fromCallable(() -> {
 
             Weather currentWeather = null;
-            apiResponse = apiUrl.openStream();
+            InputStream weatherData = getWeatherInputStream();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document weatherDataDoc = builder.parse(apiResponse);
+            Document weatherDataDoc = builder.parse(weatherData);
             NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
             LocalDateTime currentTime = LocalDateTime.now();
@@ -58,9 +95,9 @@ public class OpenWeatherSource implements WeatherSource {
     @Override
     public Observable<Weather> getWeatherInHours(int hours) {
         return Observable.fromCallable(() -> {
-            apiResponse = apiUrl.openStream();
+            InputStream weatherData = getWeatherInputStream();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document weatherDataDoc = builder.parse(apiResponse);
+            Document weatherDataDoc = builder.parse(weatherData);
             NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
             Weather forecast = null;
@@ -81,9 +118,10 @@ public class OpenWeatherSource implements WeatherSource {
     @Override
     public Observable<Weather> getWeatherInDays(int days, int timeInHours) { //TODO deal with 5 days in future but time later than now in day so no forecast.
         return Observable.fromCallable(() -> {
-            apiResponse = apiUrl.openStream();
+
+            InputStream weatherData = getWeatherInputStream();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document weatherDataDoc = builder.parse(apiResponse);
+            Document weatherDataDoc = builder.parse(weatherData);
             NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
             Weather forecast = null;
