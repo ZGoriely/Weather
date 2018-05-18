@@ -134,7 +134,8 @@ public class HomeScreen implements Screen {
     public Observable<ScreenLayout.Direction> getScreenChanges() {
         return SwingObservable.actions(leftButton).map(x -> ScreenLayout.Direction.LEFT)
                 .mergeWith(SwingObservable.actions(rightButton).map(x -> ScreenLayout.Direction.RIGHT))
-                .mergeWith(SwingObservable.actions(crestButton).map(x -> ScreenLayout.Direction.UP));
+                .mergeWith(SwingObservable.actions(crestButton).map(x -> ScreenLayout.Direction.UP))
+                .mergeWith(SwingObservable.actions(additionalInformationButton).map(x -> ScreenLayout.Direction.DOWN));
 
     }
 

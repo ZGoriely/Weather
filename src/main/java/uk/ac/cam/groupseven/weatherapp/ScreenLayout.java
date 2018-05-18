@@ -5,10 +5,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.cam.groupseven.weatherapp.screens.CrestScreen;
-import uk.ac.cam.groupseven.weatherapp.screens.DaysScreen;
-import uk.ac.cam.groupseven.weatherapp.screens.HomeScreen;
-import uk.ac.cam.groupseven.weatherapp.screens.HoursScreen;
+import uk.ac.cam.groupseven.weatherapp.screens.*;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyles;
 
 import javax.swing.*;
@@ -26,8 +23,9 @@ public class ScreenLayout {
     @ApplyStyles
     @Inject
     DaysScreen daysScreen;
-    // @Inject
-    // MoreScreen moreScreen;
+    @ApplyStyles
+    @Inject
+    MoreScreen moreScreen;
 
     public JPanel getDefault() { return homeScreen.getPanel(); }
 
@@ -45,11 +43,9 @@ public class ScreenLayout {
                 case UP:
                     nextPanel = crestScreen.getPanel();
                     break;
-                /* TODO: Add when moreScreen implemented
                 case DOWN:
                     nextPanel = moreScreen.getPanel();
                     break;
-                */
                 default:
                     nextPanel = currentPanel;
                     break;
@@ -89,7 +85,6 @@ public class ScreenLayout {
             }
             return nextPanel;
         }
-        /* TODO: Add when moreScreen implemented
         if (currentPanel == moreScreen.getPanel()) {
             JPanel nextPanel;
             switch (direction) {
@@ -102,15 +97,17 @@ public class ScreenLayout {
             }
             return nextPanel;
         }
-        */
+
         throw new NotImplementedException();
     }
 
     public Observable<ScreenChange> getScreenChanges() {
-        return Observable.merge(homeScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(homeScreen, x), x)),
+        return Observable.merge(
+                Observable.merge(homeScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(homeScreen, x), x)),
                 hoursScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(hoursScreen, x), x)),
                 crestScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(crestScreen, x), x)),
-                                daysScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(daysScreen, x), x))
+                        daysScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(daysScreen, x), x))),
+                moreScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(moreScreen, x), x))
         );
     }
 
@@ -119,7 +116,8 @@ public class ScreenLayout {
                 homeScreen.start(),
                 hoursScreen.start(),
                 crestScreen.start(),
-                daysScreen.start()
+                daysScreen.start(),
+                moreScreen.start()
         );
     }
 

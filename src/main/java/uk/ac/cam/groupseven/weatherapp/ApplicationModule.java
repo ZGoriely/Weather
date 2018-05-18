@@ -35,6 +35,8 @@ public class ApplicationModule implements Module {
         }).to(DaysViewModelSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<ImageIcon>>() {
         }).to(UserCrestViewModelSource.class);
+        binder.bind(new TypeLiteral<ViewModelSource<Loadable<MoreViewModel>>>() {
+        }).to(MoreViewModelSource.class);
 
         // bind Urls
         try {
