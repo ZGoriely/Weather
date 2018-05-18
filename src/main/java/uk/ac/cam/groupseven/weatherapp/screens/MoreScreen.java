@@ -69,7 +69,7 @@ public class MoreScreen implements Screen {
             data[2][0] = new ImageIcon(ImageIO.read(new File("res/icons/clouds.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
             data[3][0] = new ImageIcon(ImageIO.read(new File("res/icons/pressure.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
             data[4][0] = new ImageIcon(ImageIO.read(new File("res/icons/humidity.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-            data[5][0] = new ImageIcon(ImageIO.read(new File("res/icons/wind.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
+            data[5][0] = new ImageIcon(ImageIO.read(new File("res/icons/windDirection.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
             data[6][0] = new ImageIcon(ImageIO.read(new File("res/icons/sunrise.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
             data[7][0] = new ImageIcon(ImageIO.read(new File("res/icons/sunset.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
         }
@@ -89,15 +89,26 @@ public class MoreScreen implements Screen {
             return;
         }
         for (int i = 0; i < 8; i++ ) data[i][1] = "";
-        String text = "Water level:\n" + viewModel.getWaterLevel().level + " metres";
+        String text =  " Water level:\n" + viewModel.getWaterLevel().level + " metres";
         data[0][1] = text;
-        data[1][1] = "Precipitation:\n" + viewModel.getWeather().precipitation.toString();
-        data[2][1] = "Cloud cover:\n" + viewModel.getWeather().cloudCover + "%";
-        data[3][1] = "Pressure:\n" + viewModel.getWeather().pressure + "hPa";
-        data[4][1] = "Humidity:\n" + viewModel.getWeather().humidity + "%";
-        data[5][1] = "Wind direction:\n" + viewModel.getWeather().wind.direction;
-        data[6][1] = "Sunrise:\n" + viewModel.getLightingLimes().todayUpTime;
-        data[7][1] = "Sunset:\n" + viewModel.getLightingLimes().todayDownTime;
+        String precipText;
+        switch (viewModel.getWeather().precipitation) {
+            case NONE: precipText = "No Rain";
+            break;
+            case RAIN: precipText = "Raining";
+            break;
+            case SNOW: precipText = "Snowing";
+            break;
+            default: precipText = "Error";
+            break;
+        }
+        data[1][1] = " Precipitation:\n" + precipText;
+        data[2][1] = " Cloud cover:\n" + viewModel.getWeather().cloudCover + "%";
+        data[3][1] = " Pressure:\n" + viewModel.getWeather().pressure + "hPa";
+        data[4][1] = " Humidity:\n" + viewModel.getWeather().humidity + "%";
+        data[5][1] = " Wind direction:\n" + viewModel.getWeather().wind.direction;
+        data[6][1] = " Sunrise:\n" + viewModel.getLightingLimes().todayUpTime;
+        data[7][1] = " Sunset:\n" + viewModel.getLightingLimes().todayDownTime;
 
 
         TableModel model = new DefaultTableModel() {
