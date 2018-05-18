@@ -4,13 +4,12 @@ import com.google.inject.Inject;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.disposables.EmptyDisposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.DayWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.DaysViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
@@ -30,7 +29,7 @@ public class DaysScreen implements Screen {
     private JButton rightButton;
     @ApplyStyle(BackgroundStyle.class)
     private JTextPane dateText;
-    @ApplyStyle({TableStyle.class, BackgroundStyle.class})
+    @ApplyStyle({BackgroundStyle.class})
     private JTable forecastTable;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
@@ -43,7 +42,7 @@ public class DaysScreen implements Screen {
 
     @Override
     public Disposable start() {
-        return EmptyDisposable.INSTANCE;
+        return daysWeatherSource.getViewModel(getRefreshObservable()).subscribe(this::updateScreen);
     }
 
     private void updateScreen(Loadable<DaysViewModel> viewModelLoadable) {
@@ -65,29 +64,28 @@ public class DaysScreen implements Screen {
 
     private void updateTable(DaysViewModel viewModel) {
 
-        // DefaultTableModel tableModel = (DefaultTableModel) forecastTable.getModel();
         DefaultTableModel tableData = new DefaultTableModel();
-
         // TODO: Update to properly use viewModel
         String[] columnNames = {"Date",
-                "Temperature",
-                "Wind speed"};
+                "Morning Temperature",
+                "Morning Wind speed",
+                "Afternoon Temperature",
+                "Afternoon Wind speed"};
 
         for (String column : columnNames) {
             tableData.addColumn(column);
         }
-
-        for (int i = 0; i< viewModel.getTimes().size(); i++) { /* Hi Matt - I think I put the data in the table for you but obviously change if wrong */
-            Object[] row = new Object[3];
-            row[0] = viewModel.getTimes().get(i).toString(); // Add time as String (might want to do this differently to get a more human-readable time in future)
-            row[1] = viewModel.getTemperatures().get(i); // Temperature and wind speed are just added as Float objects. Could string convert them here if needed.
-            row[2] = viewModel.getWindSpeeds().get(i);
+    /* Hi Matt - I think I put the data in the table for you but obviously change if wrong */
+        for (DayWeather dayWeather : viewModel.getDayWeathers()) {
+            Object[] row = new Object[5];
+            row[0] = dayWeather.getDate();
+            row[1] = dayWeather.getMorningTemperature();
+            row[2] = dayWeather.getMorningWind();
+            row[3] = dayWeather.getAfternoonTemperature();
+            row[4] = dayWeather.getAfternoonWind();
             tableData.addRow(row);
         }
-
         forecastTable.setModel(tableData);
-
-        tableData.fireTableDataChanged();
     }
 
     private Observable<Object> getRefreshObservable() {
