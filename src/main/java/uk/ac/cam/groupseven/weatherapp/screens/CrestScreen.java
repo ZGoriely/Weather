@@ -12,6 +12,7 @@ import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
@@ -27,7 +28,7 @@ public class CrestScreen implements Screen {
     @Inject
     CrestSource crestSource;
     @Inject
-    ViewModelSource<CrestViewModel> crestViewModelSource;
+    ViewModelSource<Loadable<CrestViewModel>> crestViewModelSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
@@ -69,15 +70,15 @@ public class CrestScreen implements Screen {
         );
     }
 
-    private void updateScreen(CrestViewModel viewModel) {
-        TreeMap<String, ImageIcon> crests = viewModel.images;
+    private void updateScreen(Loadable<CrestViewModel> viewModelLoadable) {
+        CrestViewModel viewModel = viewModelLoadable.getViewModel();
+        TreeMap<String, ImageIcon> crests = viewModel.getImages();
         int numCrests = crests.size();
         crestLabels = new LinkedList<>(crests.keySet());
         Collections.sort(crestLabels);
 
         int width = tableWidth;
         int height = (numCrests + width - 1) / width;
-        System.out.println(width + " " + height);
 
         Object[][] data = new Object[width][height];
         for (int i = 0; i < numCrests; i++) {
