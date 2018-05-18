@@ -10,6 +10,7 @@ import uk.ac.cam.groupseven.weatherapp.datasources.CrestSource;
 import uk.ac.cam.groupseven.weatherapp.models.Crest;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
 import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.CrestViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
@@ -31,10 +32,8 @@ public class CrestScreen implements Screen {
     ViewModelSource<Loadable<CrestViewModel>> crestViewModelSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JButton returnHomeButton;
-    @ApplyStyle(BackgroundStyle.class)
-    private JScrollPane crestScrollPanel;
     @ApplyStyle(TableStyle.class)
     private JTable crestTable;
     @ApplyStyle(BackgroundStyle.class)
