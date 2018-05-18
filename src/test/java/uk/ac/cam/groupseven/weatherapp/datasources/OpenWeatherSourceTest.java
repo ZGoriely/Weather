@@ -3,6 +3,9 @@ package uk.ac.cam.groupseven.weatherapp.datasources;
 import com.google.inject.Guice;
 import org.junit.Test;
 import uk.ac.cam.groupseven.weatherapp.ApplicationModule;
+import uk.ac.cam.groupseven.weatherapp.models.Weather;
+
+import java.util.List;
 
 public class OpenWeatherSourceTest {
     @Test
@@ -20,7 +23,7 @@ public class OpenWeatherSourceTest {
 
     @Test
     public void getWeatherInDays() throws Exception {
-        int tm = 10;
+        int tm = 4;
         int days = 5;
         OpenWeatherSource openWeatherSource = Guice.createInjector(new ApplicationModule()).getInstance(OpenWeatherSource.class);
         System.out.println("In "+days+" day(s) at "+tm+":00 -> "+openWeatherSource.getWeatherInDays(days, tm).blockingFirst());

@@ -77,8 +77,12 @@ public class DaysScreen implements Screen {
             tableData.addColumn(column);
         }
 
-        for (int i = 0; i< viewModel.getPrecipitationTexts().size(); i++) {
-            tableData.addRow(viewModel.getPrecipitationTexts().get(i).split("[-]"));
+        for (int i = 0; i< viewModel.getTimes().size(); i++) { /* Hi Matt - I think I put the data in the table for you but obviously change if wrong */
+            Object[] row = new Object[3];
+            row[0] = viewModel.getTimes().get(i).toString(); // Add time as String (might want to do this differently to get a more human-readable time in future)
+            row[1] = viewModel.getTemperatures().get(i); // Temperature and wind speed are just added as Float objects. Could string convert them here if needed.
+            row[2] = viewModel.getWindSpeeds().get(i);
+            tableData.addRow(row);
         }
 
         forecastTable.setModel(tableData);
