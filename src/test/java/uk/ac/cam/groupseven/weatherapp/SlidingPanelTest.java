@@ -2,13 +2,13 @@ package uk.ac.cam.groupseven.weatherapp;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import uk.ac.cam.groupseven.weatherapp.mocking.MockedModule;
+import uk.ac.cam.groupseven.weatherapp.modules.MockingModule;
 
 import javax.swing.*;
 
 public class SlidingPanelTest {
     public static void main(String[] args) {
-        Injector injector = Guice.createInjector(new MockedModule());
+        Injector injector = Guice.createInjector(new MockingModule());
         JFrame frame = new JFrame("uk.ac.cam.groupseven.weatherapp.SlidingPanelTest");
         SlidingPanel panel = injector.getInstance(SlidingPanel.class);
         panel.start();

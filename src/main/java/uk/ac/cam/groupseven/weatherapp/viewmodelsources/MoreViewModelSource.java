@@ -65,7 +65,8 @@ public class MoreViewModelSource implements ViewModelSource<Loadable<MoreViewMod
         String sunrise = String.format(" Sunrise:\n%s", lightingTimes.todayUpTime);
         String sunset = String.format(" Sunset:\n%s", lightingTimes.todayDownTime);
 
-        return new MoreViewModel(waterLevelText,
+        return new MoreViewModel(
+                waterLevelText,
                 precipitation,
                 cloudCover,
                 pressure,
