@@ -1,6 +1,7 @@
 package uk.ac.cam.groupseven.weatherapp.screens;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -14,13 +15,9 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.MoreViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class MoreScreen implements Screen {
@@ -39,6 +36,34 @@ public class MoreScreen implements Screen {
     private JScrollPane infoPane;
 
     private JTextField placeholderTextField;
+
+    @Inject
+    @Named("waterIcon")
+    private ImageIcon waterIcon;
+    @Inject
+    @Named("precipitationIcon")
+    private ImageIcon precipitationIcon;
+    @Inject
+    @Named("cloudsIcon")
+    private ImageIcon cloudsIcon;
+    @Inject
+    @Named("pressureIcon")
+    private ImageIcon pressureIcon;
+    @Inject
+    @Named("humidityIcon")
+    private ImageIcon humidityIcon;
+    @Inject
+    @Named("windIcon")
+    private ImageIcon windIcon;
+    @Inject
+    @Named("sunriseIcon")
+    private ImageIcon sunriseIcon;
+    @Inject
+    @Named("sunsetIcon")
+    private ImageIcon sunsetIcon;
+    @Inject
+    @Named("moreScreenIconSize")
+    private int iconSize;
 
     @Override
     public Disposable start() {
@@ -60,81 +85,75 @@ public class MoreScreen implements Screen {
         MoreViewModel viewModel = loadable.getViewModel();
 
         Object[][] data = new Object[8][2];
-        int iconSize = 100;
         //Set icons
-        try {
-            data[0][0] = new ImageIcon(ImageIO.read(new File("res/icons/waterLevel.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-            data[1][0] = new ImageIcon(ImageIO.read(new File("res/icons/precipitation.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-            data[2][0] = new ImageIcon(ImageIO.read(new File("res/icons/clouds.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-            data[3][0] = new ImageIcon(ImageIO.read(new File("res/icons/pressure.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-            data[4][0] = new ImageIcon(ImageIO.read(new File("res/icons/humidity.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-            data[5][0] = new ImageIcon(ImageIO.read(new File("res/icons/windDirection.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-            data[6][0] = new ImageIcon(ImageIO.read(new File("res/icons/sunrise.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-            data[7][0] = new ImageIcon(ImageIO.read(new File("res/icons/sunset.png")).getScaledInstance(iconSize, iconSize, Image.SCALE_FAST));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        data[0][0] = waterIcon;
+        data[1][0] = precipitationIcon;
+        data[2][0] = cloudsIcon;
+        data[3][0] = pressureIcon;
+        data[4][0] = humidityIcon;
+        data[5][0] = windIcon;
+        data[6][0] = sunriseIcon;
+        data[7][0] = sunsetIcon;
 
 
         if (loadable.getError() != null) {
             for (int i = 0; i < data.length; i++) {
                 data[i][1] = "error";
             }
-            return;
         } else if (loadable.getLoading()) {
             for (int i = 0; i < data.length; i++) {
                 data[i][1] = "loading...";
             }
-            return;
-        }
-      
-        for (int i = 0; i < 8; i++ ) data[i][1] = "";
-        data[0][1] = viewModel.getWaterLevel();
-        data[1][1] = viewModel.getPrecipitation();
-        data[2][1] = viewModel.getCloudCover();
-        data[3][1] = viewModel.getPressure();
-        data[4][1] = viewModel.getHumidity();
-        data[5][1] = viewModel.getWindDirection();
-        data[6][1] = viewModel.getSunrise();
-        data[7][1] = viewModel.getSunset();
+        } else if (viewModel != null) {
+
+            for (int i = 0; i < 8; i++) data[i][1] = "";
+            data[0][1] = viewModel.getWaterLevel();
+            data[1][1] = viewModel.getPrecipitation();
+            data[2][1] = viewModel.getCloudCover();
+            data[3][1] = viewModel.getPressure();
+            data[4][1] = viewModel.getHumidity();
+            data[5][1] = viewModel.getWindDirection();
+            data[6][1] = viewModel.getSunrise();
+            data[7][1] = viewModel.getSunset();
 
 
+            TableModel model = new DefaultTableModel() {
 
-        TableModel model = new DefaultTableModel() {
-
-            public int getColumnCount() {
-                return data[0].length;
-            }
-
-            public int getRowCount() {
-                return data.length;
-            }
-
-            @Override
-            public Class getColumnClass(int columnIndex) {
-                return getValueAt(0, columnIndex).getClass();
-            }
-
-            @Override
-            public Object getValueAt(int row, int column) {
-                if (row < data.length && column < data[row].length) {
-                    return data[row][column];
+                public int getColumnCount() {
+                    return data[0].length;
                 }
-                return null;
-            }
 
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+                public int getRowCount() {
+                    return data.length;
+                }
 
-        infoTable.setModel(model);
-        infoTable.setRowHeight(((ImageIcon)data[0][0]).getIconHeight());
-        infoTable.setPreferredScrollableViewportSize(infoTable.getPreferredSize());
-        infoTable.getColumnModel().getColumn(0).setPreferredWidth(iconSize);
-        infoTable.getColumnModel().getColumn(1).setPreferredWidth(3*iconSize);
+                @Override
+                public Class getColumnClass(int columnIndex) {
+                    return getValueAt(0, columnIndex).getClass();
+                }
+
+                @Override
+                public Object getValueAt(int row, int column) {
+                    if (row < data.length && column < data[row].length) {
+                        return data[row][column];
+                    }
+                    return null;
+                }
+
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            infoTable.setModel(model);
+            infoTable.setRowHeight(((ImageIcon) data[0][0]).getIconHeight());
+            infoTable.setPreferredScrollableViewportSize(infoTable.getPreferredSize());
+            infoTable.getColumnModel().getColumn(0).setPreferredWidth(iconSize);
+            infoTable.getColumnModel().getColumn(1).setPreferredWidth(3 * iconSize);
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     private Observable<Object> getRefreshObservable() {
