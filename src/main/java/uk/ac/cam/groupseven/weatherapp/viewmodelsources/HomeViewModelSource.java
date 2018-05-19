@@ -30,26 +30,20 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
     private Path flagDir;
 
     public Observable<Loadable<HomeViewModel>> getViewModel(Observable<Object> refresh) {
-        return refresh
-                //.throttleFirst(6, TimeUnit.SECONDS)
-                .flatMap(x ->
+        return refresh.flatMap(x ->
                 Observable
-                        .just(new Loadable<HomeViewModel>()) //Return loading followed by the actual data
+                        .just(new Loadable<HomeViewModel>()) // Return loading followed by the actual data
                         .concatWith(
-                                rowingInfoSource.getFlagStatus()//Get flag and observe result
+                                rowingInfoSource.getFlagStatus()// Get flag and observe result
                                         .flatMap(
                                                 flagStatus ->
-                                                        weatherSource.getWeatherNow()//Get weather and observe result
+                                                        weatherSource.getWeatherNow()// Get weather and observe result
                                                                 .map(weather -> buildModel(flagStatus, weather))
                                         )
                                         .map(Loadable<HomeViewModel>::new)
                                         .onErrorReturn(Loadable::new)
                         )
-
-
-                )
-
-                .observeOn(SwingSchedulers.edt());
+                ).observeOn(SwingSchedulers.edt());
     }
 
     private HomeViewModel buildModel(FlagStatus flagStatus, Weather weather) throws IOException {
@@ -57,26 +51,26 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
         float windSpeed = 0.0f;
         String windDir = "None";
 
-
+        // Check wind and temperature for null and set variables accordingly
         if (weather.getWind() != null) {
             Wind wind = weather.getWind();
-            if (wind.getSpeedMPS() != null) windSpeed = wind.getSpeedMPS();
-            if (wind.getDirection() != null) windDir = wind.getDirection();
+            if (wind.getSpeedMPS() != null) {
+                windSpeed = wind.getSpeedMPS();
+            }
+            if (wind.getDirection() != null) {
+                windDir = wind.getDirection();
+            }
         }
-        if (weather.getTemperature() != null) temperature = weather.getTemperature();
-
+        if (weather.getTemperature() != null) {
+            temperature = weather.getTemperature();
+        }
 
         // Set flag icon
         BufferedImage flagImage = ImageIO.read(new File(flagDir.resolve(flagStatus.getCode() + ".png").toAbsolutePath().toString()));
         ImageIcon flagIcon = new ImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
 
-        HomeViewModel homeViewModel = new HomeViewModel(flagStatus,
-                temperature,
-                windSpeed,
-                windDir);
+        HomeViewModel homeViewModel = new HomeViewModel(flagStatus, temperature, windSpeed, windDir);
         homeViewModel.setFlagImage(flagIcon);
         return homeViewModel;
     }
-
-
 }

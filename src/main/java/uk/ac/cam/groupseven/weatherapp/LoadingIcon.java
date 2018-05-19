@@ -14,10 +14,9 @@ public class LoadingIcon implements Icon {
 
 
     @Inject
-    public LoadingIcon(@Named("refreshIcon") Path path,
-                       @Named("refreshIconDimensions") Dimension dimensions) {
-        imageIcon =
-                new ImageIcon(
+    public LoadingIcon(@Named("refreshIcon") Path path, @Named("refreshIconDimensions") Dimension dimensions) {
+        // Set up icon
+        imageIcon = new ImageIcon(
                         new ImageIcon(path.toAbsolutePath().toString()).getImage()
                                 .getScaledInstance(dimensions.width, dimensions.height, Image.SCALE_SMOOTH));
 
@@ -25,6 +24,7 @@ public class LoadingIcon implements Icon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
+        // Draw icon on screen with the correct rotation applied
         ((Graphics2D) g).rotate(Math.toRadians(rotation), c.getWidth() / 2, c.getHeight() / 2);
         imageIcon.paintIcon(c, g, x, y);
         ((Graphics2D) g).rotate(Math.toRadians(-rotation), c.getWidth() / 2, c.getHeight() / 2);

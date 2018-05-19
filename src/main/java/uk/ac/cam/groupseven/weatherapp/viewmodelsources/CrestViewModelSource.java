@@ -29,6 +29,7 @@ public class CrestViewModelSource implements ViewModelSource<Loadable<CrestViewM
                         .toList()
                         .map(crests ->
                         {
+                            // Set up map from crest code to crest image and return it
                             TreeMap<String, ImageIcon> images = new TreeMap<>();
                             for (Crest crest : crests) {
                                 images.put(crest.getCode(),
@@ -40,8 +41,6 @@ public class CrestViewModelSource implements ViewModelSource<Loadable<CrestViewM
                         .map(CrestViewModel::new)
                         .map(Loadable<CrestViewModel>::new)
                         .onErrorReturn(Loadable::new)
-
-        )
-                .observeOn(SwingSchedulers.edt());
+        ).observeOn(SwingSchedulers.edt());
     }
 }

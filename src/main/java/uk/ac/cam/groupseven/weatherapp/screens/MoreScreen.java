@@ -38,8 +38,6 @@ public class MoreScreen implements Screen {
     @ApplyStyle(ButtonStyle.class)
     private JScrollPane infoPane;
 
-    private JTextField placeholderTextField;
-
     @Inject
     @Named("waterIcon")
     private ImageIcon waterIcon;
@@ -75,17 +73,15 @@ public class MoreScreen implements Screen {
 
     @Override
     public Observable<ScreenLayout.Direction> getScreenChanges() {
+        // Map the correct action to the home button
         return SwingObservable.actions(upButton).map(x -> ScreenLayout.Direction.UP);
     }
 
     private void updateTable(Loadable<MoreViewModel> loadable) {
-        // Rows: precipitation, cloud cover, pressure, humidity, wind direction, other
-
-
         MoreViewModel viewModel = loadable.getViewModel();
 
         Object[][] data = new Object[8][2];
-        //Set icons
+        // Set icons
         data[0][0] = waterIcon;
         data[1][0] = precipitationIcon;
         data[2][0] = cloudsIcon;
@@ -95,7 +91,7 @@ public class MoreScreen implements Screen {
         data[6][0] = sunriseIcon;
         data[7][0] = sunsetIcon;
 
-
+        // Deal with errors when getting the data from viewmodel
         if (loadable.getError() != null) {
             for (int i = 0; i < data.length; i++) {
                 data[i][1] = "error";
@@ -105,7 +101,7 @@ public class MoreScreen implements Screen {
                 data[i][1] = "loading...";
             }
         } else if (viewModel != null) {
-
+            // Set up the data for the table
             for (int i = 0; i < 8; i++) data[i][1] = "";
             data[0][1] = viewModel.getWaterLevel();
             data[1][1] = viewModel.getPrecipitation();
@@ -116,13 +112,16 @@ public class MoreScreen implements Screen {
             data[6][1] = viewModel.getSunrise();
             data[7][1] = viewModel.getSunset();
 
-
+            // Create a new TableModel to get the correct data and have the correct column class
+            // Column Class is important in order to be able to display the icons
             TableModel model = new DefaultTableModel() {
 
+                @Override
                 public int getColumnCount() {
                     return data[0].length;
                 }
 
+                @Override
                 public int getRowCount() {
                     return data.length;
                 }
@@ -146,12 +145,16 @@ public class MoreScreen implements Screen {
                 }
             };
 
+            // Apply model to table
             infoTable.setModel(model);
+
+            // Change table properties to make it look good
             infoTable.setRowHeight(((ImageIcon) data[0][0]).getIconHeight());
             infoTable.setPreferredScrollableViewportSize(infoTable.getPreferredSize());
             infoTable.getColumnModel().getColumn(0).setPreferredWidth(iconSize);
             infoTable.getColumnModel().getColumn(1).setPreferredWidth(3 * iconSize);
         } else {
+            // An illegal state has been reached; throw exception
             throw new IllegalStateException();
         }
     }
@@ -159,7 +162,7 @@ public class MoreScreen implements Screen {
     private Observable<Object> getRefreshObservable() {
         return
                 Observable.just(new Object()) //Refresh immediately
-                        .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); //Refresh every 15 seconds
+                        .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); // And then refresh every 15 seconds
     }
 
     @Override
@@ -189,7 +192,7 @@ public class MoreScreen implements Screen {
         panel1.setOpaque(false);
         panel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         upButton = new JButton();
-        this.$$$loadButtonText$$$(upButton, ResourceBundle.getBundle("String").getString("home"));
+        this.$$$loadButtonText$$$(upButton, ResourceBundle.getBundle("strings").getString("home"));
         panel1.add(upButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 50), null, 0, false));
         final Spacer spacer1 = new Spacer();
         panel1.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));

@@ -86,37 +86,33 @@ public class HomeScreen implements Screen {
 
     @Override
     public Disposable start() {
-        // Set temp icon
+        // Set icons
         tempIcon.setIcon(thermometer);
-        //Set wind icon
         windIcon.setIcon(wind);
         refreshButton.setIcon(loadingIcon);
+
         setLoading(true);
         crestImageSource.getViewModel((getRefreshObservable())).subscribe(this::updateCrest);
-        return
-                homeWeatherSource
-                        .getViewModel(getRefreshObservable())
-                        .subscribe(this::updateScreen);
-
-
+        return homeWeatherSource.getViewModel(getRefreshObservable()).subscribe(this::updateScreen);
     }
 
     private void updateScreen(Loadable<HomeViewModel> viewModelLoadable) {
         HomeViewModel viewModel = viewModelLoadable.getViewModel();
 
+        // Deal with errors when getting data from viewmodel
         if (viewModelLoadable.getLoading()) {
+            setLoading(true);
             flagText.setText("loading");
             tempText.setText("Temperature: ...");
             windText.setText("Wind Speed: ...");
-            setLoading(true);
-
         } else if (viewModelLoadable.getError() != null) {
-            setLoading(false);
+            setLoading(true);
             flagText.setText("Error");
             windText.setText("Error");
             tempText.setText("Error");
         } else {
             setLoading(false);
+
             // Get weather info and set text
             FlagStatus flagStatus = viewModel.getFlag();
             flagText.setText("Flag: " + flagStatus.getDisplayName());
@@ -133,6 +129,7 @@ public class HomeScreen implements Screen {
     }
 
     public Observable<ScreenLayout.Direction> getScreenChanges() {
+        // Map the correct action to each of the buttons
         return SwingObservable.actions(leftButton).map(x -> ScreenLayout.Direction.LEFT)
                 .mergeWith(SwingObservable.actions(rightButton).map(x -> ScreenLayout.Direction.RIGHT))
                 .mergeWith(SwingObservable.actions(crestButton).map(x -> ScreenLayout.Direction.UP))
@@ -141,12 +138,12 @@ public class HomeScreen implements Screen {
     }
 
     private Observable<Object> getRefreshObservable() {
-        return
-                Observable.just(new Object()) //Refresh immediately
-                        .concatWith(SwingObservable.actions(refreshButton))//Refresh when button pressed
-                        .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); //Refresh every 15 seconds
+        return Observable.just(new Object()) // Refresh immediately
+                        .concatWith(SwingObservable.actions(refreshButton))// Also refresh when button pressed
+                        .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); // And also refresh every 15 seconds
     }
 
+    // Rotates the loading icon
     private void setLoading(boolean loading) {
         loadingDisposable.dispose();
         int startRotation = loadingIcon.getRotation();
@@ -224,18 +221,18 @@ public class HomeScreen implements Screen {
         panel1.setVisible(true);
         midPanel.add(panel1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         rightButton = new JButton();
-        rightButton.setActionCommand(ResourceBundle.getBundle("String").getString("24.hour"));
+        rightButton.setActionCommand(ResourceBundle.getBundle("strings").getString("24.hour"));
         rightButton.setHideActionText(false);
         rightButton.setLabel("24 Hour ⇒");
-        this.$$$loadButtonText$$$(rightButton, ResourceBundle.getBundle("String").getString("24.hour1"));
+        this.$$$loadButtonText$$$(rightButton, ResourceBundle.getBundle("strings").getString("24.hour1"));
         panel1.add(rightButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 50), null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel2.setOpaque(false);
         midPanel.add(panel2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         leftButton = new JButton();
-        leftButton.setActionCommand(ResourceBundle.getBundle("String").getString("7.day"));
-        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("String").getString("7.day1"));
+        leftButton.setActionCommand(ResourceBundle.getBundle("strings").getString("7.day"));
+        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("strings").getString("7.day1"));
         panel2.add(leftButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 50), null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -254,7 +251,7 @@ public class HomeScreen implements Screen {
         bottomPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 20, 0), -1, -1));
         panel.add(bottomPanel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         additionalInformationButton = new JButton();
-        this.$$$loadButtonText$$$(additionalInformationButton, ResourceBundle.getBundle("String").getString("more.info"));
+        this.$$$loadButtonText$$$(additionalInformationButton, ResourceBundle.getBundle("strings").getString("more.info"));
         bottomPanel.add(additionalInformationButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 50), null, 0, false));
         final Spacer spacer2 = new Spacer();
         bottomPanel.add(spacer2, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));

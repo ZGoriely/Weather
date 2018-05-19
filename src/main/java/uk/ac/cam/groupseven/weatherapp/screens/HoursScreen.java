@@ -43,8 +43,6 @@ public class HoursScreen implements Screen {
     private JScrollPane scrollPanel;
     private JPanel midPanel;
 
-    private JList<Object> list;
-
     @Inject
     @Named("tempSmallIcon")
     private ImageIcon scaledTempIcon;
@@ -59,28 +57,26 @@ public class HoursScreen implements Screen {
 
     @Override
     public Observable<ScreenLayout.Direction> getScreenChanges() {
+        // Map the correct action to each of the buttons
         return SwingObservable.actions(leftButton).map(x -> ScreenLayout.Direction.LEFT)
                 .mergeWith(SwingObservable.actions(rightButton).map(x -> ScreenLayout.Direction.RIGHT));
     }
 
     private void updateScreen(Loadable<HourViewModel> viewModelLoadable) {
+        // Deal with errors when getting the data from the viewmodel
         if (viewModelLoadable.getLoading()) {
             timeLabel.setText("Loading...");
         } else if (viewModelLoadable.getError() != null) {
             timeLabel.setText("Error");
         } else {
-
-
             HourViewModel viewModel = viewModelLoadable.getViewModel();
             assert viewModel != null;
 
-
+            // Set the label to have the current time
             timeLabel.setText(viewModel.getCurrentTime().toString());
 
-
+            // Set the table model to get the correct data
             hoursTable.setModel(new DefaultTableModel() {
-
-
                 @Override
                 public int getRowCount() {
                     return viewModel.getHourlyWeather().size();
@@ -91,10 +87,11 @@ public class HoursScreen implements Screen {
                     return 3;
                 }
 
-
                 @Override
                 public Object getValueAt(int row, int column) {
                     HourlyWeather hourlyWeather = viewModel.getHourlyWeather().get(row);
+
+                    // Make each column display the correct information
                     switch (column) {
                         case 0:
                             return hourlyWeather.getTime();
@@ -110,7 +107,7 @@ public class HoursScreen implements Screen {
 
             });
 
-
+            // Make columns display the correct information and render correctly
             hoursTable.getColumnModel().getColumn(0)
                     .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> {
                         JLabel jLabel = new JLabel((String) value);
@@ -122,7 +119,6 @@ public class HoursScreen implements Screen {
                     .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
             hoursTable.getColumnModel().getColumn(2)
                     .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
-
             hoursTable.getColumnModel().getColumn(0).setHeaderValue("Time");
             hoursTable.getColumnModel().getColumn(1).setHeaderValue(scaledTempIcon);
             hoursTable.getColumnModel().getColumn(2).setHeaderValue(scaledWindIcon);
@@ -137,11 +133,10 @@ public class HoursScreen implements Screen {
         return panel;
     }
 
-
     private Observable<Object> getRefreshObservable() {
         return
-                Observable.just(new Object()) //Refresh immediately
-                        .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); //Refresh every 15 seconds
+                Observable.just(new Object()) // Refresh immediately
+                        .mergeWith(Observable.interval(15, TimeUnit.SECONDS)); // And then refresh every 15 seconds
     }
 
     {
@@ -191,12 +186,12 @@ public class HoursScreen implements Screen {
         leftButton = new JButton();
         leftButton.setAlignmentX(0.5f);
         leftButton.setHideActionText(false);
-        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("String").getString("current.forecast1"));
+        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("strings").getString("current.forecast1"));
         midPanel.add(leftButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(149, 50), null, 0, false));
         rightButton = new JButton();
         rightButton.setAlignmentX(0.5f);
         rightButton.setHideActionText(false);
-        this.$$$loadButtonText$$$(rightButton, ResourceBundle.getBundle("String").getString("7.day.forecast"));
+        this.$$$loadButtonText$$$(rightButton, ResourceBundle.getBundle("strings").getString("7.day.forecast"));
         midPanel.add(rightButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(136, 50), null, 0, false));
         final Spacer spacer1 = new Spacer();
         midPanel.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));

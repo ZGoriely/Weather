@@ -27,7 +27,6 @@ public class CucbcSource implements RowingInfoSource {
 
     @Override
     public Observable<FlagStatus> getFlagStatus() {
-
         return Observable.fromCallable(() -> {
             Document doc = getDocumentFromUrl(cucbcFlagUrl);
             String flagCode = doc.getElementsByTagName("flag").item(0).getAttributes().item(1).getNodeValue();
@@ -53,7 +52,10 @@ public class CucbcSource implements RowingInfoSource {
     }
 
     private Document getDocumentFromUrl(URL url) throws IOException, ParserConfigurationException, SAXException {
+        // Open connection to URL
         URLConnection con = url.openConnection();
+
+        // Try to get an inputstream, if it succeeds then create the document and return it
         try (InputStream inputStream = con.getInputStream()) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setIgnoringElementContentWhitespace(true);

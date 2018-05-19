@@ -18,6 +18,7 @@ public class UrlsModule implements Module {
     }
 
     private void configureUrls(Binder binder) throws MalformedURLException {
+        // Bind urls
         binder.bind(URL.class).annotatedWith(Names.named("cucbcLightingUrl"))
                 .toInstance(new URL("http://www.cucbc.org/darkness.xml"));
         binder.bind(URL.class).annotatedWith(Names.named("cucbcFlagUrl"))

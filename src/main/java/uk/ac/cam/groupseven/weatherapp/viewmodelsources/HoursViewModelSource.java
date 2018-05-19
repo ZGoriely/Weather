@@ -25,27 +25,26 @@ public class HoursViewModelSource implements ViewModelSource<Loadable<HourViewMo
     public Observable<Loadable<HourViewModel>> getViewModel(Observable<Object> refresh) {
         return refresh.flatMapSingle(o ->
                 Observable.range(0, 6)
-                        .flatMap(x -> weatherApiSource.getWeatherInHours(x * 3))
+                        .flatMap(x -> weatherApiSource.getWeatherInHours(x * 3)) // Get the weather
                         .map(this::buildWeather)
                         .toList()
                         .map(this::buildModel)
                         .map(Loadable<HourViewModel>::new)
                         .onErrorReturn(Loadable::new)
-        )
-                .observeOn(SwingSchedulers.edt());
+        ).observeOn(SwingSchedulers.edt());
     }
 
     private HourViewModel buildModel(List<HourlyWeather> hourlyWeathers) {
-
+        // Set up the time text and call the constructor that takes a list
         String timeText = new SimpleDateFormat("HH:mm").format(calendar.getTime());
         return new HourViewModel(timeText, hourlyWeathers);
     }
 
     private HourlyWeather buildWeather(Weather weather) {
+        // Set up text and call the constructor that takes only the texts
         String timeText = weather.getFromTime().plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm"));
         String temperatureText = String.format("%.1f°C", weather.getTemperature());
         String windText = String.format("%.1f m/s", weather.getWind().getSpeedMPS());
         return new HourlyWeather(timeText, temperatureText, windText);
-
     }
 }

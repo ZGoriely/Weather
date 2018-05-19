@@ -40,6 +40,7 @@ public class MoreViewModelSource implements ViewModelSource<Loadable<MoreViewMod
     }
 
     private MoreViewModel buildModel(Weather weather, WaterLevel waterLevel, LightingTimes lightingTimes) throws IllegalArgumentException {
+        // Set up text and return a new MoreViewModel
         String waterLevelText = " Water level:\n" + waterLevel.getLevel() + " metres";
         String precipitationText;
         if (weather.getPrecipitation() == null) throw new IllegalArgumentException("Water level was null");

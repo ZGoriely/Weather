@@ -33,7 +33,7 @@ public class OpenWeatherSourceTest {
     @Test
     public void getWeatherInDays() throws Exception {
         int tm = 4;
-        int days = 4;
+        int days = 1;
         System.out.println("In "+days+" day(s) at "+tm+":00 -> "+openWeatherSource.getWeatherInDays(days, tm).blockingFirst());
     }
 

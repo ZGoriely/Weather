@@ -48,6 +48,7 @@ public class DaysViewModelSource implements ViewModelSource<Loadable<DaysViewMod
     }
 
     private DayWeather buildModel(Weather morningWeather, Weather afternoonWeather) {
+        // Set up model text and return model with correct text
         String dateText = morningWeather.getFromTime().format(DateTimeFormatter.ofPattern("dd/MM"));
         String morningTemperature = String.format("%.1f°C", morningWeather.getTemperature());
         String morningWind = String.format("%.1f m/s", morningWeather.getWind().getSpeedMPS());
