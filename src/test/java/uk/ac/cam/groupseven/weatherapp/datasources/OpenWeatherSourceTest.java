@@ -34,7 +34,7 @@ public class OpenWeatherSourceTest {
     @Test
     public void getWeatherInDays() throws Exception {
         int tm = 10;
-        int days = 5;
+        int days = 4;
 
         System.out.println("In "+days+" day(s) at "+tm+":00 -> "+openWeatherSource.getWeatherInDays(days, tm).blockingFirst());
     }
