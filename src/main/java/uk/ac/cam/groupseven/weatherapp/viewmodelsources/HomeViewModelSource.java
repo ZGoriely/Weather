@@ -13,7 +13,6 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -42,14 +41,17 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
                                                         weatherSource.getWeatherNow()//Get weather and observe result
                                                                 .map(weather -> buildModel(flagStatus, weather))
                                         )
-
+                                        .map(Loadable<HomeViewModel>::new)
+                                        .onErrorReturn(Loadable::new)
                         )
 
+
                 )
+
                 .observeOn(SwingSchedulers.edt());
     }
 
-    private Loadable<HomeViewModel> buildModel(FlagStatus flagStatus, Weather weather) throws IOException {
+    private HomeViewModel buildModel(FlagStatus flagStatus, Weather weather) throws IOException {
         float temperature = 0.0f;
         float windSpeed = 0.0f;
         String windDir = "None";
@@ -65,9 +67,13 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
 
         // Set flag icon
         BufferedImage flagImage = ImageIO.read(new File(flagDir.resolve(flagStatus.getCode() + ".png").toAbsolutePath().toString()));
-        ImageIcon flagIcon = new ImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
+        HomeViewModelImageIcon flagIcon = new HomeViewModelImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
 
-        return new Loadable<>(new HomeViewModel(flagStatus, flagIcon, temperature, windSpeed, windDir));
+        return new HomeViewModel(flagStatus,
+                flagIcon,
+                temperature,
+                windSpeed,
+                windDir);
     }
 
 

@@ -5,11 +5,9 @@ import com.google.inject.name.Named;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import sun.swing.BakedArrayList;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
 import uk.ac.cam.groupseven.weatherapp.styles.*;
-
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourlyWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;

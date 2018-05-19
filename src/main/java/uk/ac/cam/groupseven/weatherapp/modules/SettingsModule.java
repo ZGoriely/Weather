@@ -14,5 +14,8 @@ public class SettingsModule implements Module {
                 .toInstance(new Dimension(700, 1132)); //Set screen size
         binder.bind(Calendar.class).toInstance(Calendar.getInstance());
         binder.bind(String.class).annotatedWith(Names.named("windowTitle")).toInstance("Weather App");
+        binder.bind(Integer.class).annotatedWith(Names.named("morningHour")).toInstance(8);
+        binder.bind(Integer.class).annotatedWith(Names.named("afternoonHour")).toInstance(16);
+
     }
 }
