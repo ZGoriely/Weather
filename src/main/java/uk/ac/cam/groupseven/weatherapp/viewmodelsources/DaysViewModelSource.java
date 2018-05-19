@@ -27,9 +27,9 @@ public class DaysViewModelSource implements ViewModelSource<Loadable<DaysViewMod
     @Override
     public Observable<Loadable<DaysViewModel>> getViewModel(Observable<Object> refresh) {
         return Observable.range(1, 4)
-                .flatMap(x ->
+                .concatMap(x ->
                         weatherApiSource.getWeatherInDays(x, morningHour)
-                                .flatMap(morningWeather ->
+                                .concatMap(morningWeather ->
                                         weatherApiSource.getWeatherInDays(x, afternoonHour)
                                                 .map(afternoonWeather ->
                                                         buildModel(morningWeather, afternoonWeather)
