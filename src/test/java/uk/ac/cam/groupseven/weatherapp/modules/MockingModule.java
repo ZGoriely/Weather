@@ -17,7 +17,6 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.UserCrestViewModelSource
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -38,10 +37,8 @@ public class MockingModule implements Module {
         binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE, 0, 12.0f, 0.0f, 0, new Wind(1.0f, ""), LocalDateTime.now(), LocalDateTime.now()));
         binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
 
-        ImageIcon flagImage = new ImageIcon("/res/flag/grn.png");
-        HomeViewModelImageIcon flagIcon = new HomeViewModelImageIcon(flagImage.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
         binder.bind(new TypeLiteral<Loadable<HomeViewModel>>() {
-        }).toInstance(new Loadable<>(new HomeViewModel(FlagStatus.GREEN, flagIcon, 12.0f, 1.0f, "")));
+        }).toInstance(new Loadable<>(new HomeViewModel(FlagStatus.GREEN, 12.0f, 1.0f, "")));
         binder.bind(new TypeLiteral<Loadable<HourViewModel>>() {
         }).toInstance(new Loadable<>(new HourViewModel(
                 "8:50",
