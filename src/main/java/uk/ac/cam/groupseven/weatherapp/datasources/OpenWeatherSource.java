@@ -237,4 +237,22 @@ public class OpenWeatherSource implements WeatherSource {
         currentWind = new Wind(windSpeed, windDir);
         return new Weather(currentPrecipitation, currentCloudCover, currentTemperature, currentPressure, currentHumidity, currentWind, from, to);
     }
+
+    public static boolean forecastAvailable(int days, int timeInHours){
+        boolean inRange = true;
+
+        if(timeInHours >= 24 || timeInHours < 0) inRange = false;
+
+        if(days > 5) inRange = false;
+        if(days == 5
+                && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
+                && (LocalDateTime.now().getHour() / 3 <= timeInHours / 3)) /* Check that requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
+            inRange = false;
+
+        if(days == 0
+                && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of earliest available forecast */
+                && (LocalDateTime.now().getHour() / 3 > timeInHours / 3)) /* Check that requested time is located in the time window before the current time */
+
+        return inRange;
+    }
 }
