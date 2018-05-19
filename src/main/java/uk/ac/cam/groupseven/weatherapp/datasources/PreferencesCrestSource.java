@@ -1,6 +1,7 @@
 package uk.ac.cam.groupseven.weatherapp.datasources;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import uk.ac.cam.groupseven.weatherapp.models.Crest;
 
 import java.util.prefs.BackingStoreException;
@@ -19,12 +20,13 @@ public class PreferencesCrestSource implements CrestSource {
 
     @Override
     public Observable<Crest> getAllCrests() {
-        return Observable.fromArray(Crest.values());
+        return Observable.fromArray(Crest.values())
+                .subscribeOn(Schedulers.computation());
     }
 
     @Override
     public Observable<Crest> getUserCrests() {
-        return Observable.create(emitter ->
+        Observable<Crest> crestObservable = Observable.create(emitter ->
                 {
                     Crest current = Crest.getCrestFromCode(preferences.get(USER_CREST_PREF, ""));
                     emitter.onNext(current);
@@ -36,8 +38,8 @@ public class PreferencesCrestSource implements CrestSource {
                     preferences.addPreferenceChangeListener(listener);
                     emitter.setCancellable(() -> preferences.removePreferenceChangeListener(listener));
                 }
-
         );
+        return crestObservable.subscribeOn(Schedulers.io());
     }
 
 }

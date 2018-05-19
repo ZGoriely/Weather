@@ -12,9 +12,15 @@ public class LoadingIcon implements Icon {
     private final ImageIcon imageIcon;
     private int rotation;
 
+
     @Inject
-    public LoadingIcon(@Named("refreshIcon") Path path) {
-        imageIcon = new ImageIcon(path.toAbsolutePath().toString());
+    public LoadingIcon(@Named("refreshIcon") Path path,
+                       @Named("refreshIconDimensions") Dimension dimensions) {
+        imageIcon =
+                new ImageIcon(
+                        new ImageIcon(path.toAbsolutePath().toString()).getImage()
+                                .getScaledInstance(dimensions.width, dimensions.height, Image.SCALE_SMOOTH));
+
     }
 
     @Override
@@ -39,6 +45,10 @@ public class LoadingIcon implements Icon {
     }
 
     public void setRotation(int rotation) {
+        while (rotation >= 360)
+            rotation -= 360;
+        while (rotation < 0)
+            rotation += 360;
         this.rotation = rotation;
     }
 }

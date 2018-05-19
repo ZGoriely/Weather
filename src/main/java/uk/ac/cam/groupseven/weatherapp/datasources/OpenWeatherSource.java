@@ -112,7 +112,8 @@ public class OpenWeatherSource implements WeatherSource {
 
             return forecast;
 
-        });
+        })
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -125,8 +126,6 @@ public class OpenWeatherSource implements WeatherSource {
             NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
             Weather forecast = null;
-
-            System.out.println("days: "+days+", time: "+timeInHours);
 
             if(timeInHours >= 24 || timeInHours < 0) throw new TimeOutOfRangeException(timeInHours);
 
@@ -143,13 +142,8 @@ public class OpenWeatherSource implements WeatherSource {
 
             LocalDateTime forecastTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays((long)days).plusHours((long)timeInHours);
 
-            System.out.println(forecastTime);
-
             for(int i = 0; i < readings.getLength(); i++){
-                System.out.print(i+" ");
-                System.out.println(isCorrectReading(forecastTime, parseTimeNode(readings.item(i))));
                 if(isCorrectReading(forecastTime, parseTimeNode(readings.item(i)))) {
-                    System.out.println("It's reading "+i);
                     forecast = parseTimeNode(readings.item(i));
                 }
             }
@@ -160,7 +154,8 @@ public class OpenWeatherSource implements WeatherSource {
 
             return forecast;
 
-        });
+        })
+                .subscribeOn(Schedulers.io());
     }
 
     private class ForecastNotAvailableException extends RuntimeException{
@@ -285,5 +280,24 @@ public class OpenWeatherSource implements WeatherSource {
 
         currentWind = new Wind(windSpeed, windDir);
         return new Weather(currentPrecipitation, currentCloudCover, currentTemperature, currentPressure, currentHumidity, currentWind, from, to);
+    }
+
+    public static boolean forecastAvailable(int days, int timeInHours){
+        boolean inRange = true;
+
+        if(timeInHours >= 24 || timeInHours < 0) inRange = false;
+
+        if(days > 5) inRange = false;
+        if(days == 5
+                && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
+                && (LocalDateTime.now().getHour() / 3 <= timeInHours / 3)) /* Check that requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
+            inRange = false;
+
+        if(days == 0
+                && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of earliest available forecast */
+                && (LocalDateTime.now().getHour() / 3 > timeInHours / 3)) /* Check that requested time is located in the time window before the current time */
+            inRange = false;
+
+        return inRange;
     }
 }

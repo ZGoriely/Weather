@@ -38,10 +38,10 @@ public class CrestViewModelSource implements ViewModelSource<Loadable<CrestViewM
 
                         })
                         .map(CrestViewModel::new)
-                        .map(Loadable::new)
+                        .map(Loadable<CrestViewModel>::new)
                         .onErrorReturn(Loadable::new)
-                        .observeOn(SwingSchedulers.edt())
 
-        );
+        )
+                .observeOn(SwingSchedulers.edt());
     }
 }

@@ -1,20 +1,22 @@
 package uk.ac.cam.groupseven.weatherapp.screens;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.disposables.EmptyDisposable;
+import sun.swing.BakedArrayList;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
-import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
-import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.*;
+
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HourViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HourlyWeather;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.concurrent.TimeUnit;
 
 public class HoursScreen implements Screen {
@@ -22,23 +24,35 @@ public class HoursScreen implements Screen {
     ViewModelSource<Loadable<HourViewModel>> viewModelSource;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
-    @ApplyStyle(BackgroundStyle.class)
-    private JList<Object> list;
     @ApplyStyle(ButtonStyle.class)
     private JButton leftButton;
     @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
     @ApplyStyle(BackgroundStyle.class)
-    private JTextPane dateText;
-    @ApplyStyle(BackgroundStyle.class)
     private JPanel midPanel;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel topPanel;
+    @ApplyStyle({BackgroundStyle.class, HoursTableStyle.class})
+    private JTable hoursTable;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel bottomPanel;
+    @ApplyStyle({BackgroundStyle.class, BigTextStyle.class})
+    private JLabel timeLabel;
+    @ApplyStyle(ButtonStyle.class)
+    private JScrollPane scrollPanel;
+
+    private JList<Object> list;
+
+    @Inject
+    @Named("tempSmallIcon")
+    private ImageIcon scaledTempIcon;
+    @Inject
+    @Named("windSmallIcon")
+    private ImageIcon scaledWindIcon;
 
     @Override
     public Disposable start() {
-        return EmptyDisposable.INSTANCE;
-        //return viewModelSource.getViewModel(getRefreshObservable()).subscribe(x -> updateScreen(x));
+        return viewModelSource.getViewModel(getRefreshObservable()).subscribe(this::updateScreen);
     }
 
     @Override
@@ -48,15 +62,70 @@ public class HoursScreen implements Screen {
     }
 
     private void updateScreen(Loadable<HourViewModel> viewModelLoadable) {
-        list.setListData(new Object[0]);
         if (viewModelLoadable.getLoading()) {
-            //TODO
+            timeLabel.setText("Loading...");
         } else if (viewModelLoadable.getError() != null) {
-            //TODO
-        } else  {
+            timeLabel.setText("Error");
+        } else {
+
+
             HourViewModel viewModel = viewModelLoadable.getViewModel();
             assert viewModel != null;
-            list.setListData(viewModel.getPrecipitationTexts().toArray());
+
+
+            timeLabel.setText(viewModel.getCurrentTime().toString());
+
+
+            hoursTable.setModel(new DefaultTableModel() {
+
+
+                @Override
+                public int getRowCount() {
+                    return viewModel.getHourlyWeather().size();
+                }
+
+                @Override
+                public int getColumnCount() {
+                    return 3;
+                }
+
+
+                @Override
+                public Object getValueAt(int row, int column) {
+                    HourlyWeather hourlyWeather = viewModel.getHourlyWeather().get(row);
+                    switch (column) {
+                        case 0:
+                            return hourlyWeather.getTime();
+                        case 1:
+                            return hourlyWeather.getTemperature();
+                        case 2:
+                            return hourlyWeather.getWindSpeed();
+                        default:
+                            return null;
+                    }
+                }
+
+
+            });
+
+
+            hoursTable.getColumnModel().getColumn(0)
+                    .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> {
+                        JLabel jLabel = new JLabel((String) value);
+                        jLabel.setFont(table.getTableHeader().getFont());
+                        jLabel.setForeground(table.getTableHeader().getForeground());
+                        return jLabel;
+                    });
+            hoursTable.getColumnModel().getColumn(1)
+                    .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
+            hoursTable.getColumnModel().getColumn(2)
+                    .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
+
+            hoursTable.getColumnModel().getColumn(0).setHeaderValue("Time");
+            hoursTable.getColumnModel().getColumn(1).setHeaderValue(scaledTempIcon);
+            hoursTable.getColumnModel().getColumn(2).setHeaderValue(scaledWindIcon);
+
+            hoursTable.invalidate();
         }
 
     }
