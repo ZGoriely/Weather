@@ -88,7 +88,7 @@
             <properties>
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
-              <text value="⇦ 24 Hour Forecast"/>
+              <text resource-bundle="strings" key="current.forecast1"/>
             </properties>
           </component>
           <hspacer id="7fc9b">
@@ -105,7 +105,7 @@
             <properties>
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
-              <text value="Current Forecast ⇨"/>
+              <text resource-bundle="strings" key="current.forecast"/>
             </properties>
           </component>
         </children>
