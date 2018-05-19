@@ -235,7 +235,6 @@ public class HomeScreen implements Screen {
         midPanel.add(panel2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         leftButton = new JButton();
         leftButton.setActionCommand(ResourceBundle.getBundle("String").getString("7.day"));
-        leftButton.setLabel("⇐ 7 Day");
         this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("String").getString("7.day1"));
         panel2.add(leftButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 50), null, 0, false));
         final JPanel panel3 = new JPanel();

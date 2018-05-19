@@ -160,30 +160,17 @@ public class HoursScreen implements Screen {
      */
     private void $$$setupUI$$$() {
         panel = new JPanel();
-        panel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 20, 0), -1, -1));
+        panel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel.setMinimumSize(new Dimension(500, 300));
         panel.setPreferredSize(new Dimension(500, 300));
-        midPanel = new JPanel();
-        midPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
-        panel.add(midPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, new Dimension(300, 300), new Dimension(-1, 50), 0, false));
-        leftButton = new JButton();
-        leftButton.setHideActionText(false);
-        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("String").getString("current.forecast1"));
-        midPanel.add(leftButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(149, 50), null, 0, false));
-        rightButton = new JButton();
-        rightButton.setHideActionText(false);
-        this.$$$loadButtonText$$$(rightButton, ResourceBundle.getBundle("String").getString("7.day.forecast"));
-        midPanel.add(rightButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(136, 50), null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        midPanel.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, new Dimension(14, 50), null, 0, false));
+        panel.setRequestFocusEnabled(false);
         topPanel = new JPanel();
-        topPanel.setLayout(new GridLayoutManager(2, 1, new Insets(100, 0, 0, 0), -1, -1));
-        panel.add(topPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        topPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel.add(topPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, new Dimension(200, 200), new Dimension(-1, 200), 0, false));
         timeLabel = new JLabel();
+        timeLabel.setAlignmentX(0.5f);
         timeLabel.setText("Label");
-        topPanel.add(timeLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        topPanel.add(spacer2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        topPanel.add(timeLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 50, 0, 50), -1, -1));
         bottomPanel.setOpaque(false);
@@ -197,6 +184,22 @@ public class HoursScreen implements Screen {
         hoursTable.setOpaque(false);
         hoursTable.setVisible(true);
         scrollPanel.setViewportView(hoursTable);
+        midPanel = new JPanel();
+        midPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 10, 0, 10), -1, -1));
+        midPanel.setOpaque(false);
+        panel.add(midPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, new Dimension(-1, 300), null, 0, false));
+        leftButton = new JButton();
+        leftButton.setAlignmentX(0.5f);
+        leftButton.setHideActionText(false);
+        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("String").getString("current.forecast1"));
+        midPanel.add(leftButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(149, 50), null, 0, false));
+        rightButton = new JButton();
+        rightButton.setAlignmentX(0.5f);
+        rightButton.setHideActionText(false);
+        this.$$$loadButtonText$$$(rightButton, ResourceBundle.getBundle("String").getString("7.day.forecast"));
+        midPanel.add(rightButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(136, 50), null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        midPanel.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
     /**
