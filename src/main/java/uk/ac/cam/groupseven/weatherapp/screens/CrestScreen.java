@@ -44,16 +44,12 @@ public class CrestScreen implements Screen {
 
     @Override
     public Disposable start() {
-        return
-                crestViewModelSource
-                        .getViewModel(getRefreshObservable())
-                        .subscribe(this::updateScreen);
-
-
+        return crestViewModelSource.getViewModel(getRefreshObservable()).subscribe(this::updateScreen);
     }
 
     @Override
     public Observable<ScreenLayout.Direction> getScreenChanges() {
+        // Map the correct action to each of the buttons
         return SwingObservable.actions(returnHomeButton).map(x -> ScreenLayout.Direction.DOWN).mergeWith(
                 SwingObservable.listSelection(crestTable.getSelectionModel())
                         .filter(x -> crestTable.getSelectedRow() >= 0)
@@ -68,19 +64,26 @@ public class CrestScreen implements Screen {
 
     private void updateScreen(Loadable<CrestViewModel> viewModelLoadable) {
         CrestViewModel viewModel = viewModelLoadable.getViewModel();
+
+        // Set up a map for the crest images
         TreeMap<String, ImageIcon> crests = viewModel.getImages();
         int numCrests = crests.size();
+
+        // Set up a list of crest labels and sort so that crests are displayed alphabetically
         crestLabels = new LinkedList<>(crests.keySet());
         Collections.sort(crestLabels);
 
         int width = tableWidth;
         int height = (numCrests + width - 1) / width;
 
+        // Set up table data
         Object[][] data = new Object[width][height];
         for (int i = 0; i < numCrests; i++) {
             data[i % width][i / width] = crests.get(crestLabels.get(i));
         }
 
+        // Create new TableModel to get the correct table data and have the correct column class
+        // Column class is important in order to display image icons
         TableModel dataModel = new DefaultTableModel() {
             public int getColumnCount() {
                 return width;
@@ -107,12 +110,15 @@ public class CrestScreen implements Screen {
             }
         };
 
-
+        // Set table model
         crestTable.setModel(dataModel);
+
+        // Set table properties to make it look good
         crestTable.setPreferredScrollableViewportSize(crestTable.getPreferredSize());
         crestTable.setRowHeight(crests.firstEntry().getValue().getIconHeight());
     }
 
+    // Private method to convert from a row and column to a list index
     private int getPos(int row, int col) {
         return col + row * tableWidth;
     }
