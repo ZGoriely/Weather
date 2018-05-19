@@ -28,8 +28,6 @@ public class MoreScreen implements Screen {
     private JButton upButton;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
-    @ApplyStyle(BackgroundStyle.class)
-    private JTextPane WeatherGraphic;
     @ApplyStyle(TableStyle.class)
     private JTable infoTable;
     @ApplyStyle(ButtonStyle.class)
