@@ -8,12 +8,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import sun.misc.IOUtils;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.models.Wind;
 
 import javax.inject.Named;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -26,6 +29,39 @@ public class OpenWeatherSource implements WeatherSource {
     private URL apiUrl;
     private InputStream apiResponse;
 
+    private byte[] weatherXML = null;
+    private LocalDateTime lastUpdated = null;
+
+    private InputStream getWeatherInputStream(){ /* Used to allow interface to selectively load new data - don't reload more than once every 6 seconds (free weather API). */
+        if(lastUpdated == null || weatherXML == null || lastUpdated.until(LocalDateTime.now(), ChronoUnit.SECONDS) >= 6) {
+            try {
+                byte[] newWeatherXML; // Create new buffer so as to not discard old weather data before new weather data is fetched.
+                newWeatherXML = new byte[32 * 1024]; // Unless API drastically changes, 32,768 bytes is enough for xml response.
+
+                apiResponse = apiUrl.openStream();
+                newWeatherXML = IOUtils.readFully(apiResponse, newWeatherXML.length, false); // Just trust the false.
+
+                weatherXML = newWeatherXML; // This way, an exception in apiResponse.read() will leave the old weatherXML untouched.
+                lastUpdated = LocalDateTime.now(); // Update the 'last updated' time.
+
+                /*
+                System.out.println();
+                for (int i = 0; i < weatherXML.length; i++){
+                    System.out.print(String.format("%c", (char)weatherXML[i]));
+                }
+                System.out.println();
+                */
+            }
+            catch (IOException e){
+                System.out.println("Error whilst fetching latest weather data: "+e.getMessage());
+            }
+        }
+        return new ByteArrayInputStream(weatherXML);
+    }
+
+
+
+
     @Override
     public Observable<Weather> getWeatherNow() {
 
@@ -33,9 +69,9 @@ public class OpenWeatherSource implements WeatherSource {
         return Observable.fromCallable(() -> {
 
             Weather currentWeather = null;
-            apiResponse = apiUrl.openStream();
+            InputStream weatherData = getWeatherInputStream();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document weatherDataDoc = builder.parse(apiResponse);
+            Document weatherDataDoc = builder.parse(weatherData);
             NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
             LocalDateTime currentTime = LocalDateTime.now();
@@ -57,9 +93,9 @@ public class OpenWeatherSource implements WeatherSource {
     @Override
     public Observable<Weather> getWeatherInHours(int hours) {
         return Observable.fromCallable(() -> {
-            apiResponse = apiUrl.openStream();
+            InputStream weatherData = getWeatherInputStream();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document weatherDataDoc = builder.parse(apiResponse);
+            Document weatherDataDoc = builder.parse(weatherData);
             NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
             Weather forecast = null;
@@ -75,15 +111,16 @@ public class OpenWeatherSource implements WeatherSource {
             return forecast;
 
         })
-                .observeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<Weather> getWeatherInDays(int days, int timeInHours) { //TODO deal with 5 days in future but time later than now in day so no forecast.
         return Observable.fromCallable(() -> {
-            apiResponse = apiUrl.openStream();
+
+            InputStream weatherData = getWeatherInputStream();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document weatherDataDoc = builder.parse(apiResponse);
+            Document weatherDataDoc = builder.parse(weatherData);
             NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
             Weather forecast = null;
@@ -94,6 +131,11 @@ public class OpenWeatherSource implements WeatherSource {
             if(days == 5
                     && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
                     && (LocalDateTime.now().getHour() / 3 <= timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
+                throw new CrystalBallDepthExceededException(days, timeInHours);
+
+            if(days == 0
+                    && ((LocalDateTime.now().getHour() / 3) * 3 + 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
+                    && (LocalDateTime.now().getHour() / 3 > timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
                 throw new CrystalBallDepthExceededException(days, timeInHours);
 
             LocalDateTime forecastTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays((long)days).plusHours((long)timeInHours);
@@ -111,7 +153,7 @@ public class OpenWeatherSource implements WeatherSource {
             return forecast;
 
         })
-                .observeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());
     }
 
     private class ForecastNotAvailableException extends RuntimeException{
@@ -125,7 +167,7 @@ public class OpenWeatherSource implements WeatherSource {
         private final int timeValue;
 
         public CrystalBallDepthExceededException(int dayValue, int timeValue){
-            super("Requested weather "+dayValue+" days and "+(timeValue - LocalDateTime.now().getHour())+" hours in the future ("+ timeValue+":00).\r\n Sadly, we're not *that* good - we're using the free API and can only forecast until (floor(current time / 3) * 3) o'clock on the 5th day ahead.");
+            super("Requested weather "+dayValue+" days and "+(timeValue - LocalDateTime.now().getHour())+" hours in the future ("+ timeValue+":00).\r\n Sadly, we're not *that* good - we're using the free API and can only forecast until (floor(current time / 3) * 3) o'clock on the 5th day ahead. AND NOT IN THE PAST!");
             this.dayValue = dayValue;
             this.timeValue = timeValue;
         }
@@ -165,7 +207,7 @@ public class OpenWeatherSource implements WeatherSource {
     }
 
     private boolean isCorrectReading(LocalDateTime currentTime, Weather currentWeather){
-        return (currentTime.compareTo(currentWeather.fromTime) >= 0 && currentTime.compareTo(currentWeather.toTime) <= 0); /* 'from' of next reading is same as 'to' of this reading (i.e. the boundary times overlap) but the iterating-through-readings code will just use the more 'in the future' reading */
+        return (currentTime.compareTo(currentWeather.getFromTime()) >= 0 && currentTime.compareTo(currentWeather.getToTime()) <= 0); /* 'from' of next reading is same as 'to' of this reading (i.e. the boundary times overlap) but the iterating-through-readings code will just use the more 'in the future' reading */
     }
 
     private Weather parseTimeNode(Node timeNode) {

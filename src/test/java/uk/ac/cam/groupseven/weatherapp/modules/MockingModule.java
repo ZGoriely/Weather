@@ -17,6 +17,7 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.UserCrestViewModelSource
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
 import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -27,7 +28,6 @@ public class MockingModule implements Module {
     public void configure(Binder binder) {
         new IconsModule().configure(binder);
         new SettingsModule().configure(binder);
-
         binder.bind(CrestSource.class).to(CrestSourceMock.class);
         binder.bind(RowingInfoSource.class).to(RowingInfoSourceMock.class);
         binder.bind(WeatherSource.class).to(WeatherSourceMock.class);
@@ -38,9 +38,10 @@ public class MockingModule implements Module {
         binder.bind(Weather.class).toInstance(new Weather(Weather.Precipitation.NONE, 0, 12.0f, 0.0f, 0, new Wind(1.0f, ""), LocalDateTime.now(), LocalDateTime.now()));
         binder.bind(FlagStatus.class).toInstance(FlagStatus.GREEN);
 
+        ImageIcon flagImage = new ImageIcon("/res/flag/grn.png");
+        HomeViewModelImageIcon flagIcon = new HomeViewModelImageIcon(flagImage.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
         binder.bind(new TypeLiteral<Loadable<HomeViewModel>>() {
-        }).toInstance(new Loadable<>(new HomeViewModel(FlagStatus.GREEN, 12.0f, 1.0f, "")));
-      
+        }).toInstance(new Loadable<>(new HomeViewModel(FlagStatus.GREEN, flagIcon, 12.0f, 1.0f, "")));
         binder.bind(new TypeLiteral<Loadable<HourViewModel>>() {
         }).toInstance(new Loadable<>(new HourViewModel(
                 "8:50",
@@ -52,9 +53,18 @@ public class MockingModule implements Module {
                         new HourlyWeather("13:00", "18'C", "9m/s")
                 ))));
 
-        binder.bind(new TypeLiteral<Loadable<DaysViewModel>>(){}).toInstance(new Loadable<>(new DaysViewModel(
+        binder.bind(new TypeLiteral<Loadable<DaysViewModel>>() {
+        }).toInstance(new Loadable<>(new DaysViewModel(
 
-                Arrays.asList("1:00 - Sun", "2:00 - Sun", "3:00 - Sun", "4:00 - Sun", "5:00 - Sun"))));
+                Arrays.asList(
+                        new DayWeather("24/05", "5'C", "6m/s", "20'C", "7m/s"),
+                        new DayWeather("25/05", "4'C", "9m/s", "17'C", "2m/s"),
+                        new DayWeather("26/05", "2'C", "3m/s", "25'C", "2m/s"),
+                        new DayWeather("27/05", "10'C", "4m/s", "18'C", "9m/s"),
+                        new DayWeather("28/05", "7'C", "8m/s", "21'C", "2m/s"),
+                        new DayWeather("29/05", "4'C", "6m/s", "15'C", "5m/s")
+
+                ))));
 
         binder.bind(new TypeLiteral<Loadable<MoreViewModel>>() {
         }).toInstance(new Loadable<>(new MoreViewModel(

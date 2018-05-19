@@ -16,9 +16,9 @@ public class HoursTableStyle extends BackgroundStyle implements Style {
         jTable.getTableHeader().setFont(headingFont);
         jTable.setRowHeight(100);
         jTable.setFillsViewportHeight(true);
-        //jTable.setShowGrid(false);
+        jTable.setShowGrid(false);
         super.styleComponent(((JComponent) jTable.getParent()));
-
 
     }
 }
+

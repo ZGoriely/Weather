@@ -42,9 +42,9 @@ public class HoursViewModelSource implements ViewModelSource<Loadable<HourViewMo
     }
 
     private HourlyWeather buildWeather(Weather weather) {
-        String timeText = weather.fromTime.plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm"));
-        String temperatureText = String.format("%.1f°C", weather.temperature);
-        String windText = String.format("%.1f m/s", weather.wind.speedMPS);
+        String timeText = weather.getFromTime().plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm"));
+        String temperatureText = String.format("%.1f°C", weather.getTemperature());
+        String windText = String.format("%.1f m/s", weather.getWind().getSpeedMPS());
         return new HourlyWeather(timeText, temperatureText, windText);
 
     }

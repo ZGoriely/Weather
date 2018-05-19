@@ -10,7 +10,6 @@ import uk.ac.cam.groupseven.weatherapp.modules.UrlsModule;
 
 public class OpenWeatherSourceTest {
     OpenWeatherSource openWeatherSource;
-
     @Before
     public void setUp() throws Exception {
         openWeatherSource = Guice.createInjector(new ApplicationModule(),
@@ -33,9 +32,8 @@ public class OpenWeatherSourceTest {
 
     @Test
     public void getWeatherInDays() throws Exception {
-        int tm = 10;
+        int tm = 4;
         int days = 4;
-
         System.out.println("In "+days+" day(s) at "+tm+":00 -> "+openWeatherSource.getWeatherInDays(days, tm).blockingFirst());
     }
 

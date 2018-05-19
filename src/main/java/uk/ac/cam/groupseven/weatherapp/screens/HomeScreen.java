@@ -1,11 +1,14 @@
 package uk.ac.cam.groupseven.weatherapp.screens;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
 import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.EmptyDisposable;
+import io.reactivex.schedulers.Schedulers;
 import uk.ac.cam.groupseven.weatherapp.LoadingIcon;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
@@ -18,12 +21,7 @@ import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HomeScreen implements Screen {
@@ -68,7 +66,14 @@ public class HomeScreen implements Screen {
     private JLabel flagIcon;
     @Inject
     private LoadingIcon loadingIcon;
-    private Disposable loadingObservable = EmptyDisposable.INSTANCE;
+    private boolean loadingAnimating = false;
+    private Disposable loadingDisposable = EmptyDisposable.INSTANCE;
+    @Inject
+    @Named("tempBigIcon")
+    private ImageIcon thermometer;
+    @Inject
+    @Named("windBigIcon")
+    private ImageIcon wind;
 
     public JPanel getPanel() {
         return panel;
@@ -76,6 +81,10 @@ public class HomeScreen implements Screen {
 
     @Override
     public Disposable start() {
+        // Set temp icon
+        tempIcon.setIcon(thermometer);
+        //Set wind icon
+        windIcon.setIcon(wind);
         refreshButton.setIcon(loadingIcon);
         setLoading(true);
         crestImageSource.getViewModel((getRefreshObservable())).subscribe(this::updateCrest);
@@ -108,26 +117,8 @@ public class HomeScreen implements Screen {
             flagText.setText("Flag: " + flagStatus.getDisplayName());
             tempText.setText("Temperature: " + Float.toString(viewModel.getTemperature()));
             windText.setText("Wind Speed: " + Float.toString(viewModel.getWindSpeed()));
-            try {
-                // Set temp icon
-                BufferedImage thermometerImage = ImageIO.read(new File("res/icons/thermometer.png"));
-                ImageIcon thermometer = new ImageIcon(thermometerImage.getScaledInstance(150, 150, Image.SCALE_FAST));
-                tempIcon.setIcon(thermometer);
+            flagIcon.setIcon(viewModel.getFlagImage());
 
-                //Set wind icon
-                BufferedImage windImage = ImageIO.read(new File("res/icons/wind.png"));
-                ImageIcon wind = new ImageIcon(windImage.getScaledInstance(150, 150, Image.SCALE_FAST));
-                windIcon.setIcon(wind);
-
-                // Set flag icon
-                BufferedImage flagImage = ImageIO.read(new File("res/flag/" + flagStatus.getCode() + ".png"));
-                ImageIcon flag = new ImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
-                flagIcon.setIcon(flag);
-              
-            } catch (IOException e) {
-                System.out.println("Image not found");
-                e.printStackTrace();
-            }
         }
 
     }
@@ -152,29 +143,36 @@ public class HomeScreen implements Screen {
     }
 
     private void setLoading(boolean loading) {
-        loadingObservable.dispose();
-        while (loadingIcon.getRotation() > 360) {
-            loadingIcon.setRotation(loadingIcon.getRotation() - 360);
-        }
+        loadingDisposable.dispose();
+        int startRotation = loadingIcon.getRotation();
+        Disposable loadingObservable;
         if (loading) {
+            loadingAnimating = true;
             loadingObservable = Observable
-                    .intervalRange(loadingIcon.getRotation() / 10, (360), 0, 20, TimeUnit.MILLISECONDS)
-                    .repeat()
-                    .subscribeOn(SwingSchedulers.edt())
-                    .subscribe(x -> {
-                        loadingIcon.setRotation(Math.toIntExact(x) * 10);
-                        refreshButton.repaint();
-                    });
+                    .intervalRange(0, 360, 0, 10, TimeUnit.MILLISECONDS)
+                    .repeat().subscribeOn(Schedulers.computation())
+                    .subscribe(x -> loadingIcon.setRotation(startRotation + Math.toIntExact(x) * 10),
+                            Throwable::printStackTrace,
+                            () -> loadingAnimating = false);
+
 
         } else {
+            loadingAnimating = true;
             loadingObservable = Observable
-                    .intervalRange(loadingIcon.getRotation() / 10, (360 - loadingIcon.getRotation()) / 10, 0, 10, TimeUnit.MILLISECONDS)
-                    .subscribeOn(SwingSchedulers.edt())
-                    .subscribe(x -> {
-                        loadingIcon.setRotation(Math.toIntExact(x) * 10);
-                        refreshButton.repaint();
-                    });
+                    .intervalRange(startRotation / 10, (360 - startRotation) / 10, 0, 10, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.computation())
+                    .subscribe(x -> loadingIcon.setRotation(Math.toIntExact(x) * 10),
+                            Throwable::printStackTrace,
+                            () -> loadingAnimating = false);
         }
+
+        Disposable repaintDisposable = Observable
+                .interval(0, 10, TimeUnit.MILLISECONDS)
+                .takeWhile(x -> loadingAnimating)
+                .observeOn(SwingSchedulers.edt())
+                .subscribe(x -> refreshButton.repaint());
+
+        loadingDisposable = new CompositeDisposable(loadingObservable, repaintDisposable);
     }
 
 }
