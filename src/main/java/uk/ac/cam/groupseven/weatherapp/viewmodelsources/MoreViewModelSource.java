@@ -40,10 +40,10 @@ public class MoreViewModelSource implements ViewModelSource<Loadable<MoreViewMod
     }
 
     private MoreViewModel buildModel(Weather weather, WaterLevel waterLevel, LightingTimes lightingTimes) throws IllegalArgumentException {
-        String waterLevelText = " Water level:\n" + waterLevel.level + " metres";
+        String waterLevelText = " Water level:\n" + waterLevel.getLevel() + " metres";
         String precipitationText;
-        if (weather.precipitation == null) throw new IllegalArgumentException("Water level was null");
-        switch (weather.precipitation) {
+        if (weather.getPrecipitation() == null) throw new IllegalArgumentException("Water level was null");
+        switch (weather.getPrecipitation()) {
             case NONE:
                 precipitationText = "No Rain";
                 break;
@@ -58,12 +58,12 @@ public class MoreViewModelSource implements ViewModelSource<Loadable<MoreViewMod
                 break;
         }
         String precipitation = String.format(" Precipitation:\n%s", precipitationText);
-        String cloudCover = String.format(" Cloud cover:\n%d%%", weather.cloudCover);
-        String pressure = String.format(" Pressure:\n%shPa", weather.pressure);
-        String humidity = String.format(" Humidity:\n%d%%", weather.humidity);
-        String windDirection = String.format(" Wind direction:\n%s", weather.wind.direction);
-        String sunrise = String.format(" Sunrise:\n%s", lightingTimes.todayUpTime);
-        String sunset = String.format(" Sunset:\n%s", lightingTimes.todayDownTime);
+        String cloudCover = String.format(" Cloud cover:\n%d%%", weather.getCloudCover());
+        String pressure = String.format(" Pressure:\n%shPa", weather.getPressure());
+        String humidity = String.format(" Humidity:\n%d%%", weather.getHumidity());
+        String windDirection = String.format(" Wind direction:\n%s", weather.getWind().getDirection());
+        String sunrise = String.format(" Sunrise:\n%s", lightingTimes.getTodayUpTime());
+        String sunset = String.format(" Sunset:\n%s", lightingTimes.getTodayDownTime());
 
         return new MoreViewModel(
                 waterLevelText,

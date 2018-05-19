@@ -9,8 +9,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import sun.misc.IOUtils;
-import sun.nio.ch.IOUtil;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.models.Wind;
 
@@ -209,7 +207,7 @@ public class OpenWeatherSource implements WeatherSource {
     }
 
     private boolean isCorrectReading(LocalDateTime currentTime, Weather currentWeather){
-        return (currentTime.compareTo(currentWeather.fromTime) >= 0 && currentTime.compareTo(currentWeather.toTime) <= 0); /* 'from' of next reading is same as 'to' of this reading (i.e. the boundary times overlap) but the iterating-through-readings code will just use the more 'in the future' reading */
+        return (currentTime.compareTo(currentWeather.getFromTime()) >= 0 && currentTime.compareTo(currentWeather.getToTime()) <= 0); /* 'from' of next reading is same as 'to' of this reading (i.e. the boundary times overlap) but the iterating-through-readings code will just use the more 'in the future' reading */
     }
 
     private Weather parseTimeNode(Node timeNode) {

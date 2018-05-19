@@ -15,6 +15,6 @@ public class WaterLevelSourceTest {
                 new IconsModule(),
                 new SettingsModule()).getInstance(WaterLevelSourceImpl.class);
 
-        System.out.println(waterLevelSource.getWaterLevelNow().blockingFirst().level);
+        System.out.println(waterLevelSource.getWaterLevelNow().blockingFirst().getLevel());
     }
 }

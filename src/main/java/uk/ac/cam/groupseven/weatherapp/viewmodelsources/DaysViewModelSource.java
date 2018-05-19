@@ -48,11 +48,11 @@ public class DaysViewModelSource implements ViewModelSource<Loadable<DaysViewMod
     }
 
     private DayWeather buildModel(Weather morningWeather, Weather afternoonWeather) {
-        String dateText = morningWeather.fromTime.format(DateTimeFormatter.ofPattern("dd/MM"));
-        String morningTemperature = String.format("%.1f°C", morningWeather.temperature);
-        String morningWind = String.format("%.1f m/s", morningWeather.wind.speedMPS);
-        String afternoonTemperature = String.format("%.1f°C", afternoonWeather.temperature);
-        String afternoonWind = String.format("%.1f m/s", afternoonWeather.wind.speedMPS);
+        String dateText = morningWeather.getFromTime().format(DateTimeFormatter.ofPattern("dd/MM"));
+        String morningTemperature = String.format("%.1f°C", morningWeather.getTemperature());
+        String morningWind = String.format("%.1f m/s", morningWeather.getWind().getSpeedMPS());
+        String afternoonTemperature = String.format("%.1f°C", afternoonWeather.getTemperature());
+        String afternoonWind = String.format("%.1f m/s", afternoonWeather.getWind().getSpeedMPS());
         return new DayWeather(dateText, morningTemperature, morningWind, afternoonTemperature, afternoonWind);
     }
 }

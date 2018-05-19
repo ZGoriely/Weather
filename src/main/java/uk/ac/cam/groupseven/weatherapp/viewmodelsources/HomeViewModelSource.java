@@ -58,12 +58,12 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
         String windDir = "None";
 
 
-        if (weather.wind != null) {
-            Wind wind = weather.wind;
-            if(wind.speedMPS != null) windSpeed = wind.speedMPS;
-            if(wind.direction != null) windDir = wind.direction;
+        if (weather.getWind() != null) {
+            Wind wind = weather.getWind();
+            if (wind.getSpeedMPS() != null) windSpeed = wind.getSpeedMPS();
+            if (wind.getDirection() != null) windDir = wind.getDirection();
         }
-        if (weather.temperature != null) temperature = weather.temperature;
+        if (weather.getTemperature() != null) temperature = weather.getTemperature();
 
 
         // Set flag icon
