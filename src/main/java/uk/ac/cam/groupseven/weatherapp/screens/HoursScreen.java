@@ -27,10 +27,8 @@ public class HoursScreen implements Screen {
     @ApplyStyle(ButtonStyle.class)
     private JButton rightButton;
     @ApplyStyle(BackgroundStyle.class)
-    private JPanel midPanel;
-    @ApplyStyle(BackgroundStyle.class)
     private JPanel topPanel;
-    @ApplyStyle({BackgroundStyle.class, HoursTableStyle.class})
+    @ApplyStyle({HoursTableStyle.class, BackgroundStyle.class})
     private JTable hoursTable;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
@@ -38,6 +36,7 @@ public class HoursScreen implements Screen {
     private JLabel timeLabel;
     @ApplyStyle(ButtonStyle.class)
     private JScrollPane scrollPanel;
+    private JPanel midPanel;
 
     private JList<Object> list;
 
@@ -124,6 +123,7 @@ public class HoursScreen implements Screen {
             hoursTable.getColumnModel().getColumn(2).setHeaderValue(scaledWindIcon);
 
             hoursTable.invalidate();
+            hoursTable.setShowGrid(true);
         }
 
     }

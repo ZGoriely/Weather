@@ -16,6 +16,7 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -38,15 +39,15 @@ public class DaysScreen implements Screen {
     @ApplyStyle(BackgroundStyle.class)
     private JPanel panel;
     @ApplyStyle(BackgroundStyle.class)
-    private JPanel midPanel;
-    @ApplyStyle(BackgroundStyle.class)
     private JPanel topPanel;
     @ApplyStyle({BackgroundStyle.class, BigTextStyle.class})
     private JLabel dateText;
     @ApplyStyle(BackgroundStyle.class)
     private JPanel bottomPanel;
-    @ApplyStyle(BackgroundStyle.class)
+    @ApplyStyle(ButtonStyle.class)
     private JScrollPane scrollPanel;
+    @ApplyStyle(BackgroundStyle.class)
+    private JPanel midPanel;
 
     @Inject
     @Named("tempSmallIcon")
@@ -125,11 +126,15 @@ public class DaysScreen implements Screen {
             header.addColumnGroup(g_morn);
             header.addColumnGroup(g_noon);
 
-            header.setFont(new Font("Helvetica", Font.BOLD, 30));
+            //header.setFont(new Font("Helvetica", Font.BOLD, 30));
+            //header.setBackground(new Color(0, 0, 80));
+            //header.setForeground(new Color(255, 255, 255));
+            //header.setBorder(new EtchedBorder());
             header.setBackground(new Color(0, 0, 80));
             header.setForeground(new Color(255, 255, 255));
-            header.setBorder(new EtchedBorder());
-
+            header.setBorder(new LineBorder(Color.WHITE, 1));
+            Font headingFont = new Font("Helvetica", Font.BOLD, 30);
+            header.setFont(headingFont);
             forecastTable.setTableHeader(header);
 
             forecastTable.getColumnModel().getColumn(0)
@@ -139,19 +144,19 @@ public class DaysScreen implements Screen {
                         jLabel.setForeground(table.getTableHeader().getForeground());
                         return jLabel;
                     });
-
-            forecastTable.getColumnModel().getColumn(0).setHeaderValue("Date");
             for (int col=1; col<5; col++) {
                 forecastTable.getColumnModel().getColumn(col)
                         .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
             }
 
+            forecastTable.getColumnModel().getColumn(0).setHeaderValue("Date");
             forecastTable.getColumnModel().getColumn(1).setHeaderValue(scaledTempIcon);
             forecastTable.getColumnModel().getColumn(2).setHeaderValue(scaledWindIcon);
             forecastTable.getColumnModel().getColumn(3).setHeaderValue(scaledTempIcon);
             forecastTable.getColumnModel().getColumn(4).setHeaderValue(scaledWindIcon);
 
             forecastTable.setShowGrid(true);
+            forecastTable.invalidate();
         }
     }
 
