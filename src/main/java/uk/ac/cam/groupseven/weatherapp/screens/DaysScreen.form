@@ -13,9 +13,9 @@
     <border type="none"/>
     <children>
       <grid id="2f7f3" binding="topPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
+        <margin top="10" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="200"/>
             <maximum-size width="-1" height="200"/>
           </grid>
@@ -37,7 +37,7 @@
       <grid id="5353a" binding="bottomPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="50" bottom="50" right="50"/>
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <opaque value="false"/>
@@ -68,10 +68,10 @@
         </children>
       </grid>
       <grid id="79fb1" binding="midPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="10" bottom="0" right="10"/>
+        <margin top="10" left="10" bottom="0" right="10"/>
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="-1" height="300"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="100"/>
           </grid>
         </constraints>
         <properties>
@@ -86,8 +86,10 @@
               </grid>
             </constraints>
             <properties>
+              <actionCommand value="⇐ 24 Hour"/>
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
+              <label value="⇐ 24 Hour"/>
               <text resource-bundle="String" key="current.forecast1"/>
             </properties>
           </component>
