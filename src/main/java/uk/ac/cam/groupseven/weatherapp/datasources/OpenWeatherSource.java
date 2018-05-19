@@ -95,6 +95,18 @@ public class OpenWeatherSource implements WeatherSource {
 
     @Override
     public Observable<Weather> getWeatherInDays(int days, int timeInHours) { //TODO deal with 5 days in future but time later than now in day so no forecast.
+        if (timeInHours >= 24 || timeInHours <= 0) throw new TimeOutOfRangeException(timeInHours);
+        if (days > 5) throw new CrystalBallDepthExceededException(days, timeInHours);
+        if (days == 5
+                && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
+                && (LocalDateTime.now().getHour() / 3 <= timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
+            throw new CrystalBallDepthExceededException(days, timeInHours);
+
+        if (days == 0
+                && ((LocalDateTime.now().getHour() / 3) * 3 + 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
+                && (LocalDateTime.now().getHour() / 3 > timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
+            throw new CrystalBallDepthExceededException(days, timeInHours);
+
         return Observable.fromCallable(() -> {
 
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -102,21 +114,7 @@ public class OpenWeatherSource implements WeatherSource {
             NodeList readings = weatherDataDoc.getElementsByTagName("time");
 
             Weather forecast = null;
-
-            if(timeInHours >= 24 || timeInHours < 0) throw new TimeOutOfRangeException(timeInHours);
-
-            if(days > 5) throw new CrystalBallDepthExceededException(days, timeInHours);
-            if(days == 5
-                    && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
-                    && (LocalDateTime.now().getHour() / 3 <= timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
-                throw new CrystalBallDepthExceededException(days, timeInHours);
-
-            if(days == 0
-                    && ((LocalDateTime.now().getHour() / 3) * 3 + 3 != timeInHours) /* Check that requested time isn't on the boundary of latest available forecast */
-                    && (LocalDateTime.now().getHour() / 3 > timeInHours / 3)) /* Check if requested time is outside the boundaries of the currently available readings (5 days in 3h steps) */
-                throw new CrystalBallDepthExceededException(days, timeInHours);
-
-            LocalDateTime forecastTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays((long)days).plusHours((long)timeInHours);
+            LocalDateTime forecastTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays((long) days).plusHours((long) timeInHours);
 
             for(int i = 0; i < readings.getLength(); i++){
                 if(isCorrectReading(forecastTime, parseTimeNode(readings.item(i)))) {
