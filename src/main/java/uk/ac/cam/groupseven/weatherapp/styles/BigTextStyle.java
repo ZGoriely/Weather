@@ -6,7 +6,7 @@ import java.awt.*;
 public class BigTextStyle implements Style {
     @Override
     public void styleComponent(JComponent component) {
-        Font font = new Font("Helvetica", Font.BOLD, 150);
+        Font font = new Font("Helvetica", Font.BOLD, 130);
         component.setFont(font);
     }
 }
