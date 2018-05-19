@@ -10,10 +10,10 @@ import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.models.Wind;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
-import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModelImageIcon;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -68,13 +68,14 @@ public class HomeViewModelSource implements ViewModelSource<Loadable<HomeViewMod
 
         // Set flag icon
         BufferedImage flagImage = ImageIO.read(new File(flagDir.resolve(flagStatus.getCode() + ".png").toAbsolutePath().toString()));
-        HomeViewModelImageIcon flagIcon = new HomeViewModelImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
+        ImageIcon flagIcon = new ImageIcon(flagImage.getScaledInstance(250, 250, Image.SCALE_FAST));
 
-        return new HomeViewModel(flagStatus,
-                flagIcon,
+        HomeViewModel homeViewModel = new HomeViewModel(flagStatus,
                 temperature,
                 windSpeed,
                 windDir);
+        homeViewModel.setFlagImage(flagIcon);
+        return homeViewModel;
     }
 
 
