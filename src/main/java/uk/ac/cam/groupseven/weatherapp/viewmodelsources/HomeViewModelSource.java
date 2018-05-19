@@ -10,6 +10,7 @@ import uk.ac.cam.groupseven.weatherapp.models.FlagStatus;
 import uk.ac.cam.groupseven.weatherapp.models.Weather;
 import uk.ac.cam.groupseven.weatherapp.models.Wind;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModel;
+import uk.ac.cam.groupseven.weatherapp.viewmodels.HomeViewModelImageIcon;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 
 import javax.imageio.ImageIO;
