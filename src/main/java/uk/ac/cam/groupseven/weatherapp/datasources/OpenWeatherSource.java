@@ -39,20 +39,13 @@ public class OpenWeatherSource implements WeatherSource {
 
                 lastUpdated = LocalDateTime.now(); // Update the 'last updated' time - do this at start so other threads that want to do this back off - no simultaneous writing
 
-                newWeatherXML = new byte[32 * 1024]; // Unless API drastically changes, 32,768 bytes is enough for xml response.
+                int maxLen = 32 * 1024; // Unless API drastically changes, 32,768 bytes is enough for xml response.
 
                 apiResponse = apiUrl.openStream();
-                newWeatherXML = IOUtils.readFully(apiResponse, newWeatherXML.length, false); // Just trust the false.
+                newWeatherXML = IOUtils.readFully(apiResponse, maxLen, false); // Just trust the false.
 
                 weatherXML = newWeatherXML; // This way, an exception in apiResponse.read() will leave the old weatherXML untouched.
 
-                /*
-                System.out.println();
-                for (int i = 0; i < weatherXML.length; i++){
-                    System.out.print(String.format("%c", (char)weatherXML[i]));
-                }
-                System.out.println();
-                */
             }
             catch (IOException e){
                 System.out.println("Error whilst fetching latest weather data: "+e.getMessage());
