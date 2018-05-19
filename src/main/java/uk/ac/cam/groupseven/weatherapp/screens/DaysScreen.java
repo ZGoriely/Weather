@@ -57,10 +57,7 @@ public class DaysScreen implements Screen {
 
     @Override
     public Disposable start() {
-        return
-                daysWeatherSource
-                        .getViewModel(getRefreshObservable())
-                        .subscribe(this::updateScreen);
+        return daysWeatherSource.getViewModel(getRefreshObservable()).subscribe(this::updateScreen);
     }
 
 
@@ -78,29 +75,23 @@ public class DaysScreen implements Screen {
 
     private void updateScreen(Loadable<DaysViewModel> viewModelLoadable) {
 
+        // Deal with errors when getting the data from the viewmodel
         if (viewModelLoadable.getLoading()) {
-            // loading screen
             dateText.setText("Loading...");
-
         } else if (viewModelLoadable.getError() != null) {
-            // Error screen
             dateText.setText("Error");
-
         } else {
-            // Display screen
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDateTime now = LocalDateTime.now();
-            dateText.setText(dtf.format((now)));
+            // Set up useful variables
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDateTime timeNow = LocalDateTime.now();
+            dateText.setText(formatter.format((timeNow)));
 
             DaysViewModel viewModel = viewModelLoadable.getViewModel();
 
-
+            // Set the table model to get the correct data
             forecastTable.setModel(new DefaultTableModel() {
-
                 @Override
-                public int getRowCount() {
-                    return viewModel.getDayWeathers().size();
-                }
+                public int getRowCount() { return viewModel.getDayWeathers().size(); }
 
                 @Override
                 public int getColumnCount() {
@@ -110,6 +101,8 @@ public class DaysScreen implements Screen {
                 @Override
                 public Object getValueAt(int row, int column) {
                     DayWeather dayWeather = viewModel.getDayWeathers().get(row);
+
+                    // Return the correct data depending on which column was passed in
                     switch (column) {
                         case 0:
                             return dayWeather.getDate();
@@ -127,23 +120,22 @@ public class DaysScreen implements Screen {
                 }
             });
 
+            // Set up column models
+            TableColumnModel columnModel = forecastTable.getColumnModel();
+            ColumnGroup groupMorning = new ColumnGroup("Morning");
+            groupMorning.add(columnModel.getColumn(1));
+            groupMorning.add(columnModel.getColumn(2));
+            ColumnGroup groupAfternoon = new ColumnGroup("Afternoon");
+            groupAfternoon.add(columnModel.getColumn(3));
+            groupAfternoon.add(columnModel.getColumn(4));
 
-            TableColumnModel cm = forecastTable.getColumnModel();
-            ColumnGroup g_morn = new ColumnGroup("Morning");
-            g_morn.add(cm.getColumn(1));
-            g_morn.add(cm.getColumn(2));
-            ColumnGroup g_noon = new ColumnGroup("Afternoon");
-            g_noon.add(cm.getColumn(3));
-            g_noon.add(cm.getColumn(4));
+            // Set up header
+            GroupableTableHeader header = new GroupableTableHeader(columnModel);
+            header.addColumnGroup(groupMorning);
+            header.addColumnGroup(groupAfternoon);
+            header.setFont(new Font("Helvetica", Font.BOLD, 30));
 
-            GroupableTableHeader header = new GroupableTableHeader(cm);
-            header.addColumnGroup(g_morn);
-            header.addColumnGroup(g_noon);
-
-            //header.setFont(new Font("Helvetica", Font.BOLD, 30));
-            //header.setBackground(new Color(0, 0, 80));
-            //header.setForeground(new Color(255, 255, 255));
-            //header.setBorder(new EtchedBorder());
+            // Set text and background colors
             header.setBackground(new Color(0, 0, 80));
             header.setForeground(new Color(255, 255, 255));
             header.setBorder(new LineBorder(Color.WHITE, 1));
@@ -151,6 +143,7 @@ public class DaysScreen implements Screen {
             header.setFont(headingFont);
             forecastTable.setTableHeader(header);
 
+            // Set column header renderer for first column
             forecastTable.getColumnModel().getColumn(0)
                     .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> {
                         JLabel jLabel = new JLabel((String) value);
@@ -158,17 +151,21 @@ public class DaysScreen implements Screen {
                         jLabel.setForeground(table.getTableHeader().getForeground());
                         return jLabel;
                     });
-            for (int col = 1; col < 5; col++) {
+
+            //Set column model for all other columns
+            for (int col=1; col<5; col++) {
                 forecastTable.getColumnModel().getColumn(col)
                         .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
             }
 
+            // Set column headers
             forecastTable.getColumnModel().getColumn(0).setHeaderValue("Date");
             forecastTable.getColumnModel().getColumn(1).setHeaderValue(scaledTempIcon);
             forecastTable.getColumnModel().getColumn(2).setHeaderValue(scaledWindIcon);
             forecastTable.getColumnModel().getColumn(3).setHeaderValue(scaledTempIcon);
             forecastTable.getColumnModel().getColumn(4).setHeaderValue(scaledWindIcon);
 
+            // Show grid so entries are separated
             forecastTable.setShowGrid(true);
             forecastTable.invalidate();
         }

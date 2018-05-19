@@ -31,8 +31,11 @@ public class ScreenLayout {
 
     public JPanel getScreen(Screen current, Direction direction) {
         JPanel currentPanel = current.getPanel();
+        JPanel nextPanel = null;
+
+        // Return the appropriate panel to switch to given the current panel
+        // Defaults to returning the current panel if the direction was unexpected
         if (currentPanel == homeScreen.getPanel()) {
-            JPanel nextPanel;
             switch (direction) {
                 case LEFT:
                     nextPanel = daysScreen.getPanel();
@@ -50,10 +53,8 @@ public class ScreenLayout {
                     nextPanel = currentPanel;
                     break;
             }
-            return nextPanel;
         }
         if (currentPanel == hoursScreen.getPanel()) {
-            JPanel nextPanel;
             switch (direction) {
                 case LEFT:
                     nextPanel = homeScreen.getPanel();
@@ -65,13 +66,11 @@ public class ScreenLayout {
                     nextPanel = currentPanel;
                     break;
             }
-            return nextPanel;
         }
         if (currentPanel == crestScreen.getPanel()) {
             return homeScreen.getPanel();
         }
         if (currentPanel == daysScreen.getPanel()) {
-            JPanel nextPanel;
             switch (direction) {
                 case LEFT:
                     nextPanel = hoursScreen.getPanel();
@@ -83,10 +82,8 @@ public class ScreenLayout {
                     nextPanel = currentPanel;
                     break;
             }
-            return nextPanel;
         }
         if (currentPanel == moreScreen.getPanel()) {
-            JPanel nextPanel;
             switch (direction) {
                 case UP:
                     nextPanel = homeScreen.getPanel();
@@ -95,18 +92,25 @@ public class ScreenLayout {
                     nextPanel = currentPanel;
                     break;
             }
-            return nextPanel;
         }
 
-        throw new NotImplementedException();
+        // If nextPanel has not been set, that means we've pressed a button on a panel
+        // that hasn't been implemented yet; throw exception
+        if (nextPanel != null) {
+            return nextPanel;
+        } else {
+            throw new NotImplementedException();
+        }
     }
 
     public Observable<ScreenChange> getScreenChanges() {
+        // Map the correct action to each of the buttons
+        // Use two merges as one merge can merge a maximum of 4 things
         return Observable.merge(
                 Observable.merge(homeScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(homeScreen, x), x)),
                 hoursScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(hoursScreen, x), x)),
                 crestScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(crestScreen, x), x)),
-                        daysScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(daysScreen, x), x))),
+                daysScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(daysScreen, x), x))), // inner merge ends
                 moreScreen.getScreenChanges().map(x -> new ScreenChange(getScreen(moreScreen, x), x))
         );
     }
@@ -128,7 +132,6 @@ public class ScreenLayout {
         public final Direction direction;
 
         public ScreenChange(JPanel nextScreen, Direction direction) {
-
             this.nextScreen = nextScreen;
             this.direction = direction;
         }
