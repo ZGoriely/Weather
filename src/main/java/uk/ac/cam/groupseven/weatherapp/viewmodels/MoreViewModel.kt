@@ -1,10 +1,11 @@
 package uk.ac.cam.groupseven.weatherapp.viewmodels
 
-import uk.ac.cam.groupseven.weatherapp.models.LightingTimes
-import uk.ac.cam.groupseven.weatherapp.models.WaterLevel
-import uk.ac.cam.groupseven.weatherapp.models.Weather
-
 data class MoreViewModel(
-        val weather: Weather,
-        val waterLevel: WaterLevel,
-        val lightingLimes: LightingTimes)
+        val waterLevel: String,
+        val precipitation: String,
+        val cloudCover: String,
+        val pressure: String,
+        val humidity: String,
+        val windDirection: String,
+        val sunrise: String,
+        val sunset: String)

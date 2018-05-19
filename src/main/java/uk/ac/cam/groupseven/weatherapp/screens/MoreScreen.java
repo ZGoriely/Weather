@@ -6,8 +6,10 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import uk.ac.cam.groupseven.weatherapp.Screen;
 import uk.ac.cam.groupseven.weatherapp.ScreenLayout;
-import uk.ac.cam.groupseven.weatherapp.models.Crest;
-import uk.ac.cam.groupseven.weatherapp.styles.*;
+import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.BackgroundStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.ButtonStyle;
+import uk.ac.cam.groupseven.weatherapp.styles.TableStyle;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.Loadable;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.MoreViewModel;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
@@ -15,14 +17,10 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 public class MoreScreen implements Screen {
@@ -92,26 +90,14 @@ public class MoreScreen implements Screen {
         }
       
         for (int i = 0; i < 8; i++ ) data[i][1] = "";
-        String text =  " Water level:\n" + viewModel.getWaterLevel().level + " metres";
-        data[0][1] = text;
-        String precipText;
-        switch (viewModel.getWeather().precipitation) {
-            case NONE: precipText = "No Rain";
-            break;
-            case RAIN: precipText = "Raining";
-            break;
-            case SNOW: precipText = "Snowing";
-            break;
-            default: precipText = "Error";
-            break;
-        }
-        data[1][1] = " Precipitation:\n" + precipText;
-        data[2][1] = " Cloud cover:\n" + viewModel.getWeather().cloudCover + "%";
-        data[3][1] = " Pressure:\n" + viewModel.getWeather().pressure + "hPa";
-        data[4][1] = " Humidity:\n" + viewModel.getWeather().humidity + "%";
-        data[5][1] = " Wind direction:\n" + viewModel.getWeather().wind.direction;
-        data[6][1] = " Sunrise:\n" + viewModel.getLightingLimes().todayUpTime;
-        data[7][1] = " Sunset:\n" + viewModel.getLightingLimes().todayDownTime;
+        data[0][1] = viewModel.getWaterLevel();
+        data[1][1] = viewModel.getPrecipitation();
+        data[2][1] = viewModel.getCloudCover();
+        data[3][1] = viewModel.getPressure();
+        data[4][1] = viewModel.getHumidity();
+        data[5][1] = viewModel.getWindDirection();
+        data[6][1] = viewModel.getSunrise();
+        data[7][1] = viewModel.getSunset();
 
 
 
