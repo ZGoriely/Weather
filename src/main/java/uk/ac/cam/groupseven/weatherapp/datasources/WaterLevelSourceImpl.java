@@ -20,14 +20,13 @@ public class WaterLevelSourceImpl implements WaterLevelSource {
 
     public Observable<WaterLevel> getWaterLevelNow() {
         return Observable.fromCallable(() -> {
-
-
+            // Open connection and get the inputstream
             URLConnection con = waterLevelSourceUrl.openConnection();
             InputStream instream = con.getInputStream();
 
             // This code is gonna look really ugly, but it's simpler than importing another
             // library just to read in one json file
-
+            // Basically search for the right string and the value we're looking for will be right after it
             BufferedReader reader = new BufferedReader(new InputStreamReader(instream));
             String newline = reader.readLine();
             while (newline != null) {

@@ -11,6 +11,7 @@ import javax.swing.*;
 public class ApplicationModule implements Module {
     @Override
     public void configure(Binder binder) {
+        // Bind all the ViewSourceModels to the appropriate classes
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HomeViewModel>>>() {
         }).to(HomeViewModelSource.class);
         binder.bind(new TypeLiteral<ViewModelSource<Loadable<HourViewModel>>>() {

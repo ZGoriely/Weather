@@ -19,7 +19,6 @@ public class UserCrestViewModelSource implements ViewModelSource<ImageIcon> {
 
     @Override
     public Observable<ImageIcon> getViewModel(Observable<Object> refresh) {
-
         return crestSource.getUserCrests().map(crest ->
                 new ImageIcon(imageDirectory.resolve(crest.getCode() + ".gif").toAbsolutePath().toString()))
                 .observeOn(SwingSchedulers.edt());

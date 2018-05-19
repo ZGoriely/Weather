@@ -11,15 +11,12 @@ public class SlidingLayoutManager implements LayoutManager {
         this.dimension = dimension;
     }
 
-
     @Override
     public void addLayoutComponent(String name, Component comp) {
-
     }
 
     @Override
     public void removeLayoutComponent(Component comp) {
-
     }
 
     @Override
@@ -34,11 +31,13 @@ public class SlidingLayoutManager implements LayoutManager {
 
     @Override
     public void layoutContainer(Container parent) {
+        // Set up components
         Component frontComponent = null;
         Component backComponent = null;
         if (parent.getComponentCount() > 0) frontComponent = parent.getComponent(0);
         if (parent.getComponentCount() > 1) backComponent = parent.getComponent(1);
 
+        // Set bounds depending on direction provided frontComponent is not null
         if (frontComponent != null) {
             if (direction == ScreenLayout.Direction.LEFT) {
                 frontComponent.setBounds((int) (offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
@@ -54,11 +53,13 @@ public class SlidingLayoutManager implements LayoutManager {
 
             } else {
                 frontComponent.setBounds(0, 0, parent.getWidth(), parent.getHeight());
-
             }
+
             frontComponent.revalidate();
             frontComponent.repaint();
         }
+
+        // Set bounds depending on direction provided backComponent is not null
         if (backComponent != null) {
             if (direction == ScreenLayout.Direction.LEFT) {
                 backComponent.setBounds((int) (-backComponent.getWidth() + offset * parent.getWidth()), 0, parent.getWidth(), parent.getHeight());
@@ -74,8 +75,8 @@ public class SlidingLayoutManager implements LayoutManager {
 
             } else {
                 backComponent.setBounds(0, 0, 0, 0);
-
             }
+
             backComponent.revalidate();
             backComponent.repaint();
         }
