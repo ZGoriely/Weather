@@ -16,6 +16,7 @@
         <margin top="10" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
+            <minimum-size width="-1" height="200"/>
             <preferred-size width="200" height="200"/>
             <maximum-size width="-1" height="200"/>
           </grid>
@@ -35,9 +36,9 @@
         </children>
       </grid>
       <grid id="7d152" binding="bottomPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="50" bottom="0" right="50"/>
+        <margin top="25" left="50" bottom="50" right="50"/>
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <opaque value="false"/>
@@ -46,7 +47,7 @@
         <children>
           <scrollpane id="6b5d9" binding="scrollPanel">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <opaque value="true"/>
@@ -70,7 +71,9 @@
         <margin top="0" left="10" bottom="0" right="10"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
+            <minimum-size width="-1" height="100"/>
             <preferred-size width="-1" height="100"/>
+            <maximum-size width="-1" height="100"/>
           </grid>
         </constraints>
         <properties>
@@ -87,7 +90,7 @@
             <properties>
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
-              <text resource-bundle="String" key="current.forecast1"/>
+              <text value="⇐ Current Weather"/>
             </properties>
           </component>
           <component id="250d0" class="javax.swing.JButton" binding="rightButton">
@@ -100,7 +103,7 @@
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
               <label value="7 Day ⇒"/>
-              <text resource-bundle="String" key="7.day.forecast"/>
+              <text value="7 Day ⇒"/>
             </properties>
           </component>
           <hspacer id="367c8">
