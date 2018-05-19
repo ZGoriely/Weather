@@ -87,7 +87,7 @@
             <properties>
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
-              <text resource-bundle="String" key="current.forecast1"/>
+              <text resource-bundle="strings" key="current.forecast1"/>
             </properties>
           </component>
           <component id="250d0" class="javax.swing.JButton" binding="rightButton">
@@ -99,7 +99,7 @@
             <properties>
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
-              <text resource-bundle="String" key="7.day.forecast"/>
+              <text resource-bundle="strings" key="7.day.forecast"/>
             </properties>
           </component>
           <hspacer id="367c8">

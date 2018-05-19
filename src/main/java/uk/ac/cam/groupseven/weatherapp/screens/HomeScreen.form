@@ -81,10 +81,10 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <actionCommand resource-bundle="String" key="24.hour"/>
+                  <actionCommand resource-bundle="strings" key="24.hour"/>
                   <hideActionText value="false"/>
                   <label value="24 Hour ⇒"/>
-                  <text resource-bundle="String" key="24.hour1"/>
+                  <text resource-bundle="strings" key="24.hour1"/>
                 </properties>
               </component>
             </children>
@@ -106,8 +106,8 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <actionCommand resource-bundle="String" key="7.day"/>
-                  <text resource-bundle="String" key="7.day1"/>
+                  <actionCommand resource-bundle="strings" key="7.day"/>
+                  <text resource-bundle="strings" key="7.day1"/>
                 </properties>
               </component>
             </children>
@@ -165,7 +165,7 @@
               </grid>
             </constraints>
             <properties>
-              <text resource-bundle="String" key="more.info"/>
+              <text resource-bundle="strings" key="more.info"/>
             </properties>
           </component>
           <hspacer id="31d86">

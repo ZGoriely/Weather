@@ -27,7 +27,7 @@
               </grid>
             </constraints>
             <properties>
-              <text resource-bundle="String" key="return.home"/>
+              <text resource-bundle="strings" key="return.home"/>
             </properties>
           </component>
           <hspacer id="b8af9">
