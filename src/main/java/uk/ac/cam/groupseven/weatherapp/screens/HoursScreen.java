@@ -191,12 +191,12 @@ public class HoursScreen implements Screen {
         leftButton = new JButton();
         leftButton.setAlignmentX(0.5f);
         leftButton.setHideActionText(false);
-        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("String").getString("current.forecast1"));
+        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("strings").getString("current.forecast1"));
         midPanel.add(leftButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(149, 50), null, 0, false));
         rightButton = new JButton();
         rightButton.setAlignmentX(0.5f);
         rightButton.setHideActionText(false);
-        this.$$$loadButtonText$$$(rightButton, ResourceBundle.getBundle("String").getString("7.day.forecast"));
+        this.$$$loadButtonText$$$(rightButton, ResourceBundle.getBundle("strings").getString("7.day.forecast"));
         midPanel.add(rightButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(136, 50), null, 0, false));
         final Spacer spacer1 = new Spacer();
         midPanel.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));

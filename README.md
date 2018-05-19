@@ -19,6 +19,11 @@ To run execute the command:
 gradle runApp
 ```
 
+Alternatively:
+```
+gradle fatJar
+java -jar ./build/libs/WeatherApp-1.0-SNAPSHOT-all.jar
+```
 
 ## Running the tests
 
