@@ -3,6 +3,7 @@ package uk.ac.cam.groupseven.weatherapp.screens;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import hu.akarnokd.rxjava2.swing.SwingObservable;
+import hu.akarnokd.rxjava2.swing.SwingSchedulers;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -168,7 +169,7 @@ public class HomeScreen implements Screen {
         Disposable repaintDisposable = Observable
                 .interval(0, 10, TimeUnit.MILLISECONDS)
                 .takeWhile(x -> loadingAnimating)
-                .observeOn(Schedulers.computation())
+                .observeOn(SwingSchedulers.edt())
                 .subscribe(x -> refreshButton.repaint());
 
         loadingDisposable = new CompositeDisposable(loadingObservable, repaintDisposable);
