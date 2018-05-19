@@ -252,6 +252,7 @@ public class OpenWeatherSource implements WeatherSource {
         if(days == 0
                 && ((LocalDateTime.now().getHour() / 3) * 3 != timeInHours) /* Check that requested time isn't on the boundary of earliest available forecast */
                 && (LocalDateTime.now().getHour() / 3 > timeInHours / 3)) /* Check that requested time is located in the time window before the current time */
+            inRange = false;
 
         return inRange;
     }
