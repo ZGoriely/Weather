@@ -75,7 +75,7 @@ public class OpenWeatherSource implements WeatherSource {
             return forecast;
 
         })
-                .observeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class OpenWeatherSource implements WeatherSource {
             return forecast;
 
         })
-                .observeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());
     }
 
     private class ForecastNotAvailableException extends RuntimeException{
