@@ -84,10 +84,8 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <actionCommand resource-bundle="strings" key="24.hour"/>
                   <hideActionText value="false"/>
-                  <label value="24 Hour ⇒"/>
-                  <text resource-bundle="strings" key="24.hour1"/>
+                  <text resource-bundle="strings" key="24.hour"/>
                 </properties>
               </component>
               <vspacer id="765d0">

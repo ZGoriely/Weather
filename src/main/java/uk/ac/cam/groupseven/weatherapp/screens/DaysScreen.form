@@ -89,10 +89,9 @@
               </grid>
             </constraints>
             <properties>
-              <actionCommand value="⇐ 24 Hour"/>
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
-              <text resource-bundle="strings" key="current.forecast1"/>
+              <text resource-bundle="strings" key="24.hour1"/>
             </properties>
           </component>
           <hspacer id="7fc9b">

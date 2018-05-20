@@ -91,7 +91,9 @@ public class DaysScreen implements Screen {
             // Set the table model to get the correct data
             forecastTable.setModel(new DefaultTableModel() {
                 @Override
-                public int getRowCount() { return viewModel.getDayWeathers().size(); }
+                public int getRowCount() {
+                    return viewModel.getDayWeathers().size();
+                }
 
                 @Override
                 public int getColumnCount() {
@@ -153,7 +155,7 @@ public class DaysScreen implements Screen {
                     });
 
             //Set column model for all other columns
-            for (int col=1; col<5; col++) {
+            for (int col = 1; col < 5; col++) {
                 forecastTable.getColumnModel().getColumn(col)
                         .setHeaderRenderer((table, value, isSelected, hasFocus, row, column) -> new JLabel((Icon) value));
             }
@@ -197,19 +199,19 @@ public class DaysScreen implements Screen {
         panel.setPreferredSize(new Dimension(500, 300));
         panel.setRequestFocusEnabled(false);
         topPanel = new JPanel();
-        topPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel.add(topPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, new Dimension(150, 200), new Dimension(-1, 200), 0, false));
+        topPanel.setLayout(new GridLayoutManager(1, 1, new Insets(10, 0, 0, 0), -1, -1));
+        panel.add(topPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(-1, 200), new Dimension(150, 200), new Dimension(-1, 200), 0, false));
         dateText = new JLabel();
         dateText.setAlignmentX(0.5f);
         dateText.setText("Label");
-        topPanel.add(dateText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        topPanel.add(dateText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 50, 50, 50), -1, -1));
+        bottomPanel.setLayout(new GridLayoutManager(1, 1, new Insets(25, 50, 50, 50), -1, -1));
         bottomPanel.setOpaque(false);
         panel.add(bottomPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         scrollPanel = new JScrollPane();
         scrollPanel.setOpaque(true);
-        bottomPanel.add(scrollPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        bottomPanel.add(scrollPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         forecastTable = new JTable();
         forecastTable.setFillsViewportHeight(true);
         forecastTable.setSelectionBackground(new Color(-16166704));
@@ -218,11 +220,11 @@ public class DaysScreen implements Screen {
         midPanel = new JPanel();
         midPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 10, 0, 10), -1, -1));
         midPanel.setOpaque(false);
-        panel.add(midPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, new Dimension(-1, 300), null, 0, false));
+        panel.add(midPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(-1, 100), new Dimension(-1, 100), new Dimension(-1, 100), 0, false));
         leftButton = new JButton();
         leftButton.setAlignmentX(0.5f);
         leftButton.setHideActionText(false);
-        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("strings").getString("current.forecast1"));
+        this.$$$loadButtonText$$$(leftButton, ResourceBundle.getBundle("strings").getString("24.hour1"));
         midPanel.add(leftButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(149, 50), null, 0, false));
         final Spacer spacer1 = new Spacer();
         midPanel.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
