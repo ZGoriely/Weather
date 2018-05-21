@@ -7,6 +7,11 @@ import com.google.inject.name.Names;
 import java.awt.*;
 import java.util.Calendar;
 
+/**
+ * Google guice module.
+ *
+ * @see <a href="https://github.com/google/guice/wiki/GettingStarted">https://github.com/google/guice/wiki/GettingStarted</a>
+ */
 public class SettingsModule implements Module {
     @Override
     public void configure(Binder binder) {

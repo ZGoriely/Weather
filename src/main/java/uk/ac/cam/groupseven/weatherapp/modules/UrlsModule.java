@@ -7,6 +7,11 @@ import com.google.inject.name.Names;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Google guice module.
+ *
+ * @see <a href="https://github.com/google/guice/wiki/GettingStarted">https://github.com/google/guice/wiki/GettingStarted</a>
+ */
 public class UrlsModule implements Module {
     @Override
     public void configure(Binder binder) {
