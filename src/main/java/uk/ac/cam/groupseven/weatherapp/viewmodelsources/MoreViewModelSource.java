@@ -3,7 +3,7 @@ package uk.ac.cam.groupseven.weatherapp.viewmodelsources;
 import com.google.inject.Inject;
 import io.reactivex.Observable;
 import uk.ac.cam.groupseven.weatherapp.datasources.RowingInfoSource;
-import uk.ac.cam.groupseven.weatherapp.datasources.WaterLevelSourceImpl;
+import uk.ac.cam.groupseven.weatherapp.datasources.WaterLevelSource;
 import uk.ac.cam.groupseven.weatherapp.datasources.WeatherSource;
 import uk.ac.cam.groupseven.weatherapp.models.LightingTimes;
 import uk.ac.cam.groupseven.weatherapp.models.WaterLevel;
@@ -19,7 +19,7 @@ public class MoreViewModelSource implements ViewModelSource<Loadable<MoreViewMod
     private WeatherSource weatherSource;
 
     @Inject
-    private WaterLevelSourceImpl waterLevelSource;
+    private WaterLevelSource waterLevelSource;
 
     public Observable<Loadable<MoreViewModel>> getViewModel(Observable<Object> refresh) {
         return refresh.flatMap(x ->

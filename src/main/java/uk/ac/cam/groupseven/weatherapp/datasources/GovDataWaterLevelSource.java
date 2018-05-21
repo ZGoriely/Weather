@@ -13,7 +13,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 
-public class WaterLevelSourceImpl implements WaterLevelSource {
+public class GovDataWaterLevelSource implements WaterLevelSource {
     @Inject
     @Named("waterLevelSourceUrl")
     private URL waterLevelSourceUrl;
