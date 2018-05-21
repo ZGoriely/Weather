@@ -9,6 +9,7 @@ import java.awt.*;
 public class CenterTextStyle extends BackgroundStyle implements Style {
     @Override
     public void styleComponent(JComponent component) {
+        // Style to center text within a text pane
         super.styleComponent(component);
         JTextPane textPane = (JTextPane)component;
         StyledDocument doc = textPane.getStyledDocument();

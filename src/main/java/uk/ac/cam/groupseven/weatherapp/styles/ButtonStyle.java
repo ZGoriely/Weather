@@ -7,6 +7,7 @@ import java.awt.*;
 public class ButtonStyle extends BackgroundStyle implements Style {
     @Override
     public void styleComponent(JComponent component) {
+        // Style for most buttons, a border with standard background and bold font
         super.styleComponent(component);
         component.setBorder(new LineBorder(Color.WHITE, 1));
         Font font = new Font("Helvetica", Font.BOLD, 25);

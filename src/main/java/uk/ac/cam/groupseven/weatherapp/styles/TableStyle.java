@@ -6,6 +6,7 @@ import java.awt.*;
 public class TableStyle extends ButtonStyle implements Style {
     @Override
     public void styleComponent(JComponent component) {
+        // Table style, set header and cell font
         super.styleComponent(component);
         JTable jTable = (JTable) component;
         jTable.setTableHeader(null);

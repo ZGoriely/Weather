@@ -7,6 +7,7 @@ import java.awt.*;
 public class HoursTableStyle extends BackgroundStyle implements Style {
     @Override
     public void styleComponent(JComponent component) {
+        // Table style, set heading and cell styles
         JTable jTable = (JTable) component;
         super.styleComponent(jTable.getTableHeader());
         jTable.getTableHeader().setBorder(new LineBorder(Color.WHITE, 1));
