@@ -120,6 +120,10 @@ public class DaysScreen implements Screen {
                             return null;
                     }
                 }
+
+                @Override
+                public boolean isCellEditable(int row, int column) { return false; }
+
             });
 
             // Set up column models
