@@ -102,7 +102,7 @@
             <properties>
               <alignmentX value="0.5"/>
               <hideActionText value="false"/>
-              <text resource-bundle="strings" key="7.day.forecast"/>
+              <text value="4 Day ⇒"/>
             </properties>
           </component>
           <hspacer id="367c8">

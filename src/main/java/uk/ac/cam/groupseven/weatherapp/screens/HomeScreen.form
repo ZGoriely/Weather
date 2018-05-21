@@ -122,7 +122,7 @@
                 </constraints>
                 <properties>
                   <actionCommand resource-bundle="strings" key="7.day"/>
-                  <text resource-bundle="strings" key="7.day1"/>
+                  <text value="⇐ 4 Day"/>
                 </properties>
               </component>
               <vspacer id="67a3f">
