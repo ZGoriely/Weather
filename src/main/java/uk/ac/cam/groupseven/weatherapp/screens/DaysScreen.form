@@ -50,7 +50,11 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <enabled value="false"/>
+              <focusable value="true"/>
               <opaque value="true"/>
+              <requestFocusEnabled value="true"/>
+              <verifyInputWhenFocusTarget value="true"/>
             </properties>
             <border type="none">
               <size top="10" left="50" bottom="50" right="10"/>
@@ -60,8 +64,13 @@
                 <constraints/>
                 <properties>
                   <fillsViewportHeight value="true"/>
+                  <focusable value="false"/>
+                  <requestFocusEnabled value="true"/>
+                  <rowSelectionAllowed value="false"/>
                   <selectionBackground color="-16166704"/>
                   <selectionForeground color="-16777216"/>
+                  <verifyInputWhenFocusTarget value="false"/>
+                  <visible value="true"/>
                 </properties>
               </component>
             </children>
