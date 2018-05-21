@@ -60,6 +60,7 @@
                   <alignmentX value="0.5"/>
                   <fillsViewportHeight value="true"/>
                   <opaque value="false"/>
+                  <rowSelectionAllowed value="false"/>
                   <visible value="true"/>
                 </properties>
               </component>
