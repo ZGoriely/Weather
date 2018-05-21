@@ -30,11 +30,14 @@ public class SlidingPanel extends JPanel {
     }
 
     public Disposable start() {
+        //Slide when screen layout tells us to
         return new CompositeDisposable(
                 screenLayout.getScreenChanges().subscribe(x -> slide(x.nextScreen, x.direction)),
                 screenLayout.start());
     }
 
+    //Similar to double buffering. We have a front active panel and a back panel for animations.
+    //When animation is done we swap
     private Component getFrontPanel() {
         if (getComponents().length > 0) {
             return getComponents()[0];
@@ -49,40 +52,51 @@ public class SlidingPanel extends JPanel {
         return null;
     }
 
+    //Called from animation
     private void updateBounds(ScreenLayout.Direction direction) {
         slidingLayoutManager.setOffset(offset, direction);
         slidingLayoutManager.layoutContainer(this);
     }
 
+    //Do a slide animmation
     private void slide(JPanel next, ScreenLayout.Direction direction) {
+        //We are currently animating. Ignore request.
         if (currentAnimation != null && !currentAnimation.isDisposed()) {
             return;
         }
+
+        //Remove any old panel left over from a previous animation
         if (getBackPanel() != null) {
             remove(getBackPanel());
         }
         add(next);
+
+        //Tell swing we've changed stuff so it updates
         next.revalidate();
         next.repaint();
 
 
         int count = 50;
+        //Do a animation
         currentAnimation = Observable.intervalRange(0, count, 0, 400 / count, TimeUnit.MILLISECONDS)
-                .observeOn(SwingSchedulers.edt())
+                .observeOn(SwingSchedulers.edt()) //On edt thread
                 .subscribe(x ->
-                {
-                    offset = x / (float) count;
-                    updateBounds(direction);
-                    this.invalidate();
-                },
-                x -> {
-                    throw new RuntimeException(x);
-                },
-                () -> {
-                    if (getFrontPanel() != null) remove(getFrontPanel());
-                    updateBounds(null);
-                }
-        );
+                        {
+                            //Calculate offset (between 0.0 and 1.0)
+                            offset = x / (float) count;
+                            updateBounds(direction);
+                            this.invalidate();
+                        },
+                        x -> {
+                            //Throw any exception
+                            throw new RuntimeException(x);
+                        },
+                        () -> {
+                            //When we are done we swap the panels
+                            if (getFrontPanel() != null) remove(getFrontPanel());
+                            updateBounds(null);
+                        }
+                );
     }
 
 
