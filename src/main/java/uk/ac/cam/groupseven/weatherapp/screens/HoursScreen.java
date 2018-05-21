@@ -112,6 +112,8 @@ public class HoursScreen implements Screen {
                     }
                 }
 
+                @Override
+                public boolean isCellEditable(int row, int column) { return false; }
 
             });
 
