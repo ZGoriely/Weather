@@ -59,7 +59,10 @@
             <children>
               <component id="3d144" class="javax.swing.JTable" binding="infoTable">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <focusable value="false"/>
+                  <rowSelectionAllowed value="false"/>
+                </properties>
               </component>
             </children>
           </scrollpane>
