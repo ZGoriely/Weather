@@ -7,7 +7,7 @@ import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class StyleManager {
+public class StyleManager { // Class that handles the styling of Swing elements
 
     public static void applyStyles(Screen screen) {
         applyStyles((Object) screen);
