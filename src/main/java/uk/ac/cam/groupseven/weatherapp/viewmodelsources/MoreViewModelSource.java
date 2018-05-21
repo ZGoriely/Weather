@@ -60,7 +60,7 @@ public class MoreViewModelSource implements ViewModelSource<Loadable<MoreViewMod
         }
         String precipitation = String.format(" Precipitation:\n%s", precipitationText);
         String cloudCover = String.format(" Cloud cover:\n%d%%", weather.getCloudCover());
-        String pressure = String.format(" Pressure:\n%shPa", weather.getPressure());
+        String pressure = String.format(" Pressure:\n%.1fhPa", weather.getPressure());
         String humidity = String.format(" Humidity:\n%d%%", weather.getHumidity());
         String windDirection = String.format(" Wind direction:\n%s", weather.getWind().getDirection());
         String sunrise = String.format(" Sunrise:\n%s", lightingTimes.getTodayUpTime());
