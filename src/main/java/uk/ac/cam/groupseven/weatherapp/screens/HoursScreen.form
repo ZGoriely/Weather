@@ -59,8 +59,13 @@
                 <properties>
                   <alignmentX value="0.5"/>
                   <fillsViewportHeight value="true"/>
-                  <opaque value="false"/>
+                  <focusable value="false"/>
+                  <opaque value="true"/>
                   <rowSelectionAllowed value="false"/>
+                  <selectionBackground color="-16166704"/>
+                  <selectionForeground color="-16777216"/>
+                  <showHorizontalLines value="false"/>
+                  <verifyInputWhenFocusTarget value="false"/>
                   <visible value="true"/>
                 </properties>
               </component>
