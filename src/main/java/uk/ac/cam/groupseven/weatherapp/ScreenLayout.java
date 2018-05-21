@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uk.ac.cam.groupseven.weatherapp.screens.*;
 import uk.ac.cam.groupseven.weatherapp.styles.ApplyStyles;
 
@@ -99,7 +98,7 @@ public class ScreenLayout {
         if (nextPanel != null) {
             return nextPanel;
         } else {
-            throw new NotImplementedException();
+            throw new IllegalStateException();
         }
     }
 
