@@ -7,13 +7,13 @@ import uk.ac.cam.groupseven.weatherapp.modules.IconsModule;
 import uk.ac.cam.groupseven.weatherapp.modules.SettingsModule;
 import uk.ac.cam.groupseven.weatherapp.modules.UrlsModule;
 
-public class WaterLevelSourceTest {
+public class GovDataWaterLevelSourceTest {
     @Test
     public void getWaterLevelNow() {
-        WaterLevelSourceImpl waterLevelSource = Guice.createInjector(new ApplicationModule(),
+        GovDataWaterLevelSource waterLevelSource = Guice.createInjector(new ApplicationModule(),
                 new UrlsModule(),
                 new IconsModule(),
-                new SettingsModule()).getInstance(WaterLevelSourceImpl.class);
+                new SettingsModule()).getInstance(GovDataWaterLevelSource.class);
 
         System.out.println(waterLevelSource.getWaterLevelNow().blockingFirst().getLevel());
     }

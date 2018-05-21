@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Google guice module.
+ *
+ * @see <a href="https://github.com/google/guice/wiki/GettingStarted">https://github.com/google/guice/wiki/GettingStarted</a>
+ */
 public class IconsModule implements Module {
     @Override
     public void configure(Binder binder) {

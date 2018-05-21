@@ -8,6 +8,11 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.*;
 
 import javax.swing.*;
 
+/**
+ * Google guice module.
+ *
+ * @see <a href="https://github.com/google/guice/wiki/GettingStarted">https://github.com/google/guice/wiki/GettingStarted</a>
+ */
 public class ApplicationModule implements Module {
     @Override
     public void configure(Binder binder) {
