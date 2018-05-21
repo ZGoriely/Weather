@@ -19,6 +19,8 @@ import uk.ac.cam.groupseven.weatherapp.viewmodelsources.ViewModelSource;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -70,6 +72,13 @@ public class HoursScreen implements Screen {
             timeLabel.setText("Error");
         } else {
             HourViewModel viewModel = viewModelLoadable.getViewModel();
+
+            java.util.List<HourlyWeather> hourlyWeatherList = viewModel.getHourlyWeather();
+            hourlyWeatherList.sort((w1, w2) -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm");
+                return LocalDateTime.parse(w1.getTime(), formatter).compareTo(LocalDateTime.parse(w2.getTime(), formatter));
+            });
+
             assert viewModel != null;
 
             // Set the label to have the current time
@@ -89,12 +98,11 @@ public class HoursScreen implements Screen {
 
                 @Override
                 public Object getValueAt(int row, int column) {
-                    HourlyWeather hourlyWeather = viewModel.getHourlyWeather().get(row);
-
+                    HourlyWeather hourlyWeather = hourlyWeatherList.get(row);
                     // Make each column display the correct information
                     switch (column) {
                         case 0:
-                            return hourlyWeather.getTime();
+                            return hourlyWeather.getTime().substring(11);
                         case 1:
                             return hourlyWeather.getTemperature();
                         case 2:
