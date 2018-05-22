@@ -20,7 +20,7 @@ import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class MockingModule implements Module {
+public class MockingModule implements com.google.inject.Module {
     public static Injector injector = Guice.createInjector(new MockingModule());
 
     @Override
