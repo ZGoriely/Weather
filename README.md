@@ -21,7 +21,7 @@ gradle runApp
 
 Alternatively:
 ```
-gradle fatJar
+gradle shadowJar
 java -jar ./build/libs/WeatherApp-1.0-SNAPSHOT-all.jar
 ```
 
