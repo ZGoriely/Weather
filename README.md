@@ -34,7 +34,11 @@ gradle test
 
 
 ## Built With
-*TODO*
+- [gradle](https://gradle.org) -  build automation tool
+- [guice](https://github.com/google/guice) - a lightweight dependency injection framework
+- [rxjava](https://github.com/ReactiveX/RxJava) - extends the observer pattern and abstracts away from low-level threading
+- [kotlin](https://kotlinlang.org) - used here as a template language for data only classes to eliminate boilerplate code
+ 
 
 ## Authors
 
