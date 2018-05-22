@@ -121,6 +121,7 @@ public class CrestScreen implements Screen {
         // Set table properties to make it look good
         crestTable.setPreferredScrollableViewportSize(crestTable.getPreferredSize());
         crestTable.setRowHeight(crests.firstEntry().getValue().getIconHeight());
+        crestTable.setShowGrid(false);
     }
 
     // Private method to convert from a row and column to a list index

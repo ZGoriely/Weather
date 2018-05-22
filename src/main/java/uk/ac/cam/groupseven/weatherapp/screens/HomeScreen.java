@@ -90,6 +90,7 @@ public class HomeScreen implements Screen {
         tempIcon.setIcon(thermometer);
         windIcon.setIcon(wind);
         refreshButton.setIcon(loadingIcon);
+        crestButton.setBorder(BorderFactory.createEmptyBorder());
 
         setLoading(true);
         crestImageSource.getViewModel((getRefreshObservable())).subscribe(this::updateCrest);
