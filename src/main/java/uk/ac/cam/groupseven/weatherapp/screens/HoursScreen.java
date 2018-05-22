@@ -113,7 +113,9 @@ public class HoursScreen implements Screen {
                 }
 
                 @Override
-                public boolean isCellEditable(int row, int column) { return false; }
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
 
             });
 
@@ -186,7 +188,13 @@ public class HoursScreen implements Screen {
         hoursTable = new JTable();
         hoursTable.setAlignmentX(0.5f);
         hoursTable.setFillsViewportHeight(true);
-        hoursTable.setOpaque(false);
+        hoursTable.setFocusable(false);
+        hoursTable.setOpaque(true);
+        hoursTable.setRowSelectionAllowed(false);
+        hoursTable.setSelectionBackground(new Color(-16166704));
+        hoursTable.setSelectionForeground(new Color(-16777216));
+        hoursTable.setShowHorizontalLines(false);
+        hoursTable.setVerifyInputWhenFocusTarget(false);
         hoursTable.setVisible(true);
         scrollPanel.setViewportView(hoursTable);
         midPanel = new JPanel();

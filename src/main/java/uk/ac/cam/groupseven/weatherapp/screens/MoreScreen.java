@@ -205,6 +205,8 @@ public class MoreScreen implements Screen {
         infoPane = new JScrollPane();
         panel2.add(infoPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         infoTable = new JTable();
+        infoTable.setFocusable(false);
+        infoTable.setRowSelectionAllowed(false);
         infoPane.setViewportView(infoTable);
         final Spacer spacer3 = new Spacer();
         panel.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));

@@ -122,7 +122,9 @@ public class DaysScreen implements Screen {
                 }
 
                 @Override
-                public boolean isCellEditable(int row, int column) { return false; }
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
 
             });
 
@@ -214,12 +216,21 @@ public class DaysScreen implements Screen {
         bottomPanel.setOpaque(false);
         panel.add(bottomPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         scrollPanel = new JScrollPane();
+        scrollPanel.setEnabled(false);
+        scrollPanel.setFocusable(true);
         scrollPanel.setOpaque(true);
+        scrollPanel.setRequestFocusEnabled(true);
+        scrollPanel.setVerifyInputWhenFocusTarget(true);
         bottomPanel.add(scrollPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         forecastTable = new JTable();
         forecastTable.setFillsViewportHeight(true);
+        forecastTable.setFocusable(false);
+        forecastTable.setRequestFocusEnabled(true);
+        forecastTable.setRowSelectionAllowed(false);
         forecastTable.setSelectionBackground(new Color(-16166704));
         forecastTable.setSelectionForeground(new Color(-16777216));
+        forecastTable.setVerifyInputWhenFocusTarget(false);
+        forecastTable.setVisible(true);
         scrollPanel.setViewportView(forecastTable);
         midPanel = new JPanel();
         midPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 10, 0, 10), -1, -1));

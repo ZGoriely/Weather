@@ -26,20 +26,23 @@ public class DaysViewModelSource implements ViewModelSource<Loadable<DaysViewMod
 
     @Override
     public Observable<Loadable<DaysViewModel>> getViewModel(Observable<Object> refresh) {
-        return Observable.range(1, 4)
-                .concatMap(x ->
-                        weatherApiSource.getWeatherInDays(x, morningHour)
-                                .concatMap(morningWeather ->
-                                        weatherApiSource.getWeatherInDays(x, afternoonHour)
-                                                .map(afternoonWeather ->
-                                                        buildModel(morningWeather, afternoonWeather)
-                                                )
 
-                                )
-                )
-                .toList()
-                .map(this::buildModel)
-                .toObservable()
+        return refresh.flatMapSingle(r ->
+                Observable.range(1, 4)
+                        .concatMap(x ->
+                                weatherApiSource.getWeatherInDays(x, morningHour)
+                                        .concatMap(morningWeather ->
+                                                weatherApiSource.getWeatherInDays(x, afternoonHour)
+                                                        .map(afternoonWeather ->
+                                                                buildModel(morningWeather, afternoonWeather)
+                                                        )
+
+                                        )
+                        )
+                        .toList()
+                        .map(this::buildModel)
+                        .onErrorReturn(Loadable::new)
+        )
                 .observeOn(SwingSchedulers.edt());
     }
 

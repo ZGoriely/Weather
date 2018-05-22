@@ -26,7 +26,7 @@ public class HoursViewModelSource implements ViewModelSource<Loadable<HourViewMo
     public Observable<Loadable<HourViewModel>> getViewModel(Observable<Object> refresh) {
         return refresh.flatMapSingle(o ->
                 Observable.range(0, 6)
-                        .flatMap(x -> weatherApiSource.getWeatherInHours(x * 3)) // Get the weather
+                        .concatMap(x -> weatherApiSource.getWeatherInHours(x * 3)) // Get the weather
                         .map(this::buildWeather)
                         .toList()
                         .map(this::buildModel)

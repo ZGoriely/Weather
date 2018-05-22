@@ -107,7 +107,7 @@ public class HomeScreen implements Screen {
             tempText.setText("Temperature: ...");
             windText.setText("Wind Speed: ...");
         } else if (viewModelLoadable.getError() != null) {
-            setLoading(true);
+            setLoading(false);
             flagText.setText("Error");
             windText.setText("Error");
             tempText.setText("Error");
