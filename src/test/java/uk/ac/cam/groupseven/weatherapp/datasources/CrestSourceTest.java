@@ -11,10 +11,7 @@ public class CrestSourceTest {
         crestSource.setNewCrest(Crest.EMMANUEL);
         TestObserver<Crest> test = crestSource.getUserCrests().test();
         test.awaitCount(1);
-        crestSource.setNewCrest(Crest.QUEENS);
-        test.awaitCount(1);
         test.assertValueAt(0, Crest.EMMANUEL);
-        test.assertValueAt(1, Crest.QUEENS);
     }
 
 }
