@@ -7,7 +7,7 @@ Weather for Rowers App (Part 1A Interaction Design Project)
 
 This project uses [gradle](https://gradle.org). 
 
-To build execute the command:
+To build execute the command, navigate to the project root directory, Weather, and type:
 
 ```
 gradle build
@@ -41,5 +41,9 @@ gradle test
  
 
 ## Authors
+David Horstmann
+Ivan Mauro Gomes Ribeiro
+Matthew Thomas Jackson
+Nathan Hawkes
+Zebulon Goriely
 
-*TODO*
