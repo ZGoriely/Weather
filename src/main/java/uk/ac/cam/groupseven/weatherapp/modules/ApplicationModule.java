@@ -1,7 +1,6 @@
 package uk.ac.cam.groupseven.weatherapp.modules;
 
 import com.google.inject.Binder;
-import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
 import uk.ac.cam.groupseven.weatherapp.viewmodels.*;
 import uk.ac.cam.groupseven.weatherapp.viewmodelsources.*;
@@ -13,7 +12,7 @@ import javax.swing.*;
  *
  * @see <a href="https://github.com/google/guice/wiki/GettingStarted">https://github.com/google/guice/wiki/GettingStarted</a>
  */
-public class ApplicationModule implements Module {
+public class ApplicationModule implements com.google.inject.Module {
     @Override
     public void configure(Binder binder) {
         // Bind all the ViewSourceModels to the appropriate classes
