@@ -41,9 +41,9 @@ gradle test
  
 
 ## Authors
-David Horstmann
-Ivan Mauro Gomes Ribeiro
-Matthew Thomas Jackson
-Nathan Hawkes
-Zebulon Goriely
+- David Horstmann
+- Ivan Mauro Gomes Ribeiro
+- Matthew Thomas Jackson
+- Nathan Hawkes
+- Zebulon Goriely
 
